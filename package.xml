@@ -1,9 +1,9 @@
 <?xml version="1.0"?>
 <package format="2">
-  <name>2023_arm_node</name>
+  <name>arm_node</name>
   <version>0.0.1</version>
   <description>
-    2023_arm_node
+    arm_node
   </description>
   <author>Team 195</author>
   <maintainer email="info@team195.com">Team 195</maintainer>

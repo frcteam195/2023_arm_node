@@ -2,10 +2,10 @@
 
 # Import required Python code.
 import roslib
-NODE_NAME = '2023_arm_node'
+NODE_NAME = 'arm_node'
 roslib.load_manifest(NODE_NAME)
 import rospy
 import tf2_ros
-import 2023_arm_node.main as main
+import arm_node.main as main
 if __name__ == '__main__':
     main.ros_main(NODE_NAME)

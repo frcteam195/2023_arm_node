@@ -5,7 +5,7 @@ from catkin_pkg.python_setup import generate_distutils_setup
 
 # fetch values from package.xml
 setup_args = generate_distutils_setup(
-    packages=['2023_arm_node'],  #packages=['2023_arm_node', '2023_arm_node.subnode'],
+    packages=['arm_node'],  #packages=['arm_node', 'arm_node.subnode'],
     package_dir={'': 'src'})
 
 setup(**setup_args)

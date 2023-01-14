@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.8)
-project(2023_arm_node)
+project(arm_node)
 
 find_package(catkin REQUIRED COMPONENTS message_generation roscpp rospy std_msgs ck_ros_msgs_node frc_robot_utilities_py_node)
 
