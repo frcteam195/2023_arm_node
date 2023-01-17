@@ -17,6 +17,7 @@ def ros_func():
     control_sub = BufferedROSMsgHandlerPy(Arm_Control)
     control_sub.register_for_updates("ArmControl")
     status_pub = rospy.Publisher(name="ArmStatus", data_class=Arm_Status, queue_size=50, tcp_nodelay=True)
+    fault_pub = rospy.Publisher(name="ArmFaults", data_class=Health_Monitor_Control, queue_size=50, tcp_nodelay=True)
 
     armBaseMotor = Motor(9, MotorType.TalonFX)
     armBaseMotor.set_defaults()
@@ -52,6 +53,10 @@ def ros_func():
         pubmsg.arm_base_actual_position = armUpperMotor.get_sensor_position()
         pubmsg.arm_upper_actual_position = armBaseMotor.get_sensor_position()
         status_pub.publish(pubmsg)
+
+        fault_message = Health_Monitor_Control()
+        fault_message.faults = [{"code": "Arm stuck", "priority": 1}]
+        fault_pub.publish(fault_message)
 
         rate.sleep()
 
