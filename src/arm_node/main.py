@@ -1,10 +1,8 @@
 #!/usr/bin/env python3
 
-import tf2_ros
 import rospy
 from threading import Thread
 
-from arm_node.arm_link import *
 from ck_utilities_py_node.motor import *
 from frc_robot_utilities_py_node.frc_robot_utilities_py import *
 from frc_robot_utilities_py_node.RobotStatusHelperPy import RobotStatusHelperPy, Alliance, RobotMode, BufferedROSMsgHandlerPy
@@ -33,8 +31,6 @@ def ros_func():
     armUpperMotor.set_reverse_soft_limit(0.0)
     armUpperMotor.apply()
 
-    arm_broadcaster = tf2_ros.TransformBroadcaster()
-
     rate = rospy.Rate(20)
 
     while not rospy.is_shutdown():
@@ -46,8 +42,6 @@ def ros_func():
             else:
                 armBaseMotor.set(ControlMode.PERCENT_OUTPUT, 0.0, 0.0)
                 armUpperMotor.set(ControlMode.PERCENT_OUTPUT, 0.0, 0.0)
-
-        arm_broadcaster.sendTransform(get_arm_transforms(armBaseMotor.get_sensor_position(), armUpperMotor.get_sensor_position()))
 
         pubmsg = Arm_Status()
         pubmsg.arm_base_actual_position = armUpperMotor.get_sensor_position()
