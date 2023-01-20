@@ -8,7 +8,7 @@ from arm_node.arm_link import *
 from ck_utilities_py_node.motor import *
 from frc_robot_utilities_py_node.frc_robot_utilities_py import *
 from frc_robot_utilities_py_node.RobotStatusHelperPy import RobotStatusHelperPy, Alliance, RobotMode, BufferedROSMsgHandlerPy
-from ck_ros_msgs_node.msg import Arm_Control, Arm_Status
+from ck_ros_msgs_node.msg import Arm_Control, Arm_Status, Fault, Health_Monitor_Control
 
 def ros_func():
     global hmi_updates
@@ -17,7 +17,7 @@ def ros_func():
     control_sub = BufferedROSMsgHandlerPy(Arm_Control)
     control_sub.register_for_updates("ArmControl")
     status_pub = rospy.Publisher(name="ArmStatus", data_class=Arm_Status, queue_size=50, tcp_nodelay=True)
-    fault_pub = rospy.Publisher(name="ArmFaults", data_class=Health_Monitor_Control, queue_size=50, tcp_nodelay=True)
+    fault_pub = rospy.Publisher(name="HealthMonitorControl", data_class=Health_Monitor_Control, queue_size=50, tcp_nodelay=True)
 
     armBaseMotor = Motor(9, MotorType.TalonFX)
     armBaseMotor.set_defaults()
@@ -53,9 +53,14 @@ def ros_func():
         pubmsg.arm_base_actual_position = armUpperMotor.get_sensor_position()
         pubmsg.arm_upper_actual_position = armBaseMotor.get_sensor_position()
         status_pub.publish(pubmsg)
+    
+        example_fault = Fault()
+        example_fault.code = "ArmStuck"
+        example_fault.priority = 1
 
         fault_message = Health_Monitor_Control()
-        fault_message.faults = [{"code": "Arm stuck", "priority": 1}]
+        fault_message.faults = [ example_fault ]
+        fault_message.acknowledge = False
         fault_pub.publish(fault_message)
 
         rate.sleep()
