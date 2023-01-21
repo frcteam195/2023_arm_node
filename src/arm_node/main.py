@@ -20,19 +20,10 @@ def ros_func():
     fault_publisher = rospy.Publisher(
         name="HealthMonitorControl", data_class=Health_Monitor_Control, queue_size=50, tcp_nodelay=True)
 
-    # armBaseMotor = Motor(9, MotorType.TalonFX)
-    # armBaseMotor.set_defaults()
-    # armBaseMotor.set_neutral_mode(NeutralMode.Brake)
-    # armBaseMotor.set_forward_soft_limit(18000.0)
-    # armBaseMotor.set_reverse_soft_limit(0.0)
-    # armBaseMotor.apply()
-
-    # armUpperMotor = Motor(10, MotorType.TalonFX)
-    # armUpperMotor.set_defaults()
-    # armUpperMotor.set_neutral_mode(NeutralMode.Brake)
-    # armUpperMotor.set_forward_soft_limit(18000.0)
-    # armUpperMotor.set_reverse_soft_limit(0.0)
-    # armUpperMotor.apply()
+    armBaseMaster = Motor("baseArmMaster", MotorType.TalonFX)
+    armBaseSlave = Motor("baseArmSlave", MotorType.TalonFX)
+    secondArmMaster = Motor("secondArmMaster", MotorType.TalonFX)
+    secondBaseSlave = Motor("secondArmSlave", MotorType.TalonFX)
 
     rate = rospy.Rate(20)
 
@@ -40,18 +31,18 @@ def ros_func():
 
         if control_sub.get() is not None:
             if robot_status.get_mode() == RobotMode.TELEOP:
-                # armBaseMotor.set(ControlMode.MOTION_MAGIC, control_sub.get().arm_base_requested_position, 0.0)
-                # armUpperMotor.set(ControlMode.MOTION_MAGIC, control_sub.get().arm_upper_requested_position, 0.0)
+                armBaseMaster.set(ControlMode.MOTION_MAGIC, control_sub.get().arm_base_requested_position, 0.0)
+                secondArmMaster.set(ControlMode.MOTION_MAGIC, control_sub.get().arm_upper_requested_position, 0.0)
                 pass
             else:
-                # armBaseMotor.set(ControlMode.PERCENT_OUTPUT, 0.0, 0.0)
-                # armUpperMotor.set(ControlMode.PERCENT_OUTPUT, 0.0, 0.0)
+                armBaseMaster.set(ControlMode.PERCENT_OUTPUT, 0.0, 0.0)
+                secondArmMaster.set(ControlMode.PERCENT_OUTPUT, 0.0, 0.0)
                 pass
 
         status_message = Arm_Status()
-        # armUpperMotor.get_sensor_position()
+        secondArmMaster.get_sensor_position()
         status_message.arm_base_actual_position = 0
-        # armBaseMotor.get_sensor_position()
+        armBaseMaster.get_sensor_position()
         status_message.arm_upper_actual_position = 0
         status_publisher.publish(status_message)
 
