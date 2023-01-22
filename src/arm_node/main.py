@@ -21,6 +21,14 @@ def publish_arm_base_link(degrees : float):
     transform_link.set_transform(transform)
     transform_link.publish()
 
+    arm_cube = StaticCube("robot_parts", 1, "arm_base")
+    arm_transform = Transform()
+    arm_transform.linear.z = 0.5
+    arm_cube.set_transform(arm_transform)
+    arm_cube.set_scale(Scale(0.1, 0.5, 1.0))
+    arm_cube.set_color(Color(.7, .7, .7, 1.0))
+    arm_cube.publish()
+
 def ros_func():
     global hmi_updates
     global robot_status
@@ -51,7 +59,7 @@ def ros_func():
                 secondArmMaster.set(ControlMode.PERCENT_OUTPUT, 0.0, 0.0)
                 pass
 
-        publish_arm_base_link(armBaseMaster.get_sensor_position() * 360.0)
+        publish_arm_base_link(45)#armBaseMaster.get_sensor_position() * 360.0)  #MGT pretend this is 45 for now for demo purposes
 
         status_message = Arm_Status()
         secondArmMaster.get_sensor_position()
@@ -75,6 +83,14 @@ def ros_func():
 def ros_main(node_name):
     rospy.init_node(node_name)
     register_for_robot_updates()
+
+    drivebase = StaticCube("robot_base", 1, "base_link")
+    drivebase.set_scale(Scale(1.0, 1.0, 0.25))
+    drivetrans = Transform()
+    drivetrans.linear.z = 0.125
+    drivebase.set_transform(drivetrans)
+    drivebase.set_color(Color(.5, 0, 1.0, 1.0))
+    drivebase.publish()
 
     t1 = Thread(target=ros_func)
     t1.start()
