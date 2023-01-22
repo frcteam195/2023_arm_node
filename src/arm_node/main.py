@@ -5,6 +5,7 @@ from threading import Thread
 
 from ck_utilities_py_node.motor import *
 from ck_utilities_py_node.transform_links import *
+from ck_utilities_py_node.rviz_shapes import *
 from frc_robot_utilities_py_node.frc_robot_utilities_py import *
 from frc_robot_utilities_py_node.RobotStatusHelperPy import RobotStatusHelperPy, Alliance, RobotMode, BufferedROSMsgHandlerPy
 from ck_ros_msgs_node.msg import Arm_Control, Arm_Status, Fault, Health_Monitor_Control
