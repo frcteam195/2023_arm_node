@@ -4,10 +4,21 @@ import rospy
 from threading import Thread
 
 from ck_utilities_py_node.motor import *
+from ck_utilities_py_node.transform_links import *
 from frc_robot_utilities_py_node.frc_robot_utilities_py import *
 from frc_robot_utilities_py_node.RobotStatusHelperPy import RobotStatusHelperPy, Alliance, RobotMode, BufferedROSMsgHandlerPy
 from ck_ros_msgs_node.msg import Arm_Control, Arm_Status, Fault, Health_Monitor_Control
 
+import math
+
+def publish_arm_base_link(degrees : float):
+    transform = Transform()
+    transform.linear.z = .25 # Quarter of a meter up? - need to check cad for pivot point of base arm
+    transform.angular.pitch = math.radians(degrees)
+
+    transform_link = TransformLink("arm_base", "base_link") # originate from base link which is the center of the robot
+    transform_link.set_transform(transform)
+    transform_link.publish()
 
 def ros_func():
     global hmi_updates
@@ -38,6 +49,8 @@ def ros_func():
                 armBaseMaster.set(ControlMode.PERCENT_OUTPUT, 0.0, 0.0)
                 secondArmMaster.set(ControlMode.PERCENT_OUTPUT, 0.0, 0.0)
                 pass
+
+        publish_arm_base_link(armBaseMaster.get_sensor_position() * 360.0)
 
         status_message = Arm_Status()
         secondArmMaster.get_sensor_position()
