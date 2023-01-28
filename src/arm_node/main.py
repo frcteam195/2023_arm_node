@@ -37,8 +37,6 @@ def ros_func():
     control_sub.register_for_updates("ArmControl")
     status_publisher = rospy.Publisher(
         name="ArmStatus", data_class=Arm_Status, queue_size=50, tcp_nodelay=True)
-    fault_publisher = rospy.Publisher(
-        name="HealthMonitorControl", data_class=Health_Monitor_Control, queue_size=50, tcp_nodelay=True)
 
     armBaseMaster = Motor("baseArmMaster", MotorType.TalonFX)
     armBaseSlave = Motor("baseArmSlave", MotorType.TalonFX)
@@ -67,15 +65,6 @@ def ros_func():
         armBaseMaster.get_sensor_position()
         status_message.arm_upper_actual_position = 0
         status_publisher.publish(status_message)
-
-        example_fault = Fault()
-        example_fault.code = "ArmStuck"
-        example_fault.priority = 1
-
-        fault_message = Health_Monitor_Control()
-        fault_message.faults = [example_fault]
-        fault_message.acknowledge = False
-        fault_publisher.publish(fault_message)
 
         rate.sleep()
 
