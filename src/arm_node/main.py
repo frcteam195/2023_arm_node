@@ -23,13 +23,11 @@ def publish_arm_base_link(degrees : float):
     transform_link.publish()
 
 def ros_func():
-    global hmi_updates
     global robot_status
 
     control_sub = BufferedROSMsgHandlerPy(Arm_Control)
     control_sub.register_for_updates("ArmControl")
-    status_publisher = rospy.Publisher(
-        name="ArmStatus", data_class=Arm_Status, queue_size=50, tcp_nodelay=True)
+    status_publisher = rospy.Publisher(name="ArmStatus", data_class=Arm_Status, queue_size=50, tcp_nodelay=True)
 
     armBaseMaster = Motor("baseArmMaster", MotorType.TalonFX)
     armBaseSlave = Motor("baseArmSlave", MotorType.TalonFX)
