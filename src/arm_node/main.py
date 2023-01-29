@@ -6,6 +6,7 @@ from threading import Thread
 from ck_utilities_py_node.motor import *
 from ck_utilities_py_node.transform_links import *
 from ck_utilities_py_node.rviz_shapes import *
+from ck_utilities_py_node.solenoid import *
 from frc_robot_utilities_py_node.frc_robot_utilities_py import *
 from frc_robot_utilities_py_node.RobotStatusHelperPy import RobotStatusHelperPy, Alliance, RobotMode, BufferedROSMsgHandlerPy
 from ck_ros_msgs_node.msg import Arm_Control, Arm_Status, Fault, Health_Monitor_Control
@@ -34,6 +35,8 @@ def ros_func():
     armBaseSlave = Motor("baseArmSlave", MotorType.TalonFX)
     secondArmMaster = Motor("secondArmMaster", MotorType.TalonFX)
     secondBaseSlave = Motor("secondArmSlave", MotorType.TalonFX)
+    
+    extension_solenoid = Solenoid("extension", SolenoidType.SINGLE)
 
     rate = rospy.Rate(20)
 
@@ -49,6 +52,11 @@ def ros_func():
                 secondArmMaster.set(ControlMode.PERCENT_OUTPUT, 0.0, 0.0)
                 pass
 
+            if control_sub.get().extend:
+                extension_solenoid.set(SolenoidState.ON)
+            else:
+                extension_solenoid.set(SolenoidState.OFF)
+
         publish_arm_base_link(45)#armBaseMaster.get_sensor_position() * 360.0)  #MGT pretend this is 45 for now for demo purposes
 
         status_message = Arm_Status()
@@ -56,6 +64,7 @@ def ros_func():
         status_message.arm_base_actual_position = 0
         armBaseMaster.get_sensor_position()
         status_message.arm_upper_actual_position = 0
+        status_message.extended = extension_solenoid.get() == SolenoidState.ON
         status_publisher.publish(status_message)
 
         rate.sleep()
