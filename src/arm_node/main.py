@@ -34,7 +34,7 @@ def publish_arm_upper_link(degrees : float):
 
 def publish_arm_extender_link(degrees : float, extension : float):
     transform = Transform()
-   # transform.linear.z = 0 # 
+   # transform.linear.z = 0 #
     transform.angular.pitch = math.radians(degrees)
     transform.linear.z = extension * 0.3556 + 0.2032
 
@@ -55,7 +55,7 @@ def ros_func():
     armBaseSlave = Motor("baseArmSlave", MotorType.TalonFX)
     secondArmMaster = Motor("secondArmMaster", MotorType.TalonFX)
     secondBaseSlave = Motor("secondArmSlave", MotorType.TalonFX)
-    
+
     extension_solenoid = Solenoid("extension", SolenoidType.SINGLE)
 
     rate = rospy.Rate(20)
@@ -66,7 +66,7 @@ def ros_func():
             if robot_status.get_mode() == RobotMode.TELEOP:
                 armBaseMaster.set(ControlMode.MOTION_MAGIC, control_sub.get().arm_base_requested_position, 0.0)
                 secondArmMaster.set(ControlMode.MOTION_MAGIC, control_sub.get().arm_upper_requested_position, 0.0)
-                
+
                 pass
             else:
                 armBaseMaster.set(ControlMode.PERCENT_OUTPUT, 0.0, 0.0)
@@ -81,8 +81,8 @@ def ros_func():
         publish_arm_base_link(armBaseMaster.get_sensor_position() * 360.0)#armBaseMaster.get_sensor_position() * 360.0)  #MGT pretend this is 45 for now for demo purposes
         publish_arm_upper_link(90)#secondArmMaster.get_sensor_position() * 360.0)
         publish_arm_extender_link(secondArmMaster.get_sensor_position() * 360.0, True)#extension_solenoid.get() == SolenoidState.ON)
-       
-        
+
+
         master_sticky_faults = armBaseMaster.get_sticky_faults()
         slave_sticky_faults = armBaseSlave.get_sticky_faults()
 
@@ -101,8 +101,8 @@ def ros_func():
         status_message.left_arm_base_supply_unstable = master_sticky_faults.SupplyUnstable
         status_message.right_arm_base_supply_unstable = slave_sticky_faults.SupplyUnstable
         status_publisher.publish(status_message)
-        
-        
+
+
 
         rate.sleep()
 
@@ -112,9 +112,9 @@ def ros_main(node_name):
     register_for_robot_updates()
 
     drivebase = Cube("robot_base", 1, "base_link")
-    drivebase.set_scale(Scale(1.0, 1.0, 0.25))
+    drivebase.set_scale(Scale(0.6096, 0.6096, 0.127))
     drivetrans = Transform()
-    drivetrans.linear.z = 0.125
+    drivetrans.linear.z = 0.1143
     drivebase.set_transform(drivetrans)
     drivebase.set_color(Color(.5, 0, 1.0, 1.0))
     drivebase.publish()
@@ -139,11 +139,11 @@ def ros_main(node_name):
     arm_extender_transform = Transform()
     arm_extender_transform.linear.z = 0.2032 #12 in
     arm_extender_cube.set_transform(arm_extender_transform)
-    arm_extender_cube.set_scale(Scale(0.0508, 0.304673, 0.4064)) #14 out (11.995, 16, 2) 
+    arm_extender_cube.set_scale(Scale(0.0508, 0.304673, 0.4064)) #14 out (11.995, 16, 2)
     arm_extender_cube.set_color(Color(.7, .7, .7, 1.0))
     arm_extender_cube.publish()
 
-  
+
 
     t1 = Thread(target=ros_func)
     t1.start()
