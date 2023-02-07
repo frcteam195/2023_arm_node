@@ -2,7 +2,6 @@
 
 import rospy
 from threading import Thread
-
 from ck_utilities_py_node.motor import *
 from ck_utilities_py_node.transform_links import *
 from ck_utilities_py_node.rviz_shapes import *
@@ -34,7 +33,7 @@ def publish_arm_upper_link(degrees : float):
 
 def publish_arm_extender_link(degrees : float, extension : float):
     transform = Transform()
-   # transform.linear.z = 0 #
+
     transform.angular.pitch = math.radians(degrees)
     transform.linear.z = extension * 0.3556 + 0.2032
 
@@ -78,9 +77,9 @@ def ros_func():
             else:
                 extension_solenoid.set(SolenoidState.OFF)
 
-        publish_arm_base_link(armBaseMaster.get_sensor_position() * 360.0)#armBaseMaster.get_sensor_position() * 360.0)  #MGT pretend this is 45 for now for demo purposes
-        publish_arm_upper_link(90)#secondArmMaster.get_sensor_position() * 360.0)
-        publish_arm_extender_link(secondArmMaster.get_sensor_position() * 360.0, True)#extension_solenoid.get() == SolenoidState.ON)
+        publish_arm_base_link(armBaseMaster.get_sensor_position() * 360.0) #MGT pretend this is 45 for now for demo purposes
+        publish_arm_upper_link(secondArmMaster.get_sensor_position() * 360.0)
+        publish_arm_extender_link(secondArmMaster.get_sensor_position() * 360.0, extension_solenoid.get() == SolenoidState.ON)
 
 
         master_sticky_faults = armBaseMaster.get_sticky_faults()
