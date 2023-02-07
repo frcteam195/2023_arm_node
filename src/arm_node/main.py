@@ -47,7 +47,7 @@ def ros_func():
             else:
                 extension_solenoid.set(SolenoidState.OFF)
 
-        arm_simulation.publish_arm_base_link(baseArmMaster.get_sensor_position() * 360.0) #MGT pretend this is 45 for now for demo purposes
+        arm_simulation.publish_arm_base_link(baseArmMaster.get_sensor_position() * 360.0)
         arm_simulation.publish_arm_upper_link(upperArmMaster.get_sensor_position() * 360.0)
         arm_simulation.publish_arm_extender_link(upperArmMaster.get_sensor_position() * 360.0, extension_solenoid.get() == SolenoidState.ON)
 
