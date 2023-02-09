@@ -64,3 +64,12 @@ class ArmSimulation:
         transform_link = TransformLink("arm_extender", "arm_upper")
         transform_link.set_transform(transform)
         transform_link.publish()
+
+    def publish_arm_wrist_link(self, degrees : float):
+        transform = Transform()
+
+        transform.angular.yaw = math.radians(degrees)
+
+        transform_link = TransformLink("wrist_link", "arm_extender")
+        transform_link.set_transform(transform)
+        transform_link.publish()
