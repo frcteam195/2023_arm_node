@@ -38,7 +38,7 @@ class ArmSimulation:
 
         wrist_cube = Cube("robot_parts", 5, "wrist_link")
         wrist_transform = Transform()
-        wrist_transform.linear.z = 0.2032 #12 in
+        wrist_transform.linear.z = 0.2032
         wrist_cube.set_transform(wrist_transform)
         wrist_cube.set_scale(Scale(0.1, 0.1, 0.01))
         wrist_cube.set_color(Color(1, .7, .7, 1.0))
@@ -67,10 +67,8 @@ class ArmSimulation:
         transform_link.publish()
 
 
-    def publish_arm_extender_link(self, degrees : float, extension : float):
+    def publish_arm_extender_link(self, extension : float):
         transform = Transform()
-
-        transform.angular.pitch = math.radians(degrees)
         transform.linear.z = extension * 0.3556 + 0.2032
 
         transform_link = TransformLink("arm_extender", "arm_upper")

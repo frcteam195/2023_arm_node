@@ -64,7 +64,7 @@ def ros_func():
 
         arm_simulation.publish_arm_base_link(baseArmMaster.get_sensor_position() * 360.0)
         arm_simulation.publish_arm_upper_link(upperArmMaster.get_sensor_position() * 360.0)
-        arm_simulation.publish_arm_extender_link(upperArmMaster.get_sensor_position() * 360.0, extension_solenoid.get() == SolenoidState.ON)
+        arm_simulation.publish_arm_extender_link(extension_solenoid.get() == SolenoidState.ON)
         arm_simulation.publish_arm_wrist_link(wristMotor.get_sensor_position() * 360.0)
 
         master_sticky_faults = baseArmMaster.get_sticky_faults()
