@@ -12,7 +12,7 @@ class ArmSimulation:
         drivebase.set_color(Color(.5, 0, 1.0, 1.0))
         drivebase.publish()
 
-        arm_cube = Cube("robot_parts", 1, "arm_base")
+        arm_cube = Cube("robot_parts", 2, "arm_base")
         arm_transform = Transform()
         arm_transform.linear.z = 0.56515
         arm_cube.set_transform(arm_transform)
@@ -20,7 +20,7 @@ class ArmSimulation:
         arm_cube.set_color(Color(.7, .7, .7, 1.0))
         arm_cube.publish()
 
-        arm_upper_cube = Cube("robot_parts", 2, "arm_upper")
+        arm_upper_cube = Cube("robot_parts", 3, "arm_upper")
         arm_upper_transform = Transform()
         arm_upper_transform.linear.z = 0.3048
         arm_upper_cube.set_transform(arm_upper_transform)
@@ -28,13 +28,23 @@ class ArmSimulation:
         arm_upper_cube.set_color(Color(.7, .7, .7, 1.0))
         arm_upper_cube.publish()
 
-        arm_extender_cube = Cube("robot_parts", 3, "arm_extender")
+        arm_extender_cube = Cube("robot_parts", 4, "arm_extender")
         arm_extender_transform = Transform()
         arm_extender_transform.linear.z = 0.2032 #12 in
         arm_extender_cube.set_transform(arm_extender_transform)
         arm_extender_cube.set_scale(Scale(0.0508, 0.304673, 0.4064)) #14 out (11.995, 16, 2)
         arm_extender_cube.set_color(Color(.7, .7, .7, 1.0))
         arm_extender_cube.publish()
+
+        wrist_cube = Cube("robot_parts", 5, "wrist_link")
+        wrist_transform = Transform()
+        wrist_transform.linear.z = 0.2032 #12 in
+        wrist_cube.set_transform(wrist_transform)
+        wrist_cube.set_scale(Scale(0.1, 0.1, 0.01))
+        wrist_cube.set_color(Color(1, .7, .7, 1.0))
+        wrist_cube.publish()
+
+        
 
     def publish_arm_base_link(self, degrees : float):
         transform = Transform()
@@ -44,6 +54,7 @@ class ArmSimulation:
         transform_link = TransformLink("arm_base", "base_link") # originate from base link which is the center of the robot
         transform_link.set_transform(transform)
         transform_link.publish()
+
 
     def publish_arm_upper_link(self, degrees : float):
         transform = Transform()
@@ -55,6 +66,7 @@ class ArmSimulation:
         transform_link.set_transform(transform)
         transform_link.publish()
 
+
     def publish_arm_extender_link(self, degrees : float, extension : float):
         transform = Transform()
 
@@ -65,11 +77,10 @@ class ArmSimulation:
         transform_link.set_transform(transform)
         transform_link.publish()
 
+
     def publish_arm_wrist_link(self, degrees : float):
         transform = Transform()
-
         transform.angular.yaw = math.radians(degrees)
-
         transform_link = TransformLink("wrist_link", "arm_extender")
         transform_link.set_transform(transform)
         transform_link.publish()
