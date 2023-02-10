@@ -4,7 +4,7 @@ import math
 
 class ArmSimulation:
     def __init__(self) -> None:
-        drivebase = Cube("robot_base", 1, "base_link")
+        drivebase = Cube("base_link")
         drivebase.set_scale(Scale(0.6096, 0.6096, 0.127))
         drivetrans = Transform()
         drivetrans.linear.z = 0.1143
@@ -12,7 +12,7 @@ class ArmSimulation:
         drivebase.set_color(Color(.5, 0, 1.0, 1.0))
         drivebase.publish()
 
-        arm_cube = Cube("robot_parts", 2, "arm_base")
+        arm_cube = Cube("arm_base")
         arm_transform = Transform()
         arm_transform.linear.z = 0.56515
         arm_cube.set_transform(arm_transform)
@@ -20,7 +20,7 @@ class ArmSimulation:
         arm_cube.set_color(Color(.7, .7, .7, 1.0))
         arm_cube.publish()
 
-        arm_upper_cube = Cube("robot_parts", 3, "arm_upper")
+        arm_upper_cube = Cube("arm_upper")
         arm_upper_transform = Transform()
         arm_upper_transform.linear.z = 0.3048
         arm_upper_cube.set_transform(arm_upper_transform)
@@ -28,7 +28,7 @@ class ArmSimulation:
         arm_upper_cube.set_color(Color(.7, .7, .7, 1.0))
         arm_upper_cube.publish()
 
-        arm_extender_cube = Cube("robot_parts", 4, "arm_extender")
+        arm_extender_cube = Cube("arm_extender")
         arm_extender_transform = Transform()
         arm_extender_transform.linear.z = 0.2032 #12 in
         arm_extender_cube.set_transform(arm_extender_transform)
@@ -36,7 +36,7 @@ class ArmSimulation:
         arm_extender_cube.set_color(Color(.7, .7, .7, 1.0))
         arm_extender_cube.publish()
 
-        wrist_cube = Cube("robot_parts", 5, "wrist_link")
+        wrist_cube = Cube("wrist_link")
         wrist_transform = Transform()
         wrist_transform.linear.z = 0.005
         wrist_cube.set_transform(wrist_transform)
