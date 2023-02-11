@@ -12,6 +12,7 @@ from ck_ros_msgs_node.msg import Arm_Control, Arm_Status, Fault, Health_Monitor_
 from arm_node.arm_simulation import ArmSimulation
 from ck_utilities_py_node.constraints import *
 from arm_node.arm_constraints import ArmConstraints
+from arm_node.state_machine import ArmStateMachine
 
 
 def ros_func():
@@ -27,14 +28,17 @@ def ros_func():
     baseArmFollower = Motor("baseArmFollower", MotorType.TalonFX)
     upperArmMaster = Motor("upperArmMaster", MotorType.TalonFX)
     upperBaseFollower = Motor("upperArmFollower", MotorType.TalonFX)
-    
+
     wristMotor = Motor("wristMotor", MotorType.TalonFX)
 
     extension_solenoid = Solenoid("extension", SolenoidType.SINGLE)
 
     rate = rospy.Rate(20)
 
+    state_machine = ArmStateMachine()
+
     while not rospy.is_shutdown():
+        state_machine.step()
         arm_msg : Arm_Control = control_sub.get()
         if arm_msg is not None:
             if robot_status.get_mode() == RobotMode.TELEOP:
@@ -42,7 +46,7 @@ def ros_func():
 
                 if arm_msg.arm_base_requested_position > -10:
                     baseArmMaster.set(ControlMode.MOTION_MAGIC, arm_msg.arm_base_requested_position, 0.0)
-                
+
                 if arm_msg.arm_upper_requested_position > -10:
                     upperArmMaster.set(ControlMode.MOTION_MAGIC, arm_msg.arm_upper_requested_position, 0.0)
 
