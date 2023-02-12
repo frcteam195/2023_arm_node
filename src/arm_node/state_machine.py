@@ -30,9 +30,6 @@ class ArmStateMachine(StateMachine):
             self.__entered_time = rospy.Time().now().to_sec()
 
         def step(self):
-            print(self.get_enum())
-            self.machine.baseMotor.set(ControlMode.MOTION_MAGIC, 0)
-            self.machine.upperMotor.set(ControlMode.MOTION_MAGIC, 0)
             pass
 
         def transition(self) -> str:
@@ -72,10 +69,11 @@ class ArmStateMachine(StateMachine):
             return ArmStateMachine.States.PENDULUM_FRONT
     
         def entry(self):
+            self.__entered_time = rospy.Time().now().to_sec()
             pass
 
         def step(self):
-            time = rospy.Time().now().to_sec()
+            time = rospy.Time().now().to_sec() - self.__entered_time
             output = 0.13 * math.sin(time) - 0.224
 
             self.machine.upperMotor.set(ControlMode.POSITION, output)
