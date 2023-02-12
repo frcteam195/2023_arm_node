@@ -62,7 +62,7 @@ def ros_func():
 
         
         if robot_mode == RobotMode.TELEOP:
-            print('is teleop')
+            # print('is teleop')
             # baseArmMaster.set_neutral_mode(NeutralMode.Coast)
             # baseArmFollower.set_neutral_mode(NeutralMode.Coast)
             # upperArmMaster.set_neutral_mode(NeutralMode.Coast)
