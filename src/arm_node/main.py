@@ -35,7 +35,7 @@ def ros_func():
 
     rate = rospy.Rate(20)
 
-    state_machine = ArmStateMachine()
+    state_machine = ArmStateMachine(baseArmMaster, upperArmMaster, wristMotor, extension_solenoid)
 
     while not rospy.is_shutdown():
         state_machine.step()
