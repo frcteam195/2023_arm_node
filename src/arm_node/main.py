@@ -38,33 +38,43 @@ def ros_func():
     state_machine = ArmStateMachine(baseArmMaster, upperArmMaster, wristMotor, extension_solenoid)
 
     while not rospy.is_shutdown():
-        state_machine.step()
-        arm_msg : Arm_Control = control_sub.get()
-        if arm_msg is not None:
-            if robot_status.get_mode() == RobotMode.TELEOP:
-                #A little bit of trickery to allow inputs to be specified as unchanged (-20)
+        # state_machine.step()
+        # arm_msg : Arm_Control = control_sub.get()
 
-                if arm_msg.arm_base_requested_position > -10:
-                    baseArmMaster.set(ControlMode.MOTION_MAGIC, arm_msg.arm_base_requested_position, 0.0)
+        robot_mode = robot_status.get_mode()
+        
+        if robot_mode == RobotMode.TELEOP:
+            state_machine.step()
+        elif robot_status.get_mode() == RobotMode.DISABLED:
+            baseArmMaster.set(ControlMode.PERCENT_OUTPUT, 0.0)
+            upperArmMaster.set(ControlMode.PERCENT_OUTPUT, 0.0)
+            wristMotor.set(ControlMode.PERCENT_OUTPUT, 0.0)        
 
-                if arm_msg.arm_upper_requested_position > -10:
-                    upperArmMaster.set(ControlMode.MOTION_MAGIC, arm_msg.arm_upper_requested_position, 0.0)
+        # if arm_msg is not None:
+        #     if robot_status.get_mode() == RobotMode.TELEOP:
+        #         #A little bit of trickery to allow inputs to be specified as unchanged (-20)
 
-                if arm_msg.arm_wrist_requested_position > -10:
-                    wristMotor.set(ControlMode.MOTION_MAGIC, arm_msg.arm_wrist_requested_position, 0.0)
-                pass
-            else:
-                baseArmMaster.set(ControlMode.PERCENT_OUTPUT, 0.0, 0.0)
-                upperArmMaster.set(ControlMode.PERCENT_OUTPUT, 0.0, 0.0)
-                wristMotor.set(ControlMode.PERCENT_OUTPUT, 0.0, 0.0)
-                pass
+        #         if arm_msg.arm_base_requested_position > -10:
+        #             baseArmMaster.set(ControlMode.MOTION_MAGIC, arm_msg.arm_base_requested_position, 0.0)
+
+        #         if arm_msg.arm_upper_requested_position > -10:
+        #             upperArmMaster.set(ControlMode.MOTION_MAGIC, arm_msg.arm_upper_requested_position, 0.0)
+
+        #         if arm_msg.arm_wrist_requested_position > -10:
+        #             wristMotor.set(ControlMode.MOTION_MAGIC, arm_msg.arm_wrist_requested_position, 0.0)
+        #         pass
+        #     else:
+        #         baseArmMaster.set(ControlMode.PERCENT_OUTPUT, 0.0, 0.0)
+        #         upperArmMaster.set(ControlMode.PERCENT_OUTPUT, 0.0, 0.0)
+        #         wristMotor.set(ControlMode.PERCENT_OUTPUT, 0.0, 0.0)
+        #         pass
 
 
-            if arm_msg.extend >= -10:
-                if arm_msg.extend > 0:
-                    extension_solenoid.set(SolenoidState.ON)
-                else:
-                    extension_solenoid.set(SolenoidState.OFF)
+        #     if arm_msg.extend >= -10:
+        #         if arm_msg.extend > 0:
+        #             extension_solenoid.set(SolenoidState.ON)
+        #         else:
+        #             extension_solenoid.set(SolenoidState.OFF)
 
         arm_simulation.publish_arm_base_link(baseArmMaster.get_sensor_position() * 360.0)
         arm_simulation.publish_arm_upper_link(upperArmMaster.get_sensor_position() * 360.0)
