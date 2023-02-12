@@ -13,9 +13,7 @@ class ArmStateMachine(StateMachine):
     class States(Enum):
         HOME=1
         INTERMEDIATE_FRONT=2
-        PENDULUM_FRONT=3
-        PENDULUM_BACK=4
-
+        PENDULUM=3
 
     class HomeState(StateMachine.State):
 
@@ -30,11 +28,12 @@ class ArmStateMachine(StateMachine):
             self.__entered_time = rospy.Time().now().to_sec()
 
         def step(self):
-            pass
+            self.machine.baseMotor.set(ControlMode.PERCENT_OUTPUT, 0)
+            self.machine.upperMotor.set(ControlMode.PERCENT_OUTPUT, 0)
 
         def transition(self) -> str:
             if robot_status.get_mode() == RobotMode.TELEOP:
-                return ArmStateMachine.States.PENDULUM_FRONT
+                return ArmStateMachine.States.PENDULUM
 
             return ArmStateMachine.States.HOME
 
@@ -60,21 +59,30 @@ class ArmStateMachine(StateMachine):
                 return ArmStateMachine.States.HOME
             return ArmStateMachine.States.INTERMEDIATE_FRONT
 
-    class PendulumFrontState(StateMachine.State):
+    class PendulumState(StateMachine.State):
         def __init__(self, machine):
             self.machine: ArmStateMachine = machine
             self.__entered_time = None
 
         def get_enum(self):
-            return ArmStateMachine.States.PENDULUM_FRONT
-    
+            return ArmStateMachine.States.PENDULUM
+
         def entry(self):
             self.__entered_time = rospy.Time().now().to_sec()
             pass
 
         def step(self):
             time = rospy.Time().now().to_sec() - self.__entered_time
-            output = 0.13 * math.sin(time) - 0.224
+
+            speed = 2
+
+            base_range = (0.13 / 1.4)
+            base_home = 0.0224
+            base_output = base_range * math.sin(speed * time) - base_home
+
+            upper_range = (0.6958007813 / 2 / 2.54)
+            upper_home = 0.5
+            upper_output = upper_range * math.sin(speed * time) - upper_home
 
             self.machine.upperMotor.set(ControlMode.POSITION, output)
 
@@ -82,29 +90,7 @@ class ArmStateMachine(StateMachine):
             if robot_status.get_mode() == RobotMode.DISABLED:
                 return ArmStateMachine.States.HOME
 
-            return ArmStateMachine.States.PENDULUM_FRONT
-
-    class PendulumBackState(StateMachine.State):
-        def __init__(self, machine):
-            self.machine: ArmStateMachine = machine
-            self.__entered_time = None
-
-        def get_enum(self):
-            return ArmStateMachine.States.PENDULUM_BACK
-    
-        def entry(self):
-            self.__entered_time = rospy.Time().now().to_sec()
-
-        def step(self):
-            if self.machine.baseMotor.get_raw_closed_loop_error() < 0.1:
-                self.__entered_time = rospy.Time().now().to_sec()
-
-        def transition(self) -> str:
-            if self.__entered_time is not None and rospy.Time.now().to_sec() - self.__entered_time > 2.0:
-                return ArmStateMachine.States.PENDULUM_FRONT
-
-            return ArmStateMachine.States.PENDULUM_BACK
-
+            return ArmStateMachine.States.PENDULUM
 
     def __init__(self, baseMotor: Motor, upperMotor: Motor, wristMotor: Motor, extensionSolenoid: Solenoid):
         self.baseMotor = baseMotor
@@ -115,8 +101,7 @@ class ArmStateMachine(StateMachine):
         states = {
             ArmStateMachine.States.HOME : ArmStateMachine.HomeState(self),
             ArmStateMachine.States.INTERMEDIATE_FRONT : ArmStateMachine.IntermediateFrontState(self),
-            ArmStateMachine.States.PENDULUM_FRONT : ArmStateMachine.PendulumFrontState(self),
-            ArmStateMachine.States.PENDULUM_BACK : ArmStateMachine.PendulumBackState(self)
+            ArmStateMachine.States.PENDULUM : ArmStateMachine.PendulumState(self),
         }
 
         state = ArmStateMachine.States.HOME

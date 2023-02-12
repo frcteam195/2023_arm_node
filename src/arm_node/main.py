@@ -38,9 +38,6 @@ def ros_func():
     state_machine = ArmStateMachine(baseArmMaster, upperArmMaster, wristMotor, extension_solenoid)
 
     while not rospy.is_shutdown():
-        # state_machine.step()
-        # arm_msg : Arm_Control = control_sub.get()
-
         robot_mode = robot_status.get_mode()
         
         if robot_mode == RobotMode.TELEOP:
@@ -50,6 +47,7 @@ def ros_func():
             upperArmMaster.set(ControlMode.PERCENT_OUTPUT, 0.0)
             wristMotor.set(ControlMode.PERCENT_OUTPUT, 0.0)        
 
+        # extension_solenoid.set(SolenoidState.OFF)
         # if arm_msg is not None:
         #     if robot_status.get_mode() == RobotMode.TELEOP:
         #         #A little bit of trickery to allow inputs to be specified as unchanged (-20)
@@ -77,8 +75,8 @@ def ros_func():
         #             extension_solenoid.set(SolenoidState.OFF)
 
         arm_simulation.publish_arm_base_link(baseArmMaster.get_sensor_position() * 360.0)
-        arm_simulation.publish_arm_upper_link(upperArmMaster.get_sensor_position() * 360.0)
-        arm_simulation.publish_arm_extender_link(extension_solenoid.get() == SolenoidState.ON)
+        arm_simulation.publish_arm_upper_link(upperArmMaster.get_sensor_position() * 360.0 + 180.0)
+        # arm_simulation.publish_arm_extender_link(extension_solenoid.get() == SolenoidState.ON)
         arm_simulation.publish_arm_wrist_link(wristMotor.get_sensor_position() * 360.0)
 
         master_sticky_faults = baseArmMaster.get_sticky_faults()
