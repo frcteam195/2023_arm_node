@@ -30,7 +30,8 @@ class ArmStateMachine(StateMachine):
             self.__entered_time = rospy.Time().now().to_sec()
 
         def step(self):
-            pass
+            self.machine.upperMotor.set(ControlMode.PERCENT_OUTPUT, 0)
+            self.machine.baseMotor.set(ControlMode.PERCENT_OUTPUT, 0)
 
         def transition(self) -> str:
             if robot_status.get_mode() == RobotMode.TELEOP:
@@ -67,16 +68,18 @@ class ArmStateMachine(StateMachine):
 
         def get_enum(self):
             return ArmStateMachine.States.PENDULUM_FRONT
-    
+
         def entry(self):
             self.__entered_time = rospy.Time().now().to_sec()
             pass
 
         def step(self):
             time = rospy.Time().now().to_sec() - self.__entered_time
-            output = 0.13 * math.sin(time) - 0.224
+            upper_output = (0.6958007813 / 2 / 2.54) * math.sin(2 * time+math.pi) - 0.5
+            base_output = -1 * (0.13 / 1.4) * math.sin(2 * time+math.pi) - 0.0224
 
-            self.machine.upperMotor.set(ControlMode.POSITION, output)
+            self.machine.baseMotor.set(ControlMode.MOTION_MAGIC, base_output)
+            self.machine.upperMotor.set(ControlMode.MOTION_MAGIC, upper_output)
 
         def transition(self) -> str:
             if robot_status.get_mode() == RobotMode.DISABLED:
@@ -91,7 +94,7 @@ class ArmStateMachine(StateMachine):
 
         def get_enum(self):
             return ArmStateMachine.States.PENDULUM_BACK
-    
+
         def entry(self):
             self.__entered_time = rospy.Time().now().to_sec()
 
@@ -110,7 +113,7 @@ class ArmStateMachine(StateMachine):
         self.baseMotor = baseMotor
         self.upperMotor = upperMotor
         self.wristMotor = wristMotor
-        self.extensionSolenoid = extensionSolenoid
+        # self.extensionSolenoid = extensionSolenoid
 
         states = {
             ArmStateMachine.States.HOME : ArmStateMachine.HomeState(self),
