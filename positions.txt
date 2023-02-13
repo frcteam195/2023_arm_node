@@ -1,0 +1,15 @@
+Numbers for Chris
+
+Pickup
+Ground cube bm -0.0193 um -0.427
+Ground cone bm -0.0267 um -0.419
+Ground dead cone bm 0.013 Um -0.407
+Shelf bm -0.064 um -0.285
+
+Place
+Low bm 0.037 um -0.387
+Mid cube bm 0.023 um -0.272
+High cube bm 0.029 um -0.199
+Mid cone bm -0.025 um -0.255
+High cone bm 0.046 um -0.0139
+Intermediate bm -0.068 um -0.420
