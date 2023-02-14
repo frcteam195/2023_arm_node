@@ -22,7 +22,8 @@ POS_SHELF = ArmPosition(-0.064, -0.285)
 
 POS_LOW_SCORE = ArmPosition(0.037, -0.387)
 POS_MID_CUBE = ArmPosition(0.023, -0.272)
-POS_HIGH_CUBE = ArmPosition(0.029, -0.199)
+POS_HIGH_CUBE = ArmPosition(0.029, -0.175)
+# POS_HIGH_CUBE = ArmPosition(0.029, -0.199)
 POS_MID_CONE = ArmPosition(-0.025, -0.255)
 POS_HIGH_CONE = ArmPosition(0.046, -0.0139) # may exceed limits
 
