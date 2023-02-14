@@ -36,11 +36,11 @@ def ros_func():
     base_brake_solenoid = Solenoid("base_brake", SolenoidType.SINGLE)
     upper_brake_solenoid = Solenoid("upper_brake", SolenoidType.SINGLE)
 
-    # extension_solenoid = Solenoid("extension", SolenoidType.SINGLE)
+    extension_solenoid = Solenoid("extension", SolenoidType.SINGLE)
 
     rate = rospy.Rate(20)
 
-    state_machine = ArmStateMachine(baseArmMaster, upperArmMaster, wristMotor, base_brake_solenoid, upper_brake_solenoid, None)
+    state_machine = ArmStateMachine(baseArmMaster, upperArmMaster, wristMotor, base_brake_solenoid, upper_brake_solenoid, extension_solenoid)
 
     while not rospy.is_shutdown():
         robot_mode = robot_status.get_mode()
@@ -55,12 +55,12 @@ def ros_func():
                 real_goal = ArmStateMachine.States.SHELF_FRONT
             elif goal.goal == Arm_Goal.HIGH_CUBE_FRONT:
                 real_goal = ArmStateMachine.States.HIGH_CUBE_FRONT
-            
+
             # print('Setting goal to:', real_goal)
         else:
             real_goal = state_machine.goal_state
 
-        
+
         if robot_mode == RobotMode.TELEOP:
             # print('is teleop')
             # baseArmMaster.set_neutral_mode(NeutralMode.Coast)
@@ -74,7 +74,7 @@ def ros_func():
             # print("set on")
             # baseArmMaster.set(ControlMode.PERCENT_OUTPUT, 0.0)
             # upperArmMaster.set(ControlMode.PERCENT_OUTPUT, 0.0)
-            # wristMotor.set(ControlMode.PERCENT_OUTPUT, 0.0)        
+            # wristMotor.set(ControlMode.PERCENT_OUTPUT, 0.0)
 
             state_machine.goal_state = real_goal
             state_machine.step()
@@ -91,7 +91,7 @@ def ros_func():
             # print("set off")
             baseArmMaster.set(ControlMode.PERCENT_OUTPUT, 0.0)
             upperArmMaster.set(ControlMode.PERCENT_OUTPUT, 0.0)
-            wristMotor.set(ControlMode.PERCENT_OUTPUT, 0.0)        
+            wristMotor.set(ControlMode.PERCENT_OUTPUT, 0.0)
 
         # extension_solenoid.set(SolenoidState.OFF)
         # if arm_msg is not None:
@@ -122,7 +122,7 @@ def ros_func():
 
         arm_simulation.publish_arm_base_link(baseArmMaster.get_sensor_position() * 360.0)
         arm_simulation.publish_arm_upper_link(upperArmMaster.get_sensor_position() * 360.0 + 180.0)
-        # arm_simulation.publish_arm_extender_link(extension_solenoid.get() == SolenoidState.ON)
+        arm_simulation.publish_arm_extender_link(extension_solenoid.get() == SolenoidState.ON)
         arm_simulation.publish_arm_wrist_link(wristMotor.get_sensor_position() * 360.0)
 
         master_sticky_faults = baseArmMaster.get_sticky_faults()
@@ -132,7 +132,7 @@ def ros_func():
         status_message.arm_base_actual_position = baseArmMaster.get_sensor_position()
         status_message.arm_upper_actual_position = upperArmMaster.get_sensor_position()
         status_message.arm_wrist_actual_position = wristMotor.get_sensor_position()
-        # status_message.extended = extension_solenoid.get() == SolenoidState.ON
+        status_message.extended = extension_solenoid.get() == SolenoidState.ON
         status_message.left_arm_base_remote_loss_of_signal = master_sticky_faults.RemoteLossOfSignal
         status_message.right_arm_base_remote_loss_of_signal = follower_sticky_faults.RemoteLossOfSignal
         status_message.left_arm_base_reset_during_en = master_sticky_faults.ResetDuringEn
