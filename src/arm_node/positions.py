@@ -1,5 +1,10 @@
 from dataclasses import dataclass
+import rospy
 
+
+ALLOWED_DEVIATION_PCT = 0.10
+BASE_ALLOWED_DEVIATION = abs(rospy.get_param("/arm_node/baseArmMaster_forwardSoftLimit") - rospy.get_param("/arm_node/baseArmMaster_reverseSoftLimit")) * ALLOWED_DEVIATION_PCT
+UPPER_ALLOWED_DEVIATION = abs(rospy.get_param("/arm_node/upperArmMaster_forwardSoftLimit") - rospy.get_param("/arm_node/upperArmMaster_reverseSoftLimit")) * ALLOWED_DEVIATION_PCT
 
 @dataclass
 class ArmPosition:
@@ -22,3 +27,9 @@ POS_MID_CONE = ArmPosition(-0.025, -0.255)
 POS_HIGH_CONE = ArmPosition(0.046, -0.0139) # may exceed limits
 
 POS_INTERMEDIATE = ArmPosition(-0.068, -0.420)
+
+
+def mirror_position(position: ArmPosition):
+    mirrored_base = POS_HOME.base_position - (position.base_position - POS_HOME.base_position)
+    mirrored_upper = POS_HOME.upper_position - (position.upper_position - POS_HOME.upper_position)
+    return ArmPosition(mirrored_base, mirrored_upper)

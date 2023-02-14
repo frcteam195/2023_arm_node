@@ -36,12 +36,20 @@ class ArmStateMachine(StateMachine):
             return ArmStateMachine.States.HOME
 
         def entry(self):
-            # print('Entering', self.get_enum())
-            pass
+            print('Entering', self.get_enum())
+            self.machine.baseBrakeSolenoid.set(SolenoidState.ON)
+            self.machine.upperBrakeSolenoid.set(SolenoidState.ON)
+            
 
         def step(self):
-            self.machine.baseMotor.set(ControlMode.MOTION_MAGIC, POS_HOME.base_position)
-            self.machine.upperMotor.set(ControlMode.MOTION_MAGIC, POS_HOME.upper_position)
+            if self.machine.baseMotor.is_at_setpoint(BASE_ALLOWED_DEVIATION) and self.machine.upperMotor.is_at_setpoint(UPPER_ALLOWED_DEVIATION):
+                self.machine.baseMotor.set(ControlMode.PERCENT_OUTPUT, 0)
+                self.machine.upperMotor.set(ControlMode.PERCENT_OUTPUT, 0)
+                self.machine.baseBrakeSolenoid.set(SolenoidState.OFF)
+                self.machine.upperBrakeSolenoid.set(SolenoidState.OFF)
+            else:
+                self.machine.baseMotor.set(ControlMode.MOTION_MAGIC, POS_HOME.base_position)
+                self.machine.upperMotor.set(ControlMode.MOTION_MAGIC, POS_HOME.upper_position)
 
         def transition(self) -> str:
             if self.machine.goal_state is not self.get_enum():
@@ -61,7 +69,9 @@ class ArmStateMachine(StateMachine):
         def entry(self):
             # print('Entering', self.get_enum())
             # self.machine.extensionSolenoid.set(SolenoidState.OFF)
-            pass
+            self.machine.baseBrakeSolenoid.set(SolenoidState.ON)
+            self.machine.upperBrakeSolenoid.set(SolenoidState.ON)
+            self.machine.extensionSolenoid.set(SolenoidState.OFF)
 
         def step(self):
             self.machine.baseMotor.set(ControlMode.MOTION_MAGIC, POS_INTERMEDIATE.base_position)
@@ -69,7 +79,7 @@ class ArmStateMachine(StateMachine):
 
         def transition(self) -> str:
             delta = 0.05
-            if self.machine.baseMotor.is_at_setpoint(delta) and self.machine.upperMotor.is_at_setpoint(delta):
+            if self.machine.baseMotor.is_at_setpoint(BASE_ALLOWED_DEVIATION) and self.machine.upperMotor.is_at_setpoint(UPPER_ALLOWED_DEVIATION):
                 return self.machine.goal_state
 
             return self.get_enum()
@@ -84,11 +94,19 @@ class ArmStateMachine(StateMachine):
 
         def entry(self):
             # print('Entering', self.get_enum())
-            pass
+            self.machine.baseBrakeSolenoid.set(SolenoidState.ON)
+            self.machine.upperBrakeSolenoid.set(SolenoidState.ON)
+            
 
         def step(self):
-            self.machine.baseMotor.set(ControlMode.MOTION_MAGIC, POS_SHELF.base_position)
-            self.machine.upperMotor.set(ControlMode.MOTION_MAGIC, POS_SHELF.upper_position)
+            if self.machine.baseMotor.is_at_setpoint(BASE_ALLOWED_DEVIATION) and self.machine.upperMotor.is_at_setpoint(UPPER_ALLOWED_DEVIATION):
+                self.machine.baseMotor.set(ControlMode.PERCENT_OUTPUT, 0)
+                self.machine.upperMotor.set(ControlMode.PERCENT_OUTPUT, 0)
+                self.machine.baseBrakeSolenoid.set(SolenoidState.OFF)
+                self.machine.upperBrakeSolenoid.set(SolenoidState.OFF)
+            else:
+                self.machine.baseMotor.set(ControlMode.MOTION_MAGIC, POS_SHELF.base_position)
+                self.machine.upperMotor.set(ControlMode.MOTION_MAGIC, POS_SHELF.upper_position)
 
         def transition(self) -> str:
             if self.machine.goal_state is not self.get_enum():
@@ -107,11 +125,20 @@ class ArmStateMachine(StateMachine):
         def entry(self):
             print('Entering', self.get_enum())
             # self.machine.extensionSolenoid.set(SolenoidState.ON)
-            pass
+            self.machine.baseBrakeSolenoid.set(SolenoidState.ON)
+            self.machine.upperBrakeSolenoid.set(SolenoidState.ON)
+            self.machine.extensionSolenoid.set(SolenoidState.ON)
+            
 
         def step(self):
-            self.machine.baseMotor.set(ControlMode.MOTION_MAGIC, POS_HIGH_CUBE.base_position)
-            self.machine.upperMotor.set(ControlMode.MOTION_MAGIC, POS_HIGH_CUBE.upper_position)
+            if self.machine.baseMotor.is_at_setpoint(BASE_ALLOWED_DEVIATION) and self.machine.upperMotor.is_at_setpoint(UPPER_ALLOWED_DEVIATION):
+                self.machine.baseMotor.set(ControlMode.PERCENT_OUTPUT, 0)
+                self.machine.upperMotor.set(ControlMode.PERCENT_OUTPUT, 0)
+                self.machine.baseBrakeSolenoid.set(SolenoidState.OFF)
+                self.machine.upperBrakeSolenoid.set(SolenoidState.OFF)
+            else:
+                self.machine.baseMotor.set(ControlMode.MOTION_MAGIC, POS_HIGH_CUBE.base_position)
+                self.machine.upperMotor.set(ControlMode.MOTION_MAGIC, POS_HIGH_CUBE.upper_position)
 
         def transition(self) -> str:
             if self.machine.goal_state is not self.get_enum():
