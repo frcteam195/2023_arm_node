@@ -8,147 +8,66 @@ from frc_robot_utilities_py_node.RobotStatusHelperPy import RobotMode
 from enum import Enum
 import rospy
 
+# from arm_node.states.HomeState import HomeState
+
 
 class ArmStateMachine(StateMachine):
 
 
     class States(Enum):
-        HOME=1,
-        INTERMEDIATE_FRONT=2,
-        GROUND_CUBE_FRONT=3,
-        GROUND_CONE_FRONT=4,
-        GROUND_DEAD_CODE_FRONT=5,
-        SHELF_FRONT=6,
-        LOW_SCORE_FRONT=7,
-        MID_CUBE_FRONT=8,
-        HIGH_CUBE_FRONT=9,
-        MID_CONE_FRONT=10,
-        HIGH_CONE_FRONT=11,
+        HOME=1
+
+        INTERMEDIATE_FRONT=2
+        GROUND_CUBE_FRONT=3
+        GROUND_CONE_FRONT=4
+        GROUND_DEAD_CONE_FRONT=5
+        SHELF_FRONT=6
+        LOW_SCORE_FRONT=7
+        MID_CUBE_FRONT=8
+        HIGH_CUBE_FRONT=9
+        MID_CONE_FRONT=10
+        HIGH_CONE_FRONT=11
+
+        INTERMEDIATE_BACK=12
+        GROUND_CUBE_BACK=13
+        GROUND_CONE_BACK=14
+        GROUND_DEAD_CONE_BACK=15
+        SHELF_BACK=16
+        LOW_SCORE_BACL=17
+        MID_CUBE_BACK=18
+        HIGH_CUBE_BACK=19
+        MID_CONE_BACK=20
+        HIGH_CONE_BACK=21
+
         PENDULUM=12
 
+    
+    FRONT_STATES = [
+        States.INTERMEDIATE_FRONT,
+        States.GROUND_CUBE_FRONT,
+        States.GROUND_CONE_FRONT,
+        States.GROUND_DEAD_CONE_FRONT,
+        States.SHELF_FRONT,
+        States.LOW_SCORE_FRONT,
+        States.MID_CUBE_FRONT,
+        States.HIGH_CUBE_FRONT,
+        States.MID_CONE_FRONT,
+        States.HIGH_CONE_FRONT
+    ]
 
-    class HomeState(StateMachine.State):
+    BACK_STATES = [
+        States.INTERMEDIATE_BACK,
+        States.GROUND_CUBE_BACK,
+        States.GROUND_CONE_BACK,
+        States.GROUND_DEAD_CONE_BACK,
+        States.SHELF_BACK,
+        States.LOW_SCORE_BACL,
+        States.MID_CUBE_BACK,
+        States.HIGH_CUBE_BACK,
+        States.MID_CONE_BACK,
+        States.HIGH_CONE_BACK,
+    ]
 
-        def __init__(self, machine):
-            self.machine: ArmStateMachine = machine
-
-        def get_enum(self):
-            return ArmStateMachine.States.HOME
-
-        def entry(self):
-            rospy.logerr("Entering: ")
-            rospy.logerr(self.get_enum())
-            self.machine.baseBrakeSolenoid.set(SolenoidState.ON)
-            self.machine.upperBrakeSolenoid.set(SolenoidState.ON)
-            
-
-        def step(self):
-            # if self.machine.baseMotor.is_at_setpoint(BASE_ALLOWED_DEVIATION) and self.machine.upperMotor.is_at_setpoint(UPPER_ALLOWED_DEVIATION):
-            if self.machine.baseMotor.is_at_setpoint(0.01) and self.machine.upperMotor.is_at_setpoint(0.01):
-                self.machine.baseMotor.set(ControlMode.PERCENT_OUTPUT, 0)
-                self.machine.upperMotor.set(ControlMode.PERCENT_OUTPUT, 0)
-                self.machine.baseBrakeSolenoid.set(SolenoidState.OFF)
-                self.machine.upperBrakeSolenoid.set(SolenoidState.OFF)
-            else:
-                self.machine.baseMotor.set(ControlMode.MOTION_MAGIC, POS_HOME.base_position)
-                self.machine.upperMotor.set(ControlMode.MOTION_MAGIC, POS_HOME.upper_position)
-
-        def transition(self) -> str:
-            if self.machine.goal_state is not self.get_enum():
-                return ArmStateMachine.States.INTERMEDIATE_FRONT
-
-            return self.get_enum()
-
-    class IntermediateFrontState(StateMachine.State):
-
-        def __init__(self, machine):
-            self.machine: ArmStateMachine = machine
-            self.__entered_time = None
-
-        def get_enum(self):
-            return ArmStateMachine.States.INTERMEDIATE_FRONT
-
-        def entry(self):
-            # print('Entering', self.get_enum())
-            # self.machine.extensionSolenoid.set(SolenoidState.OFF)
-            self.machine.baseBrakeSolenoid.set(SolenoidState.ON)
-            self.machine.upperBrakeSolenoid.set(SolenoidState.ON)
-            self.machine.extensionSolenoid.set(SolenoidState.OFF)
-
-        def step(self):
-            self.machine.baseMotor.set(ControlMode.MOTION_MAGIC, POS_INTERMEDIATE.base_position)
-            self.machine.upperMotor.set(ControlMode.MOTION_MAGIC, POS_INTERMEDIATE.upper_position)
-
-        def transition(self) -> str:
-            delta = 0.05
-            if self.machine.baseMotor.is_at_setpoint(BASE_ALLOWED_DEVIATION) and self.machine.upperMotor.is_at_setpoint(UPPER_ALLOWED_DEVIATION):
-                return self.machine.goal_state
-
-            return self.get_enum()
-
-    class ShelfFrontState(StateMachine.State):
-
-        def __init__(self, machine):
-            self.machine: ArmStateMachine = machine
-
-        def get_enum(self):
-            return ArmStateMachine.States.SHELF_FRONT
-
-        def entry(self):
-            # print('Entering', self.get_enum())
-            self.machine.baseBrakeSolenoid.set(SolenoidState.ON)
-            self.machine.upperBrakeSolenoid.set(SolenoidState.ON)
-            
-
-        def step(self):
-            # if self.machine.baseMotor.is_at_setpoint(BASE_ALLOWED_DEVIATION) and self.machine.upperMotor.is_at_setpoint(UPPER_ALLOWED_DEVIATION):
-            if self.machine.baseMotor.is_at_setpoint(0.01) and self.machine.upperMotor.is_at_setpoint(0.01):
-                self.machine.baseMotor.set(ControlMode.PERCENT_OUTPUT, 0)
-                self.machine.upperMotor.set(ControlMode.PERCENT_OUTPUT, 0)
-                self.machine.baseBrakeSolenoid.set(SolenoidState.OFF)
-                self.machine.upperBrakeSolenoid.set(SolenoidState.OFF)
-            else:
-                self.machine.baseMotor.set(ControlMode.MOTION_MAGIC, POS_SHELF.base_position)
-                self.machine.upperMotor.set(ControlMode.MOTION_MAGIC, POS_SHELF.upper_position)
-
-        def transition(self) -> str:
-            if self.machine.goal_state is not self.get_enum():
-                return ArmStateMachine.States.INTERMEDIATE_FRONT
-
-            return self.get_enum()
-
-    class HighCubeFrontState(StateMachine.State):
-
-        def __init__(self, machine):
-            self.machine: ArmStateMachine = machine
-
-        def get_enum(self):
-            return ArmStateMachine.States.HIGH_CUBE_FRONT
-
-        def entry(self):
-            print('Entering', self.get_enum())
-            # self.machine.extensionSolenoid.set(SolenoidState.ON)
-            self.machine.baseBrakeSolenoid.set(SolenoidState.ON)
-            self.machine.upperBrakeSolenoid.set(SolenoidState.ON)
-            self.machine.extensionSolenoid.set(SolenoidState.ON)
-            
-
-        def step(self):
-            # if self.machine.baseMotor.is_at_setpoint(BASE_ALLOWED_DEVIATION) and self.machine.upperMotor.is_at_setpoint(UPPER_ALLOWED_DEVIATION):
-            if self.machine.baseMotor.is_at_setpoint(0.01) and self.machine.upperMotor.is_at_setpoint(0.01):
-                self.machine.baseMotor.set(ControlMode.PERCENT_OUTPUT, 0)
-                self.machine.upperMotor.set(ControlMode.PERCENT_OUTPUT, 0)
-                self.machine.baseBrakeSolenoid.set(SolenoidState.OFF)
-                self.machine.upperBrakeSolenoid.set(SolenoidState.OFF)
-            else:
-                self.machine.baseMotor.set(ControlMode.MOTION_MAGIC, POS_HIGH_CUBE.base_position)
-                self.machine.upperMotor.set(ControlMode.MOTION_MAGIC, POS_HIGH_CUBE.upper_position)
-
-        def transition(self) -> str:
-            if self.machine.goal_state is not self.get_enum():
-                return ArmStateMachine.States.INTERMEDIATE_FRONT
-
-            return self.get_enum()
 
     class PendulumState(StateMachine.State):
 
@@ -193,12 +112,20 @@ class ArmStateMachine(StateMachine):
         self.upperBrakeSolenoid = upperBrakeSolenoid
         self.extensionSolenoid = extensionSolenoid
 
+        from arm_node.states.home_state import HomeState
+        from arm_node.states.intermediate_front_state import IntermediateFrontState
+        from arm_node.states.intemediate_back_state import IntermediateBackState
+        from arm_node.states.shelf_state import ShelfState
+        from arm_node.states.high_cube_state import HighCubeState
+
         states = {
-            ArmStateMachine.States.HOME : ArmStateMachine.HomeState(self),
-            ArmStateMachine.States.INTERMEDIATE_FRONT : ArmStateMachine.IntermediateFrontState(self),
-            ArmStateMachine.States.SHELF_FRONT : ArmStateMachine.ShelfFrontState(self),
-            ArmStateMachine.States.HIGH_CUBE_FRONT : ArmStateMachine.HighCubeFrontState(self),
-            ArmStateMachine.States.PENDULUM : ArmStateMachine.PendulumState(self),
+            ArmStateMachine.States.HOME : HomeState(self),
+            ArmStateMachine.States.INTERMEDIATE_FRONT : IntermediateFrontState(self),
+            ArmStateMachine.States.INTERMEDIATE_BACK : IntermediateBackState(self),
+            ArmStateMachine.States.SHELF_FRONT : ShelfState(self),
+            ArmStateMachine.States.HIGH_CUBE_FRONT : HighCubeState(self),
+            ArmStateMachine.States.HIGH_CUBE_BACK : HighCubeState(self, False),
+            # ArmStateMachine.States.PENDULUM : ArmStateMachine.PendulumState(self),
         }
 
         state = ArmStateMachine.States.HOME

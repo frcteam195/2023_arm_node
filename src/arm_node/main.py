@@ -79,7 +79,7 @@ def ros_func():
             # wristMotor.set(ControlMode.PERCENT_OUTPUT, 0.0)        
     
             # print(state_machine.goal_state)
-            print(state_machine.state)
+            # print(state_machine.state)
             state_machine.goal_state = real_goal
             state_machine.step()
 
