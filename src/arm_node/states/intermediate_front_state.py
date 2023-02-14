@@ -1,5 +1,6 @@
 from arm_node.arm import Arm
 from arm_node.positions import *
+from arm_node.states.util import *
 from arm_node.state_machine import ArmStateMachine
 
 from ck_utilities_py_node.motor import *
@@ -23,7 +24,7 @@ class IntermediateFrontState(StateMachine.State):
 
     def step(self):
         print('in transition')
-        if self.machine.goal_state in ArmStateMachine.HIGH_INTERMEDIATE_NEEDED or self.machine.prev_goal in ArmStateMachine.HIGH_INTERMEDIATE_NEEDED:
+        if goal_is_high(self.machine) or prev_goal_was_high(self.machine):
             self.arm.set_motion_magic(POS_HIGH_INTERMEDIATE)
         else:
             self.arm.set_motion_magic(POS_INTERMEDIATE)

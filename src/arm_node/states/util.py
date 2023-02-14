@@ -26,3 +26,9 @@ def standard_step(arm: Arm, position: ArmPosition):
         arm.enable_brakes()
     else:
         arm.set_motion_magic(position)
+
+def goal_is_high(machine: ArmStateMachine):
+    return machine.goal_state in ArmStateMachine.HIGH_INTERMEDIATE_NEEDED
+
+def prev_goal_was_high(machine: ArmStateMachine):
+    return machine.prev_goal in ArmStateMachine.HIGH_INTERMEDIATE_NEEDED
