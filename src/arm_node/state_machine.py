@@ -40,7 +40,8 @@ class ArmStateMachine(StateMachine):
         MID_CONE_BACK=20
         HIGH_CONE_BACK=21
 
-        PENDULUM=12
+        FORCE_HOME=22
+        PENDULUM=23
 
     
     FRONT_STATES = [
@@ -88,6 +89,7 @@ class ArmStateMachine(StateMachine):
 
         states = {
             ArmStateMachine.States.HOME : HomeState(self, arm),
+            ArmStateMachine.States.FORCE_HOME : HomeState(self, arm, True),
             ArmStateMachine.States.INTERMEDIATE_FRONT : IntermediateFrontState(self, arm),
             ArmStateMachine.States.INTERMEDIATE_BACK : IntermediateBackState(self, arm),
             ArmStateMachine.States.SHELF_FRONT : ShelfState(self, arm),
@@ -99,11 +101,11 @@ class ArmStateMachine(StateMachine):
         state = ArmStateMachine.States.HOME
 
         self.goal_state = ArmStateMachine.States.HOME
-        self.last_goal = self.goal_state
+        self.prev_goal = self.goal_state
 
         super().__init__(states, state)
 
     def set_goal(self, new_goal):
         if self.goal_state is not new_goal:
-            self.last_goal = self.goal_state
+            self.prev_goal = self.goal_state
             self.goal_state = new_goal

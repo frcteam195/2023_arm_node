@@ -24,15 +24,16 @@ class IntermediateBackState(StateMachine.State):
 
     def step(self):
         print('in transition')
-        if self.machine.goal_state in ArmStateMachine.HIGH_INTERMEDIATE_NEEDED or self.machine.last_goal in ArmStateMachine.HIGH_INTERMEDIATE_NEEDED:
+        if self.machine.goal_state in ArmStateMachine.HIGH_INTERMEDIATE_NEEDED or self.machine.prev_goal in ArmStateMachine.HIGH_INTERMEDIATE_NEEDED:
             self.arm.set_motion_magic(mirror_position(POS_HIGH_INTERMEDIATE))
         else:
             self.arm.set_motion_magic(self.position)
 
     def transition(self) -> Enum:
-        if self.machine.goal_state in ArmStateMachine.FRONT_STATES:
-            return ArmStateMachine.States.INTERMEDIATE_FRONT
         if self.arm.is_at_setpoint(BASE_ALLOWED_DEVIATION, UPPER_ALLOWED_DEVIATION):
+            if self.machine.goal_state in ArmStateMachine.FRONT_STATES:
+                return ArmStateMachine.States.FORCE_HOME
+
             return self.machine.goal_state
 
         return self.get_enum()

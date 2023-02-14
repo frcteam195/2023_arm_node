@@ -18,21 +18,21 @@ class IntermediateFrontState(StateMachine.State):
 
     def entry(self):
         print('Entering', self.get_enum())
-        # self.machine.extensionSolenoid.set(SolenoidState.OFF)
         self.arm.disable_brakes()
         self.arm.retract()
 
     def step(self):
         print('in transition')
-        if self.machine.goal_state in ArmStateMachine.HIGH_INTERMEDIATE_NEEDED or self.machine.last_goal in ArmStateMachine.HIGH_INTERMEDIATE_NEEDED:
+        if self.machine.goal_state in ArmStateMachine.HIGH_INTERMEDIATE_NEEDED or self.machine.prev_goal in ArmStateMachine.HIGH_INTERMEDIATE_NEEDED:
             self.arm.set_motion_magic(POS_HIGH_INTERMEDIATE)
         else:
             self.arm.set_motion_magic(POS_INTERMEDIATE)
 
     def transition(self) -> Enum:
-        if self.machine.goal_state in ArmStateMachine.BACK_STATES:
-            return ArmStateMachine.States.INTERMEDIATE_BACK
         if self.arm.is_at_setpoint(BASE_ALLOWED_DEVIATION, UPPER_ALLOWED_DEVIATION):
+            if self.machine.goal_state in ArmStateMachine.BACK_STATES:
+                return ArmStateMachine.States.FORCE_HOME
+
             return self.machine.goal_state
 
         return self.get_enum()
