@@ -55,6 +55,8 @@ def ros_func():
                 real_goal = ArmStateMachine.States.SHELF_FRONT
             elif goal.goal == Arm_Goal.HIGH_CUBE_FRONT:
                 real_goal = ArmStateMachine.States.HIGH_CUBE_FRONT
+            elif goal.goal == Arm_Goal.HIGH_CUBE_BACK:
+                real_goal = ArmStateMachine.States.HIGH_CUBE_BACK
 
             # print('Setting goal to:', real_goal)
         else:
@@ -76,7 +78,8 @@ def ros_func():
             # upperArmMaster.set(ControlMode.PERCENT_OUTPUT, 0.0)
             # wristMotor.set(ControlMode.PERCENT_OUTPUT, 0.0)        
     
-            print(state_machine.goal_state)
+            # print(state_machine.goal_state)
+            print(state_machine.state)
             state_machine.goal_state = real_goal
             state_machine.step()
 
