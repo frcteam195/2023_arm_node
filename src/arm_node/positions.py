@@ -28,6 +28,7 @@ POS_MID_CONE = ArmPosition(-0.025, -0.255)
 POS_HIGH_CONE = ArmPosition(0.046, -0.0139) # may exceed limits
 
 POS_INTERMEDIATE = ArmPosition(-0.068, -0.420)
+POS_HIGH_INTERMEDIATE = ArmPosition(-0.12, -0.250)
 
 
 def mirror_position(position: ArmPosition) -> ArmPosition:

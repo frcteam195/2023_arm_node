@@ -1,4 +1,6 @@
+from arm_node.arm import Arm
 from arm_node.positions import *
+from arm_node.states.util import *
 from arm_node.state_machine import ArmStateMachine
 
 from ck_utilities_py_node.motor import *
@@ -8,8 +10,9 @@ from ck_utilities_py_node.StateMachine import StateMachine
 
 class HomeState(StateMachine.State):
 
-    def __init__(self, machine):
+    def __init__(self, machine, arm):
         self.machine: ArmStateMachine = machine
+        self.arm: Arm = arm
         self.position: ArmPosition = POS_HOME
 
     def get_enum(self):
@@ -18,23 +21,13 @@ class HomeState(StateMachine.State):
     def entry(self):
         rospy.logerr("Entering: ")
         rospy.logerr(self.get_enum())
-        self.machine.baseBrakeSolenoid.set(SolenoidState.ON)
-        self.machine.upperBrakeSolenoid.set(SolenoidState.ON)
+        self.arm.disable_brakes()
             
     def step(self):
-        print('Home', UPPER_ALLOWED_DEVIATION)
-        # print(BASE_ALLOWED_DEVIATION)
-        if self.machine.baseMotor.is_at_setpoint(0.01) and self.machine.upperMotor.is_at_setpoint(0.01):
-            self.machine.baseMotor.set(ControlMode.PERCENT_OUTPUT, 0)
-            self.machine.upperMotor.set(ControlMode.PERCENT_OUTPUT, 0)
-            self.machine.baseBrakeSolenoid.set(SolenoidState.OFF)
-            self.machine.upperBrakeSolenoid.set(SolenoidState.OFF)
-        else:
-            self.machine.baseMotor.set(ControlMode.MOTION_MAGIC, POS_HOME.base_position)
-            self.machine.upperMotor.set(ControlMode.MOTION_MAGIC, POS_HOME.upper_position)
+        standard_step(self.arm, self.position)
 
-    def transition(self) -> str:
+    def transition(self) -> Enum:
         if self.machine.goal_state is not self.get_enum():
-            return ArmStateMachine.States.INTERMEDIATE_FRONT
+            return transition_to_intermediate(self.machine.goal_state in ArmStateMachine.FRONT_STATES)
 
         return self.get_enum()

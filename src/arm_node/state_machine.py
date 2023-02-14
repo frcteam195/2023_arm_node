@@ -1,4 +1,5 @@
 from arm_node.positions import *
+from arm_node.arm import Arm
 
 from ck_utilities_py_node.motor import *
 from ck_utilities_py_node.solenoid import *
@@ -68,49 +69,16 @@ class ArmStateMachine(StateMachine):
         States.HIGH_CONE_BACK,
     ]
 
+    HIGH_INTERMEDIATE_NEEDED = [
+        States.HIGH_CUBE_FRONT,
+        States.HIGH_CUBE_BACK,
+        States.HIGH_CONE_FRONT,
+        States.HIGH_CONE_BACK
+    ]
 
-    class PendulumState(StateMachine.State):
 
-        def __init__(self, machine):
-            self.machine: ArmStateMachine = machine
-            self.__entered_time = None
-
-        def get_enum(self):
-            return ArmStateMachine.States.PENDULUM
-
-        def entry(self):
-            self.__entered_time = rospy.Time().now().to_sec()
-            pass
-
-        def step(self):
-            time = rospy.Time().now().to_sec() - self.__entered_time
-
-            speed = 2
-
-            base_range = (0.13 / 1.4)
-            base_home = 0.0224
-            base_output = base_range * math.sin(speed * time) - base_home
-
-            upper_range = (0.6958007813 / 2 / 2.54)
-            upper_home = 0.5
-            upper_output = upper_range * math.sin(speed * time) - upper_home
-
-            self.machine.baseMotor.set(ControlMode.MOTION_MAGIC, base_output)
-            self.machine.upperMotor.set(ControlMode.MOTION_MAGIC, upper_output)
-
-        def transition(self) -> str:
-            if robot_status.get_mode() == RobotMode.DISABLED:
-                return ArmStateMachine.States.HOME
-
-            return ArmStateMachine.States.PENDULUM
-
-    def __init__(self, baseMotor: Motor, upperMotor: Motor, wristMotor: Motor, baseBrakeSolenoid: Solenoid, upperBrakeSolenoid: Solenoid, extensionSolenoid: Solenoid):
-        self.baseMotor = baseMotor
-        self.upperMotor = upperMotor
-        self.wristMotor = wristMotor
-        self.baseBrakeSolenoid = baseBrakeSolenoid
-        self.upperBrakeSolenoid = upperBrakeSolenoid
-        self.extensionSolenoid = extensionSolenoid
+    def __init__(self, arm: Arm):
+        self.arm = arm
 
         from arm_node.states.home_state import HomeState
         from arm_node.states.intermediate_front_state import IntermediateFrontState
@@ -119,17 +87,23 @@ class ArmStateMachine(StateMachine):
         from arm_node.states.high_cube_state import HighCubeState
 
         states = {
-            ArmStateMachine.States.HOME : HomeState(self),
-            ArmStateMachine.States.INTERMEDIATE_FRONT : IntermediateFrontState(self),
-            ArmStateMachine.States.INTERMEDIATE_BACK : IntermediateBackState(self),
-            ArmStateMachine.States.SHELF_FRONT : ShelfState(self),
-            ArmStateMachine.States.HIGH_CUBE_FRONT : HighCubeState(self),
-            ArmStateMachine.States.HIGH_CUBE_BACK : HighCubeState(self, False),
+            ArmStateMachine.States.HOME : HomeState(self, arm),
+            ArmStateMachine.States.INTERMEDIATE_FRONT : IntermediateFrontState(self, arm),
+            ArmStateMachine.States.INTERMEDIATE_BACK : IntermediateBackState(self, arm),
+            ArmStateMachine.States.SHELF_FRONT : ShelfState(self, arm),
+            ArmStateMachine.States.HIGH_CUBE_FRONT : HighCubeState(self, arm),
+            ArmStateMachine.States.HIGH_CUBE_BACK : HighCubeState(self, arm, False),
             # ArmStateMachine.States.PENDULUM : ArmStateMachine.PendulumState(self),
         }
 
         state = ArmStateMachine.States.HOME
 
         self.goal_state = ArmStateMachine.States.HOME
+        self.last_goal = self.goal_state
 
         super().__init__(states, state)
+
+    def set_goal(self, new_goal):
+        if self.goal_state is not new_goal:
+            self.last_goal = self.goal_state
+            self.goal_state = new_goal

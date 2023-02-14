@@ -13,6 +13,8 @@ from arm_node.arm_simulation import ArmSimulation
 from ck_utilities_py_node.constraints import *
 from arm_node.arm_constraints import ArmConstraints
 from arm_node.state_machine import ArmStateMachine
+from arm_node.positions import *
+from arm_node.arm import Arm
 
 
 def ros_func():
@@ -38,9 +40,11 @@ def ros_func():
 
     extension_solenoid = Solenoid("extension", SolenoidType.SINGLE)
 
-    rate = rospy.Rate(20)
+    rate = rospy.Rate(100)
 
-    state_machine = ArmStateMachine(baseArmMaster, upperArmMaster, wristMotor, base_brake_solenoid, upper_brake_solenoid, extension_solenoid)
+    arm = Arm(baseArmMaster, upperArmMaster, base_brake_solenoid, upper_brake_solenoid, extension_solenoid)
+
+    state_machine = ArmStateMachine(arm)
 
     while not rospy.is_shutdown():
         robot_mode = robot_status.get_mode()
@@ -80,7 +84,8 @@ def ros_func():
     
             # print(state_machine.goal_state)
             # print(state_machine.state)
-            state_machine.goal_state = real_goal
+            # state_machine.goal_state = real_goal
+            state_machine.set_goal(real_goal)
             state_machine.step()
 
         elif robot_mode == RobotMode.DISABLED:
