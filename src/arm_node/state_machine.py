@@ -36,13 +36,15 @@ class ArmStateMachine(StateMachine):
             return ArmStateMachine.States.HOME
 
         def entry(self):
-            print('Entering', self.get_enum())
+            rospy.logerr("Entering: ")
+            rospy.logerr(self.get_enum())
             self.machine.baseBrakeSolenoid.set(SolenoidState.ON)
             self.machine.upperBrakeSolenoid.set(SolenoidState.ON)
             
 
         def step(self):
-            if self.machine.baseMotor.is_at_setpoint(BASE_ALLOWED_DEVIATION) and self.machine.upperMotor.is_at_setpoint(UPPER_ALLOWED_DEVIATION):
+            # if self.machine.baseMotor.is_at_setpoint(BASE_ALLOWED_DEVIATION) and self.machine.upperMotor.is_at_setpoint(UPPER_ALLOWED_DEVIATION):
+            if self.machine.baseMotor.is_at_setpoint(0.01) and self.machine.upperMotor.is_at_setpoint(0.01):
                 self.machine.baseMotor.set(ControlMode.PERCENT_OUTPUT, 0)
                 self.machine.upperMotor.set(ControlMode.PERCENT_OUTPUT, 0)
                 self.machine.baseBrakeSolenoid.set(SolenoidState.OFF)
@@ -99,7 +101,8 @@ class ArmStateMachine(StateMachine):
             
 
         def step(self):
-            if self.machine.baseMotor.is_at_setpoint(BASE_ALLOWED_DEVIATION) and self.machine.upperMotor.is_at_setpoint(UPPER_ALLOWED_DEVIATION):
+            # if self.machine.baseMotor.is_at_setpoint(BASE_ALLOWED_DEVIATION) and self.machine.upperMotor.is_at_setpoint(UPPER_ALLOWED_DEVIATION):
+            if self.machine.baseMotor.is_at_setpoint(0.01) and self.machine.upperMotor.is_at_setpoint(0.01):
                 self.machine.baseMotor.set(ControlMode.PERCENT_OUTPUT, 0)
                 self.machine.upperMotor.set(ControlMode.PERCENT_OUTPUT, 0)
                 self.machine.baseBrakeSolenoid.set(SolenoidState.OFF)
@@ -131,7 +134,8 @@ class ArmStateMachine(StateMachine):
             
 
         def step(self):
-            if self.machine.baseMotor.is_at_setpoint(BASE_ALLOWED_DEVIATION) and self.machine.upperMotor.is_at_setpoint(UPPER_ALLOWED_DEVIATION):
+            # if self.machine.baseMotor.is_at_setpoint(BASE_ALLOWED_DEVIATION) and self.machine.upperMotor.is_at_setpoint(UPPER_ALLOWED_DEVIATION):
+            if self.machine.baseMotor.is_at_setpoint(0.01) and self.machine.upperMotor.is_at_setpoint(0.01):
                 self.machine.baseMotor.set(ControlMode.PERCENT_OUTPUT, 0)
                 self.machine.upperMotor.set(ControlMode.PERCENT_OUTPUT, 0)
                 self.machine.baseBrakeSolenoid.set(SolenoidState.OFF)
