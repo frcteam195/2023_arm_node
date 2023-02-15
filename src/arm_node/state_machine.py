@@ -43,6 +43,12 @@ class ArmStateMachine(StateMachine):
         FORCE_HOME=22
         PENDULUM=23
 
+
+    class GoalSides(Enum):
+        HOME=1
+        FRONT=2
+        BACK=3
+
     
     FRONT_STATES = [
         States.INTERMEDIATE_FRONT,
@@ -91,7 +97,8 @@ class ArmStateMachine(StateMachine):
             ArmStateMachine.States.HOME : HomeState(self, arm),
             ArmStateMachine.States.FORCE_HOME : HomeState(self, arm, True),
             ArmStateMachine.States.INTERMEDIATE_FRONT : IntermediateFrontState(self, arm),
-            ArmStateMachine.States.INTERMEDIATE_BACK : IntermediateBackState(self, arm),
+            # ArmStateMachine.States.INTERMEDIATE_BACK : IntermediateBackState(self, arm),
+            ArmStateMachine.States.INTERMEDIATE_BACK : IntermediateFrontState(self, arm, ArmStateMachine.GoalSides.BACK),
             ArmStateMachine.States.SHELF_FRONT : ShelfState(self, arm),
             ArmStateMachine.States.HIGH_CUBE_FRONT : HighCubeState(self, arm),
             ArmStateMachine.States.HIGH_CUBE_BACK : HighCubeState(self, arm, False),
@@ -109,3 +116,21 @@ class ArmStateMachine(StateMachine):
         if self.goal_state is not new_goal:
             self.prev_goal = self.goal_state
             self.goal_state = new_goal
+
+    def goal_is_high(self) -> bool:
+        return self.goal_state in ArmStateMachine.HIGH_INTERMEDIATE_NEEDED
+
+    def prev_goal_was_high(self) -> bool:
+        return self.prev_goal in ArmStateMachine.HIGH_INTERMEDIATE_NEEDED
+
+    def goal_same_side(self) -> bool:
+        return ArmStateMachine.get_goal_side(self.goal_state) is ArmStateMachine.get_goal_side(self.prev_goal)
+
+    @staticmethod
+    def get_goal_side(goal):
+        if goal is ArmStateMachine.States.HOME or goal is ArmStateMachine.States.FORCE_HOME:
+            return ArmStateMachine.GoalSides.HOME
+        if goal in ArmStateMachine.FRONT_STATES:
+            return ArmStateMachine.GoalSides.FRONT
+        elif goal in ArmStateMachine.BACK_STATES:
+            return ArmStateMachine.GoalSides.BACK

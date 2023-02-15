@@ -20,8 +20,6 @@ class HomeState(StateMachine.State):
         return ArmStateMachine.States.HOME
 
     def entry(self):
-        rospy.logerr("Entering: ")
-        rospy.logerr(self.get_enum())
         self.arm.disable_brakes()
             
     def step(self):

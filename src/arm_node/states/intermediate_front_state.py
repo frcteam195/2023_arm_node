@@ -10,30 +10,42 @@ from ck_utilities_py_node.StateMachine import StateMachine
 
 class IntermediateFrontState(StateMachine.State):
 
-    def __init__(self, machine, arm):
+    def __init__(self, machine, arm, side=ArmStateMachine.GoalSides.FRONT):
         self.machine: ArmStateMachine = machine
         self.arm: Arm = arm
+        self.side: ArmStateMachine.GoalSides = side
+        self.default_position: ArmPosition = POS_INTERMEDIATE
+        self.high_position: ArmPosition = POS_HIGH_INTERMEDIATE
+
+        if side is ArmStateMachine.GoalSides.BACK:
+            self.default_position = mirror_position(self.default_position)
+            self.high_position = mirror_position(self.high_position)
 
     def get_enum(self):
-        return ArmStateMachine.States.INTERMEDIATE_FRONT
+        if self.side is ArmStateMachine.GoalSides.FRONT:
+            return ArmStateMachine.States.INTERMEDIATE_FRONT
+        else:
+            return ArmStateMachine.States.INTERMEDIATE_BACK
 
     def entry(self):
-        print('Entering', self.get_enum())
+        # print('Entering', self.get_enum())
         self.arm.disable_brakes()
         self.arm.retract()
 
     def step(self):
-        print('in transition')
-        if goal_is_high(self.machine) or prev_goal_was_high(self.machine):
-            self.arm.set_motion_magic(POS_HIGH_INTERMEDIATE)
+        # print('in transition')
+        if self.machine.goal_is_high() or self.machine.prev_goal_was_high():
+            self.arm.set_motion_magic(self.high_position)
         else:
-            self.arm.set_motion_magic(POS_INTERMEDIATE)
+            self.arm.set_motion_magic(self.default_position)
 
     def transition(self) -> Enum:
         if self.arm.is_at_setpoint(BASE_ALLOWED_DEVIATION, UPPER_ALLOWED_DEVIATION):
-            if self.machine.goal_state in ArmStateMachine.BACK_STATES:
+            if self.side is not ArmStateMachine.get_goal_side(self.machine.goal_state):
                 return ArmStateMachine.States.FORCE_HOME
 
+            return self.machine.goal_state
+        elif self.machine.goal_same_side():
             return self.machine.goal_state
 
         return self.get_enum()
