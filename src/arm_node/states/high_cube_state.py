@@ -29,10 +29,11 @@ class HighCubeState(StateMachine.State):
     def entry(self):
         print('Entering', self.get_enum())
         self.arm.disable_brakes()
-        self.arm.extend()
             
     def step(self):
         standard_step(self.arm, self.position)
+        if self.arm.is_at_setpoint(0.01, 0.1):
+            self.arm.extend()
 
     def transition(self) -> Enum:
         if self.machine.goal_state is not self.get_enum():
