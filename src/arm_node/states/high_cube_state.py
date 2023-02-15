@@ -32,8 +32,8 @@ class HighCubeState(StateMachine.State):
             
     def step(self):
         standard_step(self.arm, self.position)
-        if self.arm.is_at_setpoint(0.01, 0.1):
-            self.arm.extend()
+        # if self.arm.is_at_setpoint(0.01, 0.1):
+        #     self.arm.extend()
 
     def transition(self) -> Enum:
         if self.machine.goal_state is not self.get_enum():
