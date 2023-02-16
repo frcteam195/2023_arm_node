@@ -6,6 +6,8 @@ from ck_utilities_py_node.StateMachine import StateMachine
 from ck_utilities_py_node.motor import *
 from ck_utilities_py_node.solenoid import *
 
+from ck_ros_msgs_node.msg import Arm_Goal
+
 def transition_to_intermediate(is_front: bool) -> StateMachine.State:
     if is_front:
         return ArmStateMachine.States.INTERMEDIATE_FRONT
@@ -32,3 +34,29 @@ def goal_is_high(machine: ArmStateMachine):
 
 def prev_goal_was_high(machine: ArmStateMachine):
     return machine.prev_goal in ArmStateMachine.HIGH_INTERMEDIATE_NEEDED
+
+
+ARM_GOAL_DICT = {
+    Arm_Goal.HOME : ArmStateMachine.States.HOME,
+    Arm_Goal.GROUND_CUBE_FRONT : ArmStateMachine.States.GROUND_CUBE_FRONT,
+    Arm_Goal.GROUND_CUBE_BACK : ArmStateMachine.States.GROUND_CUBE_BACK,
+    Arm_Goal.GROUND_CONE_FRONT : ArmStateMachine.States.GROUND_CONE_FRONT,
+    Arm_Goal.GROUND_CONE_BACK : ArmStateMachine.States.GROUND_CONE_BACK,
+    Arm_Goal.SHELF_PICKUP_FRONT : ArmStateMachine.States.SHELF_BACK,
+    Arm_Goal.SHELF_PICKUP_BACK : ArmStateMachine.States.SHELF_BACK,
+    Arm_Goal.LOW_SCORE_FRONT : ArmStateMachine.States.LOW_SCORE_FRONT,
+    Arm_Goal.LOW_SCORE_BACK : ArmStateMachine.States.LOW_SCORE_BACK,
+    Arm_Goal.MID_CONE_FRONT : ArmStateMachine.States.MID_CONE_FRONT,
+    Arm_Goal.MID_CONE_BACK : ArmStateMachine.States.MID_CONE_BACK,
+    Arm_Goal.MID_CUBE_FRONT : ArmStateMachine.States.MID_CUBE_FRONT,
+    Arm_Goal.MID_CUBE_BACK : ArmStateMachine.States.MID_CUBE_BACK,
+    Arm_Goal.HIGH_CONE_FRONT : ArmStateMachine.States.HIGH_CONE_FRONT,
+    Arm_Goal.HIGH_CONE_BACK : ArmStateMachine.States.HIGH_CONE_BACK,
+    Arm_Goal.HIGH_CUBE_FRONT : ArmStateMachine.States.HIGH_CUBE_FRONT,
+    Arm_Goal.HIGH_CUBE_FRONT : ArmStateMachine.States.HIGH_CUBE_BACK,
+    Arm_Goal.GROUND_DEAD_CONE_FRONT : ArmStateMachine.States.GROUND_DEAD_CONE_FRONT,
+    Arm_Goal.GROUND_DEAD_CONE_BACK : ArmStateMachine.States.GROUND_DEAD_CONE_BACK,
+}
+
+def goal_msg_to_state(goal_msg: Arm_Goal):
+    return ARM_GOAL_DICT[goal_msg.goal]
