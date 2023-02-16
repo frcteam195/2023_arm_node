@@ -26,6 +26,8 @@ def standard_step(arm: Arm, position: ArmPosition):
     if arm.is_at_setpoint(0.005, 0.005):
         # arm.set_percent_output()
         arm.enable_brakes()
+    else:
+        arm.disable_brakes()
 
     arm.set_motion_magic(position)
 
