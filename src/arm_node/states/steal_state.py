@@ -8,25 +8,28 @@ from ck_utilities_py_node.solenoid import *
 from ck_utilities_py_node.StateMachine import StateMachine
 
 
-class ShelfState(StateMachine.State):
+class StealState(StateMachine.State):
 
     def __init__(self, machine, arm, is_front=True):
         self.machine: ArmStateMachine = machine
         self.arm: Arm = arm
         self.is_front = is_front
 
-        self.position: ArmPosition = POS_SHELF
+        self.position: ArmPosition = POS_STEAL
+
         if ArmStateMachine.BACK_STATES:
             self.position = mirror_position(self.position)
 
     def get_enum(self):
         if ArmStateMachine.FRONT_STATES:
-            return ArmStateMachine.States.SHELF_FRONT
+            return ArmStateMachine.States.STEAL_FRONT
         else:
-            return ArmStateMachine.States.SHELF_BACK
+            return ArmStateMachine.States.STEAL_BACK
 
     def entry(self):
+        print('Entering', self.get_enum())
         self.arm.disable_brakes()
+        self.arm.extend()
             
     def step(self):
         standard_step(self.arm, self.position)
