@@ -105,21 +105,15 @@ class ArmStateMachine(StateMachine):
         from arm_node.states.ground_cube_state import GroundCubeState
         from arm_node.states.ground_dead_cone_state import GroundDeadConeState
         from arm_node.states.steal_state import StealState
-      
-
-
-        
-
-
-
 
         states = {
             ArmStateMachine.States.HOME : HomeState(self, arm),
-            ArmStateMachine.States.FORCE_HOME : HomeState(self, arm, ArmStateMachine.GoalSides.FRONT),
+            ArmStateMachine.States.FORCE_HOME : HomeState(self, arm, True),
             ArmStateMachine.States.INTERMEDIATE_FRONT : IntermediateFrontState(self, arm),
             # ArmStateMachine.States.INTERMEDIATE_BACK : IntermediateBackState(self, arm),
             ArmStateMachine.States.INTERMEDIATE_BACK : IntermediateFrontState(self, arm, ArmStateMachine.GoalSides.BACK),
             ArmStateMachine.States.SHELF_FRONT : ShelfState(self, arm),
+            ArmStateMachine.States.SHELF_BACK : ShelfState(self, arm, ArmStateMachine.GoalSides.BACK),
             ArmStateMachine.States.HIGH_CUBE_FRONT : HighCubeState(self, arm),
             ArmStateMachine.States.HIGH_CUBE_BACK : HighCubeState(self, arm, ArmStateMachine.GoalSides.BACK),
             ArmStateMachine.States.HIGH_CONE_FRONT : HighConeState(self, arm),
@@ -136,10 +130,8 @@ class ArmStateMachine(StateMachine):
             ArmStateMachine.States.GROUND_CUBE_BACK : GroundCubeState(self, arm, ArmStateMachine.GoalSides.BACK),
             ArmStateMachine.States.GROUND_DEAD_CONE_FRONT : GroundDeadConeState(self, arm),
             ArmStateMachine.States.GROUND_DEAD_CONE_BACK : GroundDeadConeState(self, arm, ArmStateMachine.GoalSides.BACK),
-            ArmStateMachine.States.STEAL_FRONT : StealState(self, arm),
-            ArmStateMachine.States.STEAL_BACK : StealState(self, arm, ArmStateMachine.GoalSides.BACK),
-           
-
+            # ArmStateMachine.States.STEAL_FRONT : StealState(self, arm),
+            # ArmStateMachine.States.STEAL_BACK : StealState(self, arm, ArmStateMachine.GoalSides.BACK),
             # ArmStateMachine.States.PENDULUM : ArmStateMachine.PendulumState(self),
         }
 

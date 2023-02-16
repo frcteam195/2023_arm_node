@@ -10,17 +10,17 @@ from ck_utilities_py_node.StateMachine import StateMachine
 
 class ShelfState(StateMachine.State):
 
-    def __init__(self, machine, arm, is_front=True):
+    def __init__(self, machine, arm, side=ArmStateMachine.GoalSides.FRONT):
         self.machine: ArmStateMachine = machine
         self.arm: Arm = arm
-        self.is_front = is_front
+        self.side: ArmStateMachine.GoalSides = side
 
         self.position: ArmPosition = POS_SHELF
-        if ArmStateMachine.BACK_STATES:
+        if self.side is ArmStateMachine.GoalSides.BACK:
             self.position = mirror_position(self.position)
 
     def get_enum(self):
-        if ArmStateMachine.FRONT_STATES:
+        if self.side is ArmStateMachine.GoalSides.FRONT:
             return ArmStateMachine.States.SHELF_FRONT
         else:
             return ArmStateMachine.States.SHELF_BACK
@@ -33,9 +33,6 @@ class ShelfState(StateMachine.State):
 
     def transition(self) -> Enum:
         if self.machine.goal_state is not self.get_enum():
-            if ArmStateMachine.FRONT_STATES:
-                return transition_to_intermediate(ArmStateMachine.FRONT_STATES)
-            else:
-                return transition_to_intermediate(ArmStateMachine.BACK_STATES)
+            return transition_to_intermediate(self.side is ArmStateMachine.GoalSides.FRONT)
 
         return self.get_enum()

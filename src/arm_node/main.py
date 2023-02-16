@@ -15,6 +15,7 @@ from arm_node.arm_constraints import ArmConstraints
 from arm_node.state_machine import ArmStateMachine
 from arm_node.positions import *
 from arm_node.arm import Arm
+from arm_node.states.util import goal_msg_to_state
 
 
 def ros_func():
@@ -53,15 +54,7 @@ def ros_func():
         real_goal = None
 
         if goal is not None:
-            if goal.goal == Arm_Goal.HOME:
-                real_goal = ArmStateMachine.States.HOME
-            elif goal.goal == Arm_Goal.SHELF_PICKUP_FRONT:
-                real_goal = ArmStateMachine.States.SHELF_FRONT
-            elif goal.goal == Arm_Goal.HIGH_CUBE_FRONT:
-                real_goal = ArmStateMachine.States.HIGH_CUBE_FRONT
-            elif goal.goal == Arm_Goal.HIGH_CUBE_BACK:
-                real_goal = ArmStateMachine.States.HIGH_CUBE_BACK
-
+            real_goal = goal_msg_to_state(goal)
             # print('Setting goal to:', real_goal)
         else:
             real_goal = state_machine.goal_state
