@@ -36,27 +36,58 @@ def prev_goal_was_high(machine: ArmStateMachine):
     return machine.prev_goal in ArmStateMachine.HIGH_INTERMEDIATE_NEEDED
 
 
-ARM_GOAL_DICT = {
+# ARM_GOAL_DICT = {
+#     Arm_Goal.HOME : ArmStateMachine.States.HOME,
+#     Arm_Goal.GROUND_CUBE_FRONT : ArmStateMachine.States.GROUND_CUBE_FRONT,
+#     Arm_Goal.GROUND_CUBE_BACK : ArmStateMachine.States.GROUND_CUBE_BACK,
+#     Arm_Goal.GROUND_CONE_FRONT : ArmStateMachine.States.GROUND_CONE_FRONT,
+#     Arm_Goal.GROUND_CONE_BACK : ArmStateMachine.States.GROUND_CONE_BACK,
+#     Arm_Goal.SHELF_PICKUP_FRONT : ArmStateMachine.States.SHELF_FRONT,
+#     Arm_Goal.SHELF_PICKUP_BACK : ArmStateMachine.States.SHELF_BACK,
+#     Arm_Goal.LOW_SCORE_FRONT : ArmStateMachine.States.LOW_SCORE_FRONT,
+#     Arm_Goal.LOW_SCORE_BACK : ArmStateMachine.States.LOW_SCORE_BACK,
+#     Arm_Goal.MID_CONE_FRONT : ArmStateMachine.States.MID_CONE_FRONT,
+#     Arm_Goal.MID_CONE_BACK : ArmStateMachine.States.MID_CONE_BACK,
+#     Arm_Goal.MID_CUBE_FRONT : ArmStateMachine.States.MID_CUBE_FRONT,
+#     Arm_Goal.MID_CUBE_BACK : ArmStateMachine.States.MID_CUBE_BACK,
+#     Arm_Goal.HIGH_CONE_FRONT : ArmStateMachine.States.HIGH_CONE_FRONT,
+#     Arm_Goal.HIGH_CONE_BACK : ArmStateMachine.States.HIGH_CONE_BACK,
+#     Arm_Goal.HIGH_CUBE_FRONT : ArmStateMachine.States.HIGH_CUBE_FRONT,
+#     Arm_Goal.HIGH_CUBE_BACK : ArmStateMachine.States.HIGH_CUBE_BACK,
+#     Arm_Goal.GROUND_DEAD_CONE_FRONT : ArmStateMachine.States.GROUND_DEAD_CONE_FRONT,
+#     Arm_Goal.GROUND_DEAD_CONE_BACK : ArmStateMachine.States.GROUND_DEAD_CONE_BACK,
+# }
+
+FRONT_GOALS = {
     Arm_Goal.HOME : ArmStateMachine.States.HOME,
-    Arm_Goal.GROUND_CUBE_FRONT : ArmStateMachine.States.GROUND_CUBE_FRONT,
-    Arm_Goal.GROUND_CUBE_BACK : ArmStateMachine.States.GROUND_CUBE_BACK,
-    Arm_Goal.GROUND_CONE_FRONT : ArmStateMachine.States.GROUND_CONE_FRONT,
-    Arm_Goal.GROUND_CONE_BACK : ArmStateMachine.States.GROUND_CONE_BACK,
-    Arm_Goal.SHELF_PICKUP_FRONT : ArmStateMachine.States.SHELF_FRONT,
-    Arm_Goal.SHELF_PICKUP_BACK : ArmStateMachine.States.SHELF_BACK,
-    Arm_Goal.LOW_SCORE_FRONT : ArmStateMachine.States.LOW_SCORE_FRONT,
-    Arm_Goal.LOW_SCORE_BACK : ArmStateMachine.States.LOW_SCORE_BACK,
-    Arm_Goal.MID_CONE_FRONT : ArmStateMachine.States.MID_CONE_FRONT,
-    Arm_Goal.MID_CONE_BACK : ArmStateMachine.States.MID_CONE_BACK,
-    Arm_Goal.MID_CUBE_FRONT : ArmStateMachine.States.MID_CUBE_FRONT,
-    Arm_Goal.MID_CUBE_BACK : ArmStateMachine.States.MID_CUBE_BACK,
-    Arm_Goal.HIGH_CONE_FRONT : ArmStateMachine.States.HIGH_CONE_FRONT,
-    Arm_Goal.HIGH_CONE_BACK : ArmStateMachine.States.HIGH_CONE_BACK,
-    Arm_Goal.HIGH_CUBE_FRONT : ArmStateMachine.States.HIGH_CUBE_FRONT,
-    Arm_Goal.HIGH_CUBE_BACK : ArmStateMachine.States.HIGH_CUBE_BACK,
-    Arm_Goal.GROUND_DEAD_CONE_FRONT : ArmStateMachine.States.GROUND_DEAD_CONE_FRONT,
-    Arm_Goal.GROUND_DEAD_CONE_BACK : ArmStateMachine.States.GROUND_DEAD_CONE_BACK,
+    Arm_Goal.GROUND_CUBE : ArmStateMachine.States.GROUND_CUBE_FRONT,
+    Arm_Goal.GROUND_CONE : ArmStateMachine.States.GROUND_CONE_FRONT,
+    Arm_Goal.SHELF_PICKUP : ArmStateMachine.States.SHELF_FRONT,
+    Arm_Goal.LOW_SCORE : ArmStateMachine.States.LOW_SCORE_FRONT,
+    Arm_Goal.MID_CONE : ArmStateMachine.States.MID_CONE_FRONT,
+    Arm_Goal.MID_CUBE : ArmStateMachine.States.MID_CUBE_FRONT,
+    Arm_Goal.HIGH_CONE : ArmStateMachine.States.HIGH_CONE_FRONT,
+    Arm_Goal.HIGH_CUBE : ArmStateMachine.States.HIGH_CUBE_FRONT,
+    Arm_Goal.GROUND_DEAD_CONE : ArmStateMachine.States.GROUND_DEAD_CONE_FRONT,
+}
+
+BACK_GOALS = {
+    Arm_Goal.HOME : ArmStateMachine.States.HOME,
+    Arm_Goal.GROUND_CUBE : ArmStateMachine.States.GROUND_CUBE_BACK,
+    Arm_Goal.GROUND_CONE : ArmStateMachine.States.GROUND_CONE_BACK,
+    Arm_Goal.SHELF_PICKUP : ArmStateMachine.States.SHELF_BACK,
+    Arm_Goal.LOW_SCORE : ArmStateMachine.States.LOW_SCORE_BACK,
+    Arm_Goal.MID_CONE : ArmStateMachine.States.MID_CONE_BACK,
+    Arm_Goal.MID_CUBE : ArmStateMachine.States.MID_CUBE_BACK,
+    Arm_Goal.HIGH_CONE : ArmStateMachine.States.HIGH_CONE_BACK,
+    Arm_Goal.HIGH_CUBE : ArmStateMachine.States.HIGH_CUBE_BACK,
+    Arm_Goal.GROUND_DEAD_CONE : ArmStateMachine.States.GROUND_DEAD_CONE_BACK,
 }
 
 def goal_msg_to_state(goal_msg: Arm_Goal):
-    return ARM_GOAL_DICT[goal_msg.goal]
+    # return ARM_GOAL_DICT[goal_msg.goal]
+
+    if goal_msg.goal_side is Arm_Goal.SIDE_FRONT:
+        return FRONT_GOALS[goal_msg.goal]
+    else:
+        return BACK_GOALS[goal_msg.goal]
