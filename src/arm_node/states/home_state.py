@@ -30,7 +30,7 @@ class HomeState(StateMachine.State):
             new_state = transition_to_intermediate(self.machine.goal_state in ArmStateMachine.FRONT_STATES)
 
             if self.force:
-                if self.arm.is_at_setpoint(0.01, 0.01):
+                if self.arm.is_at_setpoint_raw(0.01, 0.01):
                     return new_state
             else:
                 return new_state

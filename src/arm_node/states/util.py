@@ -23,13 +23,13 @@ def standard_step(arm: Arm, position: ArmPosition):
     # else:
     #     machine.baseMotor.set(ControlMode.MOTION_MAGIC, position.base_position)
     #     machine.upperMotor.set(ControlMode.MOTION_MAGIC, position.upper_position)
-    if arm.is_at_setpoint(0.005, 0.005):
+    if arm.is_at_setpoint_raw(0.005, 0.005):
         # arm.set_percent_output()
         arm.enable_brakes()
     else:
         arm.disable_brakes()
 
-    arm.set_motion_magic(position)
+    arm.set_motion_magic_raw(position)
 
 def goal_is_high(machine: ArmStateMachine):
     return machine.goal_state in ArmStateMachine.HIGH_INTERMEDIATE_NEEDED

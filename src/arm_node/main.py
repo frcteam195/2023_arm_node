@@ -43,7 +43,7 @@ def ros_func():
 
     rate = rospy.Rate(100)
 
-    arm = Arm(baseArmMaster, upperArmMaster, base_brake_solenoid, upper_brake_solenoid, extension_solenoid)
+    arm = Arm(baseArmMaster, upperArmMaster, wristMotor, base_brake_solenoid, upper_brake_solenoid, extension_solenoid, POS_HOME, None, None)
 
     state_machine = ArmStateMachine(arm)
 
@@ -127,22 +127,25 @@ def ros_func():
         arm_simulation.publish_arm_extender_link(extension_solenoid.get() == SolenoidState.ON)
         arm_simulation.publish_arm_wrist_link(wristMotor.get_sensor_position() * 360.0)
 
-        master_sticky_faults = baseArmMaster.get_sticky_faults()
-        follower_sticky_faults = baseArmFollower.get_sticky_faults()
+        # master_sticky_faults = baseArmMaster.get_sticky_faults()
+        # follower_sticky_faults = baseArmFollower.get_sticky_faults()
 
-        status_message = Arm_Status()
-        status_message.arm_base_actual_position = baseArmMaster.get_sensor_position()
-        status_message.arm_upper_actual_position = upperArmMaster.get_sensor_position()
-        status_message.arm_wrist_actual_position = wristMotor.get_sensor_position()
-        status_message.extended = extension_solenoid.get() == SolenoidState.ON
-        status_message.left_arm_base_remote_loss_of_signal = master_sticky_faults.RemoteLossOfSignal
-        status_message.right_arm_base_remote_loss_of_signal = follower_sticky_faults.RemoteLossOfSignal
-        status_message.left_arm_base_reset_during_en = master_sticky_faults.ResetDuringEn
-        status_message.right_arm_base_reset_during_en = follower_sticky_faults.ResetDuringEn
-        status_message.left_arm_base_hardware_ESD_reset = master_sticky_faults.HardwareESDReset
-        status_message.right_arm_base_hardware_ESD_reset = follower_sticky_faults.HardwareESDReset
-        status_message.left_arm_base_supply_unstable = master_sticky_faults.SupplyUnstable
-        status_message.right_arm_base_supply_unstable = follower_sticky_faults.SupplyUnstable
+        # status_message = Arm_Status()
+        # status_message.arm_base_actual_position = baseArmMaster.get_sensor_position()
+        # status_message.arm_upper_actual_position = upperArmMaster.get_sensor_position()
+        # status_message.arm_wrist_actual_position = wristMotor.get_sensor_position()
+        # status_message.extended = extension_solenoid.get() == SolenoidState.ON
+        # status_message.left_arm_base_remote_loss_of_signal = master_sticky_faults.RemoteLossOfSignal
+        # status_message.right_arm_base_remote_loss_of_signal = follower_sticky_faults.RemoteLossOfSignal
+        # status_message.left_arm_base_reset_during_en = master_sticky_faults.ResetDuringEn
+        # status_message.right_arm_base_reset_during_en = follower_sticky_faults.ResetDuringEn
+        # status_message.left_arm_base_hardware_ESD_reset = master_sticky_faults.HardwareESDReset
+        # status_message.right_arm_base_hardware_ESD_reset = follower_sticky_faults.HardwareESDReset
+        # status_message.left_arm_base_supply_unstable = master_sticky_faults.SupplyUnstable
+        # status_message.right_arm_base_supply_unstable = follower_sticky_faults.SupplyUnstable
+        # status_publisher.publish(status_message)
+
+        status_message = arm.get_status()
         status_publisher.publish(status_message)
 
         rate.sleep()

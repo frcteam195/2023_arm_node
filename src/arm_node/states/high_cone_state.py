@@ -32,7 +32,7 @@ class HighConeState(StateMachine.State):
             
     def step(self):
         standard_step(self.arm, self.position)
-        if (self.arm.is_at_setpoint(0.01, 0.01)):
+        if (self.arm.is_at_setpoint_raw(0.01, 0.01)):
             self.arm.extend()
 
     def transition(self) -> Enum:

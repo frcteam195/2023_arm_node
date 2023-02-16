@@ -8,8 +8,8 @@ UPPER_ALLOWED_DEVIATION = abs(rospy.get_param("/arm_node/upperArmMaster_forwardS
 
 @dataclass
 class ArmPosition:
-    base_position: float
-    upper_position: float
+    base_position: float = 0.0
+    upper_position: float = 0.0
 
 
 POS_HOME = ArmPosition(-0.022402006267613173, -0.5)
