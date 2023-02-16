@@ -23,11 +23,11 @@ def standard_step(arm: Arm, position: ArmPosition):
     # else:
     #     machine.baseMotor.set(ControlMode.MOTION_MAGIC, position.base_position)
     #     machine.upperMotor.set(ControlMode.MOTION_MAGIC, position.upper_position)
-    if arm.is_at_setpoint(0.01, 0.01):
-        arm.set_percent_output()
+    if arm.is_at_setpoint(0.005, 0.005):
+        # arm.set_percent_output()
         arm.enable_brakes()
-    else:
-        arm.set_motion_magic(position)
+
+    arm.set_motion_magic(position)
 
 def goal_is_high(machine: ArmStateMachine):
     return machine.goal_state in ArmStateMachine.HIGH_INTERMEDIATE_NEEDED
@@ -53,7 +53,7 @@ ARM_GOAL_DICT = {
     Arm_Goal.HIGH_CONE_FRONT : ArmStateMachine.States.HIGH_CONE_FRONT,
     Arm_Goal.HIGH_CONE_BACK : ArmStateMachine.States.HIGH_CONE_BACK,
     Arm_Goal.HIGH_CUBE_FRONT : ArmStateMachine.States.HIGH_CUBE_FRONT,
-    Arm_Goal.HIGH_CUBE_FRONT : ArmStateMachine.States.HIGH_CUBE_BACK,
+    Arm_Goal.HIGH_CUBE_BACK : ArmStateMachine.States.HIGH_CUBE_BACK,
     Arm_Goal.GROUND_DEAD_CONE_FRONT : ArmStateMachine.States.GROUND_DEAD_CONE_FRONT,
     Arm_Goal.GROUND_DEAD_CONE_BACK : ArmStateMachine.States.GROUND_DEAD_CONE_BACK,
 }

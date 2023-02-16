@@ -28,10 +28,12 @@ class HighConeState(StateMachine.State):
 
     def entry(self):
         self.arm.disable_brakes()
-        self.arm.extend()
+        # self.arm.extend()
             
     def step(self):
         standard_step(self.arm, self.position)
+        if (self.arm.is_at_setpoint(0.01, 0.01)):
+            self.arm.extend()
 
     def transition(self) -> Enum:
         if self.machine.goal_state is not self.get_enum():

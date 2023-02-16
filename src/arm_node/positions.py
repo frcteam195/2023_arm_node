@@ -16,21 +16,23 @@ POS_HOME = ArmPosition(-0.022402006267613173, -0.5)
 
 POS_STEAL = ArmPosition(0.024, -0.272) #fake values
 
-POS_GROUND_CUBE = ArmPosition(-0.0193, -0.427)
+POS_GROUND_CUBE = ArmPosition(0.0, -0.40)
 POS_GROUND_CONE = ArmPosition(-0.0267, -0.419)
-POS_GROUND_DEAD_CONE = ArmPosition(0.013, -0.407)
+POS_GROUND_DEAD_CONE = ArmPosition(0.013, -0.424)
 
 POS_SHELF = ArmPosition(-0.064, -0.285)
 
 POS_LOW_SCORE = ArmPosition(0.037, -0.387)
-POS_MID_CUBE = ArmPosition(0.023, -0.272)
+POS_MID_CUBE = ArmPosition(0.023, -0.267)
 POS_HIGH_CUBE = ArmPosition(0.029, -0.175)
 # POS_HIGH_CUBE = ArmPosition(0.029, -0.199)
-POS_MID_CONE = ArmPosition(-0.025, -0.255)
-POS_HIGH_CONE = ArmPosition(0.046, -0.0139) # may exceed limits
+POS_MID_CONE = ArmPosition(0.025, -0.195)
+# POS_HIGH_CONE = ArmPosition(0.046, -0.0139) # may exceed limits
+POS_HIGH_CONE = ArmPosition(0.038, -0.142) # may exceed limits
+# upper forward soft limit: -0.159423828125
 
 POS_INTERMEDIATE = ArmPosition(-0.068, -0.420)
-POS_HIGH_INTERMEDIATE = ArmPosition(-0.12, -0.250)
+POS_HIGH_INTERMEDIATE = ArmPosition(-0.068, -0.250)
 
 
 def mirror_position(position: ArmPosition) -> ArmPosition:
