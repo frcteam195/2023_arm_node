@@ -17,11 +17,11 @@ class GroundDeadConeState(StateMachine.State):
 
         self.position: ArmPosition = POS_GROUND_DEAD_CONE
 
-        if not is_front:
+        if ArmStateMachine.BACK_STATES:
             self.position = mirror_position(self.position)
 
     def get_enum(self):
-        if self.is_front:
+        if ArmStateMachine.FRONT_STATES:
             return ArmStateMachine.States.GROUND_DEAD_CONE_FRONT
         else:
             return ArmStateMachine.States.GROUND_DEAD_CONE_BACK
@@ -36,6 +36,9 @@ class GroundDeadConeState(StateMachine.State):
 
     def transition(self) -> Enum:
         if self.machine.goal_state is not self.get_enum():
-            return transition_to_intermediate(self.is_front)
+            if ArmStateMachine.FRONT_STATES:
+                return transition_to_intermediate(ArmStateMachine.FRONT_STATES)
+            else:
+                return transition_to_intermediate(ArmStateMachine.BACK_STATES)
 
         return self.get_enum()
