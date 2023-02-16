@@ -21,7 +21,7 @@ class StealState(StateMachine.State):
             self.position = mirror_position(self.position)
 
     def get_enum(self):
-        if self.is_front:
+        if ArmStateMachine.FRONT_STATES:
             return ArmStateMachine.States.STEAL_FRONT
         else:
             return ArmStateMachine.States.STEAL_BACK
