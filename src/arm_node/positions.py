@@ -14,9 +14,11 @@ class ArmPosition:
 
 POS_HOME = ArmPosition(-0.022402006267613173, -0.5)
 
+POS_STEAL = ArmPosition(0.024, -0.272) #fake values
+
 POS_GROUND_CUBE = ArmPosition(-0.0193, -0.427)
 POS_GROUND_CONE = ArmPosition(-0.0267, -0.419)
-POS_GROUND_DEAD_CODE = ArmPosition(0.013, -0.407)
+POS_GROUND_DEAD_CONE = ArmPosition(0.013, -0.407)
 
 POS_SHELF = ArmPosition(-0.064, -0.285)
 

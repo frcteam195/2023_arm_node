@@ -29,26 +29,29 @@ class ArmStateMachine(StateMachine):
         MID_CONE_FRONT=10
         HIGH_CONE_FRONT=11
 
+
         INTERMEDIATE_BACK=12
         GROUND_CUBE_BACK=13
         GROUND_CONE_BACK=14
         GROUND_DEAD_CONE_BACK=15
         SHELF_BACK=16
-        LOW_SCORE_BACL=17
+        LOW_SCORE_BACK=17
         MID_CUBE_BACK=18
         HIGH_CUBE_BACK=19
         MID_CONE_BACK=20
         HIGH_CONE_BACK=21
+        
 
         FORCE_HOME=22
         PENDULUM=23
 
+        STEAL_FRONT=24
+        STEAL_BACK=25
 
     class GoalSides(Enum):
         HOME=1
         FRONT=2
         BACK=3
-
     
     FRONT_STATES = [
         States.INTERMEDIATE_FRONT,
@@ -60,7 +63,8 @@ class ArmStateMachine(StateMachine):
         States.MID_CUBE_FRONT,
         States.HIGH_CUBE_FRONT,
         States.MID_CONE_FRONT,
-        States.HIGH_CONE_FRONT
+        States.HIGH_CONE_FRONT,
+        States.STEAL_FRONT
     ]
 
     BACK_STATES = [
@@ -69,11 +73,12 @@ class ArmStateMachine(StateMachine):
         States.GROUND_CONE_BACK,
         States.GROUND_DEAD_CONE_BACK,
         States.SHELF_BACK,
-        States.LOW_SCORE_BACL,
+        States.LOW_SCORE_BACK,
         States.MID_CUBE_BACK,
         States.HIGH_CUBE_BACK,
         States.MID_CONE_BACK,
         States.HIGH_CONE_BACK,
+        States.STEAL_BACK
     ]
 
     HIGH_INTERMEDIATE_NEEDED = [
@@ -92,6 +97,21 @@ class ArmStateMachine(StateMachine):
         from arm_node.states.intemediate_back_state import IntermediateBackState
         from arm_node.states.shelf_state import ShelfState
         from arm_node.states.high_cube_state import HighCubeState
+        from arm_node.states.high_cone_state import HighConeState
+        from arm_node.states.mid_cone_state import MidConeState
+        from arm_node.states.mid_cube_state import MidCubeState
+        from arm_node.states.low_score_state import LowScoreState
+        from arm_node.states.ground_cone_state import GroundConeState
+        from arm_node.states.ground_cube_state import GroundCubeState
+        from arm_node.states.ground_dead_cone_state import GroundDeadConeState
+        from arm_node.states.steal_state import StealState
+      
+
+
+        
+
+
+
 
         states = {
             ArmStateMachine.States.HOME : HomeState(self, arm),
@@ -102,6 +122,24 @@ class ArmStateMachine(StateMachine):
             ArmStateMachine.States.SHELF_FRONT : ShelfState(self, arm),
             ArmStateMachine.States.HIGH_CUBE_FRONT : HighCubeState(self, arm),
             ArmStateMachine.States.HIGH_CUBE_BACK : HighCubeState(self, arm, False),
+            ArmStateMachine.States.HIGH_CONE_FRONT : HighConeState(self, arm),
+            ArmStateMachine.States.HIGH_CONE_BACK : HighConeState(self, arm, False),
+            ArmStateMachine.States.MID_CONE_FRONT : MidConeState(self, arm),
+            ArmStateMachine.States.MID_CONE_BACK : MidConeState(self, arm, False),
+            ArmStateMachine.States.MID_CUBE_FRONT : MidCubeState(self, arm),
+            ArmStateMachine.States.MID_CUBE_BACK : MidCubeState(self, arm, False),  
+            ArmStateMachine.States.LOW_SCORE_FRONT : LowScoreState(self, arm),
+            ArmStateMachine.States.LOW_SCORE_BACK : LowScoreState(self, arm, False),
+            ArmStateMachine.States.GROUND_CONE_FRONT : GroundConeState(self, arm),
+            ArmStateMachine.States.GROUND_CONE_BACK : GroundConeState(self, arm, False),
+            ArmStateMachine.States.GROUND_CUBE_FRONT : GroundCubeState(self, arm),
+            ArmStateMachine.States.GROUND_CUBE_BACK : GroundCubeState(self, arm, False),
+            ArmStateMachine.States.GROUND_DEAD_CONE_FRONT : GroundDeadConeState(self, arm),
+            ArmStateMachine.States.GROUND_DEAD_CONE_BACK : GroundDeadConeState(self, arm, False),
+            ArmStateMachine.States.STEAL_FRONT : StealState(self, arm),
+            ArmStateMachine.States.STEAL_BACK : StealState(self, arm, False),
+           
+
             # ArmStateMachine.States.PENDULUM : ArmStateMachine.PendulumState(self),
         }
 
