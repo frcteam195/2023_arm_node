@@ -84,10 +84,14 @@ BACK_GOALS = {
     Arm_Goal.GROUND_DEAD_CONE : ArmStateMachine.States.GROUND_DEAD_CONE_BACK,
 }
 
-def goal_msg_to_state(goal_msg: Arm_Goal):
-    # return ARM_GOAL_DICT[goal_msg.goal]
+SIDE_GOALS = {
+    Arm_Goal.SIDE_FRONT : FRONT_GOALS,
+    Arm_Goal.SIDE_BACK : BACK_GOALS
+}
 
-    if goal_msg.goal_side is Arm_Goal.SIDE_FRONT:
-        return FRONT_GOALS[goal_msg.goal]
-    else:
-        return BACK_GOALS[goal_msg.goal]
+def goal_msg_to_state(goal_msg: Arm_Goal):
+    # if goal_msg.goal_side is Arm_Goal.SIDE_FRONT:
+    #     return FRONT_GOALS[goal_msg.goal]
+    # else:
+    #     return BACK_GOALS[goal_msg.goal]
+    return SIDE_GOALS[goal_msg.goal_side][goal_msg.goal]
