@@ -15,7 +15,7 @@ from arm_node.arm_constraints import ArmConstraints
 from arm_node.state_machine import ArmStateMachine
 from arm_node.positions import *
 from arm_node.arm import Arm
-from arm_node.states.util import goal_msg_to_state
+from arm_node.states.util import goal_msg_to_state, state_to_msg
 
 
 def ros_func():
@@ -146,6 +146,7 @@ def ros_func():
         # status_publisher.publish(status_message)
 
         status_message = arm.get_status()
+        status_message.goal = state_to_msg(state_machine.goal_state)
         status_publisher.publish(status_message)
 
         rate.sleep()

@@ -64,26 +64,26 @@ FRONT_GOALS = {
     Arm_Goal.HOME : ArmStateMachine.States.HOME,
     Arm_Goal.GROUND_CUBE : ArmStateMachine.States.GROUND_CUBE_FRONT,
     Arm_Goal.GROUND_CONE : ArmStateMachine.States.GROUND_CONE_FRONT,
+    Arm_Goal.GROUND_DEAD_CONE : ArmStateMachine.States.GROUND_DEAD_CONE_FRONT,
     Arm_Goal.SHELF_PICKUP : ArmStateMachine.States.SHELF_FRONT,
     Arm_Goal.LOW_SCORE : ArmStateMachine.States.LOW_SCORE_FRONT,
     Arm_Goal.MID_CONE : ArmStateMachine.States.MID_CONE_FRONT,
     Arm_Goal.MID_CUBE : ArmStateMachine.States.MID_CUBE_FRONT,
     Arm_Goal.HIGH_CONE : ArmStateMachine.States.HIGH_CONE_FRONT,
     Arm_Goal.HIGH_CUBE : ArmStateMachine.States.HIGH_CUBE_FRONT,
-    Arm_Goal.GROUND_DEAD_CONE : ArmStateMachine.States.GROUND_DEAD_CONE_FRONT,
 }
 
 BACK_GOALS = {
     Arm_Goal.HOME : ArmStateMachine.States.HOME,
     Arm_Goal.GROUND_CUBE : ArmStateMachine.States.GROUND_CUBE_BACK,
     Arm_Goal.GROUND_CONE : ArmStateMachine.States.GROUND_CONE_BACK,
+    Arm_Goal.GROUND_DEAD_CONE : ArmStateMachine.States.GROUND_DEAD_CONE_BACK,
     Arm_Goal.SHELF_PICKUP : ArmStateMachine.States.SHELF_BACK,
     Arm_Goal.LOW_SCORE : ArmStateMachine.States.LOW_SCORE_BACK,
     Arm_Goal.MID_CONE : ArmStateMachine.States.MID_CONE_BACK,
     Arm_Goal.MID_CUBE : ArmStateMachine.States.MID_CUBE_BACK,
     Arm_Goal.HIGH_CONE : ArmStateMachine.States.HIGH_CONE_BACK,
     Arm_Goal.HIGH_CUBE : ArmStateMachine.States.HIGH_CUBE_BACK,
-    Arm_Goal.GROUND_DEAD_CONE : ArmStateMachine.States.GROUND_DEAD_CONE_BACK,
 }
 
 SIDE_GOALS = {
@@ -91,9 +91,25 @@ SIDE_GOALS = {
     Arm_Goal.SIDE_BACK : BACK_GOALS
 }
 
+INVERTED_FRONT_GOALS = {v: k for k, v in FRONT_GOALS.items()}
+INVERTED_BACK_GOALS = {v: k for k, v in BACK_GOALS.items()}
+
 def goal_msg_to_state(goal_msg: Arm_Goal):
     # if goal_msg.goal_side is Arm_Goal.SIDE_FRONT:
     #     return FRONT_GOALS[goal_msg.goal]
     # else:
     #     return BACK_GOALS[goal_msg.goal]
     return SIDE_GOALS[goal_msg.goal_side][goal_msg.goal]
+
+def state_to_msg(state: ArmStateMachine.States) -> Arm_Goal:
+    goal_msg = Arm_Goal()
+
+    if ArmStateMachine.get_goal_side(state) is ArmStateMachine.GoalSides.FRONT \
+            or ArmStateMachine.get_goal_side(state) is ArmStateMachine.GoalSides.HOME:
+        goal_msg.goal = INVERTED_FRONT_GOALS[state]
+        goal_msg.goal_side = Arm_Goal.SIDE_FRONT
+    else:
+        goal_msg.goal = INVERTED_BACK_GOALS[state]
+        goal_msg.goal_side = Arm_Goal.SIDE_BACK
+    
+    return goal_msg
