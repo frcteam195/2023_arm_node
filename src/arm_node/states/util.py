@@ -94,6 +94,12 @@ SIDE_GOALS = {
 INVERTED_FRONT_GOALS = {v: k for k, v in FRONT_GOALS.items()}
 INVERTED_BACK_GOALS = {v: k for k, v in BACK_GOALS.items()}
 
+INVERTED_SIDES = {
+    ArmStateMachine.GoalSides.HOME : Arm_Goal.SIDE_FRONT,
+    ArmStateMachine.GoalSides.FRONT : Arm_Goal.SIDE_FRONT,
+    ArmStateMachine.GoalSides.BACK : Arm_Goal.SIDE_BACK
+}
+
 def goal_msg_to_state(goal_msg: Arm_Goal):
     # if goal_msg.goal_side is Arm_Goal.SIDE_FRONT:
     #     return FRONT_GOALS[goal_msg.goal]
@@ -104,12 +110,11 @@ def goal_msg_to_state(goal_msg: Arm_Goal):
 def state_to_msg(state: ArmStateMachine.States) -> Arm_Goal:
     goal_msg = Arm_Goal()
 
-    if ArmStateMachine.get_goal_side(state) is ArmStateMachine.GoalSides.FRONT \
-            or ArmStateMachine.get_goal_side(state) is ArmStateMachine.GoalSides.HOME:
+    goal_msg.goal_side = INVERTED_SIDES[ArmStateMachine.get_goal_side(state)]
+
+    if goal_msg.goal_side is Arm_Goal.SIDE_FRONT:
         goal_msg.goal = INVERTED_FRONT_GOALS[state]
-        goal_msg.goal_side = Arm_Goal.SIDE_FRONT
     else:
         goal_msg.goal = INVERTED_BACK_GOALS[state]
-        goal_msg.goal_side = Arm_Goal.SIDE_BACK
-    
+
     return goal_msg
