@@ -30,7 +30,7 @@ class IntermediateBackState(StateMachine.State):
             self.arm.set_motion_magic(self.position)
 
     def transition(self) -> Enum:
-        if self.arm.is_at_setpoint_raw(BASE_ALLOWED_DEVIATION, UPPER_ALLOWED_DEVIATION):
+        if self.arm.is_at_setpoint_raw(0.06, 0.06):
             if self.machine.goal_state in ArmStateMachine.FRONT_STATES:
                 return ArmStateMachine.States.FORCE_HOME
 
