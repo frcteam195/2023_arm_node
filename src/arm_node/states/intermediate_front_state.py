@@ -35,12 +35,12 @@ class IntermediateFrontState(StateMachine.State):
     def step(self):
         # print('in transition')
         if self.machine.goal_is_high() or self.machine.prev_goal_was_high():
-            self.arm.set_motion_magic(self.high_position)
+            self.arm.set_motion_magic_raw(self.high_position)
         else:
-            self.arm.set_motion_magic(self.default_position)
+            self.arm.set_motion_magic_raw(self.default_position)
 
     def transition(self) -> Enum:
-        if self.arm.is_at_setpoint_raw(BASE_ALLOWED_DEVIATION, UPPER_ALLOWED_DEVIATION):
+        if self.arm.is_at_setpoint_raw(0.01, 0.01):
             if self.side is not ArmStateMachine.get_goal_side(self.machine.goal_state):
                 return ArmStateMachine.States.FORCE_HOME
 
