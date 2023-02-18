@@ -36,6 +36,6 @@ POS_HIGH_INTERMEDIATE = ArmPosition(-0.068, -0.250)
 
 
 def mirror_position(position: ArmPosition) -> ArmPosition:
-    mirrored_base = POS_HOME.base_position - (position.base_position - POS_HOME.base_position)
+    mirrored_base = POS_HOME.base_position - (position.base_position - POS_HOME.base_position) - (4/360)
     mirrored_upper = POS_HOME.upper_position - (position.upper_position - POS_HOME.upper_position)
     return ArmPosition(mirrored_base, mirrored_upper)
