@@ -8,13 +8,15 @@ from ck_utilities_py_node.solenoid import *
 
 from ck_ros_msgs_node.msg import Arm_Goal
 
+from actions_node.game_specific_actions.constant import WristPosition
+
 def transition_to_intermediate(is_front: bool) -> StateMachine.State:
     if is_front:
         return ArmStateMachine.States.INTERMEDIATE_FRONT
     else:
         return ArmStateMachine.States.INTERMEDIATE_BACK
 
-def standard_step(arm: Arm, position: ArmPosition):
+def standard_step(arm: Arm, position: ArmPosition, control_wrist=True):
     # if machine.baseMotor.is_at_setpoint(0.01) and machine.upperMotor.is_at_setpoint(0.01):
     #     machine.baseMotor.set(ControlMode.PERCENT_OUTPUT, 0.0)
     #     machine.upperMotor.set(ControlMode.PERCENT_OUTPUT, 0.0)
@@ -28,6 +30,12 @@ def standard_step(arm: Arm, position: ArmPosition):
         arm.enable_brakes()
     else:
         arm.disable_brakes()
+
+    # if wrist_position is not WristPosition.Unchanged:
+    #     arm.set_wrist(wrist_position.value)
+
+    if control_wrist:
+        arm.set_wrist(arm.wrist_goal)
 
     arm.set_motion_magic_raw(position)
 
@@ -100,6 +108,12 @@ INVERTED_SIDES = {
     ArmStateMachine.GoalSides.BACK : Arm_Goal.SIDE_BACK
 }
 
+WRIST_GOALS = {
+    Arm_Goal.WRIST_ZERO : WristPosition.Zero,
+    Arm_Goal.WRIST_90 : WristPosition.Left_90,
+    Arm_Goal.WRIST_180 : WristPosition.Left_180
+}
+
 def goal_msg_to_state(goal_msg: Arm_Goal):
     # if goal_msg.goal_side is Arm_Goal.SIDE_FRONT:
     #     return FRONT_GOALS[goal_msg.goal]
@@ -118,3 +132,6 @@ def state_to_msg(state: ArmStateMachine.States) -> Arm_Goal:
         goal_msg.goal = INVERTED_BACK_GOALS[state]
 
     return goal_msg
+
+def wrist_msg_to_state(goal_msg: Arm_Goal) -> WristPosition:
+    return WRIST_GOALS[goal_msg.wrist_goal]

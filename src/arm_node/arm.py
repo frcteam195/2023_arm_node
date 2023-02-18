@@ -5,6 +5,8 @@ from arm_node.positions import ArmPosition
 
 from ck_ros_msgs_node.msg import Arm_Status
 
+from actions_node.game_specific_actions.constant import WristPosition
+
 
 class Arm:
     def __init__(self, baseMotor, upperMotor, wristMotor, baseBrake, upperBrake, extension, home_position, lower_limits, upper_limits):
@@ -17,6 +19,8 @@ class Arm:
         self.home_position: ArmPosition = home_position
         self.lower_limits: ArmPosition = lower_limits
         self.upper_limits: ArmPosition = upper_limits
+
+        self.wrist_goal: WristPosition = WristPosition.Zero
 
         # self.allowed_deviation_pct = 0.05
         # self.allowed_deviation = ArmPosition()
@@ -40,6 +44,21 @@ class Arm:
         base_in_range = self.baseMotor.is_at_setpoint(base_tolerance)
         upper_in_range = self.upperMotor.is_at_setpoint(upper_tolerance)
         return base_in_range and upper_in_range
+
+    def stow_wrist(self):
+        self.wristMotor.set(ControlMode.MOTION_MAGIC, WristPosition.Zero.value)
+
+    def set_wrist(self, position: WristPosition):
+        self.wristMotor.set(ControlMode.MOTION_MAGIC, position.value)
+    
+    def limp_wrist(self, position: WristPosition):
+        self.wristMotor.set(ControlMode.PERCENT_OUTPUT, 0.0)
+
+    def wrist_at_setpoint(self, tolerance: float) -> bool:
+        return self.wristMotor.is_at_setpoint(tolerance)
+
+    def get_wrist_goal(self) -> WristPosition:
+        return self.wrist_goal
 
     def enable_brakes(self):
         self.baseBrake.set(SolenoidState.OFF)

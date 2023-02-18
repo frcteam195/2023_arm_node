@@ -29,6 +29,7 @@ class ShelfState(StateMachine.State):
         self.arm.disable_brakes()
             
     def step(self):
+        # self.arm.set_wrist(self.machine.wrist_goal)
         standard_step(self.arm, self.position)
 
     def transition(self) -> Enum:

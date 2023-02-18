@@ -15,7 +15,9 @@ from arm_node.arm_constraints import ArmConstraints
 from arm_node.state_machine import ArmStateMachine
 from arm_node.positions import *
 from arm_node.arm import Arm
-from arm_node.states.util import goal_msg_to_state, state_to_msg
+from arm_node.states.util import goal_msg_to_state, state_to_msg, wrist_msg_to_state
+
+from actions_node.game_specific_actions.constant import WristPosition
 
 
 def ros_func():
@@ -49,15 +51,18 @@ def ros_func():
 
     while not rospy.is_shutdown():
         robot_mode = robot_status.get_mode()
-        goal: Arm_Goal = goal_sub.get()
+        goal_msg: Arm_Goal = goal_sub.get()
 
-        real_goal = None
+        arm_goal = None
+        wrist_goal = None
 
-        if goal is not None:
-            real_goal = goal_msg_to_state(goal)
+        if goal_msg is not None:
+            arm_goal = goal_msg_to_state(goal_msg)
+            wrist_goal = wrist_msg_to_state(goal_msg)
             # print('Setting goal to:', real_goal)
         else:
-            real_goal = state_machine.goal_state
+            arm_goal = state_machine.goal_state
+            wrist_goal = state_machine.wrist_goal
 
 
         if robot_mode == RobotMode.TELEOP:
@@ -78,7 +83,9 @@ def ros_func():
             # print(state_machine.goal_state)
             # print(state_machine.state)
             # state_machine.goal_state = real_goal
-            state_machine.set_goal(real_goal)
+            state_machine.set_goal(arm_goal)
+            arm.wrist_goal = wrist_goal
+            # arm.set_wrist(state_machine.wrist_goal)
             state_machine.step()
 
         elif robot_mode == RobotMode.DISABLED:
@@ -88,6 +95,7 @@ def ros_func():
             # upperArmFollower.set_neutral_mode(NeutralMode.Brake)
             # baseArmMaster.apply()
             # upperArmMaster.apply()
+            
             base_brake_solenoid.set(SolenoidState.OFF)
             upper_brake_solenoid.set(SolenoidState.OFF)
             # print("set off")

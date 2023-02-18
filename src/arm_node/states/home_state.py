@@ -23,7 +23,7 @@ class HomeState(StateMachine.State):
         self.arm.disable_brakes()
             
     def step(self):
-        standard_step(self.arm, self.position)
+        standard_step(self.arm, self.position, False)
 
     def transition(self) -> Enum:
         if self.machine.goal_state is not self.get_enum():

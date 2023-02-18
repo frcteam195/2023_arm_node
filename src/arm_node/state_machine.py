@@ -9,6 +9,8 @@ from frc_robot_utilities_py_node.RobotStatusHelperPy import RobotMode
 from enum import Enum
 import rospy
 
+from actions_node.game_specific_actions.constant import WristPosition
+
 # from arm_node.states.HomeState import HomeState
 
 
@@ -140,12 +142,18 @@ class ArmStateMachine(StateMachine):
         self.goal_state = ArmStateMachine.States.HOME
         self.prev_goal = self.goal_state
 
+        self.wrist_goal = WristPosition.Zero
+
         super().__init__(states, state)
 
     def set_goal(self, new_goal):
         if self.goal_state is not new_goal:
             self.prev_goal = self.goal_state
             self.goal_state = new_goal
+
+    def set_goals(self, arm_goal, wrist_goal):
+        self.set_goal(arm_goal)
+        self.wrist_goal = wrist_goal
 
     def goal_is_high(self) -> bool:
         return self.goal_state in ArmStateMachine.HIGH_INTERMEDIATE_NEEDED
