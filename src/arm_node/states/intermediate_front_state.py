@@ -39,8 +39,10 @@ class IntermediateFrontState(StateMachine.State):
         else:
             self.arm.set_motion_magic_raw(self.default_position)
 
+        self.arm.stow_wrist()
+
     def transition(self) -> Enum:
-        if self.arm.is_at_setpoint_raw(0.01, 0.01):
+        if self.arm.is_at_setpoint_raw(0.01, 0.01) and self.arm.wrist_at_setpoint(0.04):
             if self.side is not ArmStateMachine.get_goal_side(self.machine.goal_state):
                 return ArmStateMachine.States.FORCE_HOME
 
