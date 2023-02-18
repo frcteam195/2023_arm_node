@@ -22,7 +22,7 @@ POS_GROUND_DEAD_CONE = ArmPosition(0.013, -0.424)
 
 POS_SHELF = ArmPosition(-0.064, -0.285)
 
-POS_LOW_SCORE = ArmPosition(0.037, -0.387)
+POS_LOW_SCORE = ArmPosition(POS_HOME.base_position, -0.387)
 POS_MID_CUBE = ArmPosition(0.023, -0.267)
 POS_HIGH_CUBE = ArmPosition(0.029, -0.175)
 # POS_HIGH_CUBE = ArmPosition(0.029, -0.199)
