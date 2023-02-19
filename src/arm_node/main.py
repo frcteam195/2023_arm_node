@@ -75,7 +75,7 @@ def ros_func():
         limelight.stream = 0
         limelight.snapshot = 0
         limelight.name = "limelight-arm"
-        limelight.pipeline = 1 if upperArmMaster.get_sensor_position() * 360.0 < 1.0 else 0
+        limelight.pipeline = 1 if upperArmMaster.get_sensor_position() * 360.0 < 5.0 else 0
         
         limelight_control_msg = Limelight_Control()
         limelight_control_msg.limelights.append(limelight)
