@@ -35,9 +35,9 @@ class IntermediateFrontState(StateMachine.State):
     def step(self):
         # print('in transition')
         if self.machine.goal_is_high() or self.machine.prev_goal_was_high():
-            self.arm.set_motion_magic_raw(self.high_position)
+            self.arm.set_motion_magic(self.high_position)
         else:
-            self.arm.set_motion_magic_raw(self.default_position)
+            self.arm.set_motion_magic(self.default_position)
 
         self.arm.stow_wrist()
 

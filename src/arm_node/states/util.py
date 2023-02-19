@@ -37,7 +37,7 @@ def standard_step(arm: Arm, position: ArmPosition, control_wrist=True):
     if control_wrist:
         arm.set_wrist(arm.wrist_goal)
 
-    arm.set_motion_magic_raw(position)
+    arm.set_motion_magic(position)
 
 def goal_is_high(machine: ArmStateMachine):
     return machine.goal_state in ArmStateMachine.HIGH_INTERMEDIATE_NEEDED
