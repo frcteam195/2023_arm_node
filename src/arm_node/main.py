@@ -68,26 +68,18 @@ def ros_func():
             arm_goal = state_machine.goal_state
             wrist_goal = state_machine.wrist_goal
 
-
-        limelight1 = Limelight()
-        limelight1.ledMode = 0
-        limelight1.camMode = 0
-        limelight1.stream = 0
-        limelight1.snapshot = 0
-        limelight1.name = "limelight-arm"
-
-      
-      
-        if upperArmMaster.get_sensor_position() < 0:
-            limelight1.pipeline = 1
-            
-        else:
-            limelight1.pipeline = 0
+        # Flip limelight depending on arm position.
+        limelight = Limelight()
+        limelight.ledMode = 0
+        limelight.camMode = 0
+        limelight.stream = 0
+        limelight.snapshot = 0
+        limelight.name = "limelight-arm"
+        limelight.pipeline = 1 if upperArmMaster.get_sensor_position() * 360.0 < 1.0 else 0
+        
         limelight_control_msg = Limelight_Control()
-        limelight_control_msg.limelights.append(limelight1)
-        
-        
-    
+        limelight_control_msg.limelights.append(limelight)
+
         if robot_mode == RobotMode.TELEOP:
             # print('is teleop')
             # baseArmMaster.set_neutral_mode(NeutralMode.Coast)
