@@ -115,9 +115,9 @@ class Arm:
         return self.wristMotor.get_sensor_velocity()
 
     def __angle_to_rotation(self, angle: ArmPosition) -> ArmPosition:
-        #
-        #   Returns the arm position in rotation based on the given angles from each home value
-        #
+        """
+        Returns the arm position in rotation based on the given angles from each home value
+        """
         new_pos = ArmPosition()
         new_pos.base_position = angle.base_position / 360.0 + self.home_position.base_position
         new_pos.upper_position = angle.upper_position / 360.0 + self.home_position.upper_position
