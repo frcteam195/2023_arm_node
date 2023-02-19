@@ -46,11 +46,17 @@ class Arm:
         return base_in_range and upper_in_range
 
     def stow_wrist(self):
-        self.wristMotor.set(ControlMode.MOTION_MAGIC, WristPosition.Zero.value)
+        if self.wrist_goal == WristPosition.Left_90:
+            self.wrist_goal = WristPosition.Zero
+
+        if self.wrist_goal == WristPosition.Zero:
+            self.wristMotor.set(ControlMode.MOTION_MAGIC, WristPosition.Zero.value)
+        elif self.wrist_goal == WristPosition.Left_180:
+            self.wristMotor.set(ControlMode.MOTION_MAGIC, WristPosition.Left_180.value)
 
     def set_wrist(self, position: WristPosition):
         self.wristMotor.set(ControlMode.MOTION_MAGIC, position.value)
-    
+
     def limp_wrist(self, position: WristPosition):
         self.wristMotor.set(ControlMode.PERCENT_OUTPUT, 0.0)
 
