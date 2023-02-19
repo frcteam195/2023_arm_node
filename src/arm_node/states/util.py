@@ -17,6 +17,9 @@ def transition_to_intermediate(is_front: bool) -> StateMachine.State:
         return ArmStateMachine.States.INTERMEDIATE_BACK
 
 def standard_step(arm: Arm, position: ArmPosition, control_wrist=True):
+    """
+    Standard arm control.
+    """
     # if machine.baseMotor.is_at_setpoint(0.01) and machine.upperMotor.is_at_setpoint(0.01):
     #     machine.baseMotor.set(ControlMode.PERCENT_OUTPUT, 0.0)
     #     machine.upperMotor.set(ControlMode.PERCENT_OUTPUT, 0.0)
@@ -25,10 +28,12 @@ def standard_step(arm: Arm, position: ArmPosition, control_wrist=True):
     # else:
     #     machine.baseMotor.set(ControlMode.MOTION_MAGIC, position.base_position)
     #     machine.upperMotor.set(ControlMode.MOTION_MAGIC, position.upper_position)
+
+    # Apply brakes when within the setpoint, but only disable the brakes if it's much farther off.
     if arm.is_at_setpoint_raw(0.005, 0.005):
         # arm.set_percent_output()
         arm.enable_brakes()
-    else:
+    elif not arm.is_at_setpoint_raw(0.010, 0.010):
         arm.disable_brakes()
 
     # if wrist_position is not WristPosition.Unchanged:
