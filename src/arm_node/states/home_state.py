@@ -21,7 +21,6 @@ class HomeState(StateMachine.State):
 
     def entry(self):
         self.arm.disable_brakes()
-        self.machine.wrist_goal = WristPosition.Zero
 
     def step(self):
         standard_step(self.arm, self.position, False)
