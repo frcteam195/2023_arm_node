@@ -35,5 +35,9 @@ class IntermediateBackState(StateMachine.State):
                 return ArmStateMachine.States.FORCE_HOME
 
             return self.machine.goal_state
+        # elif self.machine.goal_state in ArmStateMachine.BACK_STATES and \
+        #      self.arm.is_at_setpoint_raw(0.06, 1.0) and \
+        #      abs(self.arm.upperMotor.get_sensor_position()) > abs(self.arm.upperMotor.get_setpoint()):
+        #     return self.machine.goal_state
 
         return self.get_enum()

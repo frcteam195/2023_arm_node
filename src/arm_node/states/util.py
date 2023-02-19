@@ -79,6 +79,7 @@ FRONT_GOALS = {
     Arm_Goal.MID_CUBE : ArmStateMachine.States.MID_CUBE_FRONT,
     Arm_Goal.HIGH_CONE : ArmStateMachine.States.HIGH_CONE_FRONT,
     Arm_Goal.HIGH_CUBE : ArmStateMachine.States.HIGH_CUBE_FRONT,
+    Arm_Goal.PRE_SCORE : ArmStateMachine.States.PRE_SCORE_FRONT,
 }
 
 BACK_GOALS = {
@@ -92,6 +93,7 @@ BACK_GOALS = {
     Arm_Goal.MID_CUBE : ArmStateMachine.States.MID_CUBE_BACK,
     Arm_Goal.HIGH_CONE : ArmStateMachine.States.HIGH_CONE_BACK,
     Arm_Goal.HIGH_CUBE : ArmStateMachine.States.HIGH_CUBE_BACK,
+    Arm_Goal.PRE_SCORE : ArmStateMachine.States.PRE_SCORE_BACK,
 }
 
 SIDE_GOALS = {
