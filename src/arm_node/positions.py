@@ -34,7 +34,7 @@ POS_SHELF = ArmPosition(-14.98, 77.4)
 POS_LOW_SCORE = ArmPosition(21.38, 40.68)
 POS_MID_CUBE = ArmPosition(16.34, 83.88)
 POS_HIGH_CUBE = ArmPosition(18.5, 117.0)
-POS_MID_CONE = ArmPosition(17.06, 109.8)
+POS_MID_CONE = ArmPosition(17.06, 113.8)
 POS_HIGH_CONE = ArmPosition(21.74, 128.88)
 
 POS_INTERMEDIATE = ArmPosition(-16.41, 28.0)
@@ -45,7 +45,7 @@ def mirror_position(position: ArmPosition) -> ArmPosition:
     """
     Mirrors the provided position.
     """
-    mirrored_base = 0 - position.base_position
+    mirrored_base = 0 - position.base_position - 4
     mirrored_upper = 0 - position.upper_position
     return ArmPosition(mirrored_base, mirrored_upper)
 
