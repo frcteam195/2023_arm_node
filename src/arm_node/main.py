@@ -113,6 +113,7 @@ def ros_func():
             
             base_brake_solenoid.set(SolenoidState.OFF)
             upper_brake_solenoid.set(SolenoidState.OFF)
+            extension_solenoid.set(SolenoidState.OFF)
             # print("set off")
             baseArmMaster.set(ControlMode.PERCENT_OUTPUT, 0.0)
             upperArmMaster.set(ControlMode.PERCENT_OUTPUT, 0.0)
