@@ -19,35 +19,35 @@ class ArmPosition:
     """
     base_position: float = 0.0
     upper_position: float = 0.0
+    base_position_rear: float = 0.0
+    upper_position_rear: float = 0.0
 
 
 POS_HOME = ArmPosition(0.0, 0.0)
 
-POS_STEAL = ArmPosition(16.70, 82.08)  # Fake
+POS_STEAL = ArmPosition(16.70, 82.08, -16.70, -82.08)  # Fake
 
-POS_GROUND_CUBE = ArmPosition(8.06, 36.0)
-POS_GROUND_CONE = ArmPosition(-1.55, 29.16)
-POS_GROUND_DEAD_CONE = ArmPosition(12.74, 27.36)
+POS_GROUND_CUBE = ArmPosition(8.06, 36.0, -8.06, -36.0)
+POS_GROUND_CONE = ArmPosition(-1.55, 29.16, 1.55, -29.16)
+POS_GROUND_DEAD_CONE = ArmPosition(12.74, 27.36, -12.74, -27.36)
 
-POS_SHELF = ArmPosition(-14.98, 77.4)
+POS_SHELF = ArmPosition(-14.98, 77.4, 14.98, -77.4)
 
-POS_LOW_SCORE = ArmPosition(21.38, 40.68)
-POS_MID_CUBE = ArmPosition(16.34, 83.88)
-POS_HIGH_CUBE = ArmPosition(18.5, 117.0)
-POS_MID_CONE = ArmPosition(17.06, 113.8)
-POS_HIGH_CONE = ArmPosition(18.74, 128.88)
+POS_LOW_SCORE = ArmPosition(21.38, 40.68, -21.38, -40.68)
+POS_MID_CUBE = ArmPosition(16.34, 83.88, -16.34, -83.88)
+POS_HIGH_CUBE = ArmPosition(18.5, 117.0, -18.5, -117.0)
+POS_MID_CONE = ArmPosition(17.06, 113.8, -17.06, -113.8)
+POS_HIGH_CONE = ArmPosition(18.74, 128.88, -18.74, -128.88)
 
-POS_INTERMEDIATE = ArmPosition(-16.41, 28.0)
-POS_HIGH_INTERMEDIATE = ArmPosition(-16.41, 90.0)
+POS_INTERMEDIATE = ArmPosition(-16.41, 28.0, 16.41, -28.0)
+POS_HIGH_INTERMEDIATE = ArmPosition(-16.41, 90.0, 16.41, -90.0)
 
 
 def mirror_position(position: ArmPosition) -> ArmPosition:
     """
-    Mirrors the provided position.
+    Provides rear position angle lookup
     """
-    mirrored_base = 0 - position.base_position - 4
-    mirrored_upper = 0 - position.upper_position
-    return ArmPosition(mirrored_base, mirrored_upper)
+    return ArmPosition(position.base_position_rear, position.upper_position_rear)
 
 
 def rotation_to_angle(rotation: ArmPosition) -> ArmPosition:
