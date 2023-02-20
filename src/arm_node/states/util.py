@@ -8,7 +8,11 @@ from ck_utilities_py_node.solenoid import *
 
 from ck_ros_msgs_node.msg import Arm_Goal
 
+from frc_robot_utilities_py_node.odometry_helper import OdometryHelper
+
 from actions_node.game_specific_actions.constant import WristPosition
+
+odom = OdometryHelper()
 
 def transition_to_intermediate(is_front: bool) -> StateMachine.State:
     if is_front:
@@ -122,11 +126,9 @@ WRIST_GOALS = {
 }
 
 def goal_msg_to_state(goal_msg: Arm_Goal):
-    # if goal_msg.goal_side is Arm_Goal.SIDE_FRONT:
-    #     return FRONT_GOALS[goal_msg.goal]
-    # else:
-    #     return BACK_GOALS[goal_msg.goal]
     return SIDE_GOALS[goal_msg.goal_side][goal_msg.goal]
+
+
 
 def state_to_msg(state: ArmStateMachine.States) -> Arm_Goal:
     goal_msg = Arm_Goal()

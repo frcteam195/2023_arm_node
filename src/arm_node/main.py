@@ -25,8 +25,6 @@ def ros_func():
 
     arm_simulation = ArmSimulation()
 
-    control_sub = BufferedROSMsgHandlerPy(Arm_Control)
-    control_sub.register_for_updates("ArmControl")
     goal_sub = BufferedROSMsgHandlerPy(Arm_Goal)
     goal_sub.register_for_updates("ArmGoal")
     status_publisher = rospy.Publisher(name="ArmStatus", data_class=Arm_Status, queue_size=50, tcp_nodelay=True)
@@ -81,71 +79,19 @@ def ros_func():
         limelight_control_msg.limelights.append(limelight)
 
         if robot_mode == RobotMode.TELEOP:
-            # print('is teleop')
-            # baseArmMaster.set_neutral_mode(NeutralMode.Coast)
-            # baseArmFollower.set_neutral_mode(NeutralMode.Coast)
-            # upperArmMaster.set_neutral_mode(NeutralMode.Coast)
-            # upperArmFollower.set_neutral_mode(NeutralMode.Coast)
-            # baseArmMaster.apply()
-            # upperArmMaster.apply()
-            # base_brake_solenoid.set(SolenoidState.ON)
-            # upper_brake_solenoid.set(SolenoidState.ON)
-            # print("set on")
-            # baseArmMaster.set(ControlMode.PERCENT_OUTPUT, 0.0)
-            # upperArmMaster.set(ControlMode.PERCENT_OUTPUT, 0.0)
-            # wristMotor.set(ControlMode.PERCENT_OUTPUT, 0.0)        
-    
-            # print(state_machine.goal_state)
-            # print(state_machine.state)
-            # state_machine.goal_state = real_goal
             state_machine.set_goal(arm_goal)
             arm.wrist_goal = wrist_goal
-            # arm.set_wrist(state_machine.wrist_goal)
             state_machine.step()
 
         elif robot_mode == RobotMode.DISABLED:
-            # baseArmMaster.set_neutral_mode(NeutralMode.Brake)
-            # baseArmFollower.set_neutral_mode(NeutralMode.Brake)
-            # upperArmMaster.set_neutral_mode(NeutralMode.Brake)
-            # upperArmFollower.set_neutral_mode(NeutralMode.Brake)
-            # baseArmMaster.apply()
-            # upperArmMaster.apply()
-            
             base_brake_solenoid.set(SolenoidState.OFF)
             upper_brake_solenoid.set(SolenoidState.OFF)
             extension_solenoid.set(SolenoidState.OFF)
-            # print("set off")
             baseArmMaster.set(ControlMode.PERCENT_OUTPUT, 0.0)
             upperArmMaster.set(ControlMode.PERCENT_OUTPUT, 0.0)
             wristMotor.set(ControlMode.PERCENT_OUTPUT, 0.0)
 
-        # extension_solenoid.set(SolenoidState.OFF)
-        # if arm_msg is not None:
-        #     if robot_status.get_mode() == RobotMode.TELEOP:
-        #         #A little bit of trickery to allow inputs to be specified as unchanged (-20)
-
-        #         if arm_msg.arm_base_requested_position > -10:
-        #             baseArmMaster.set(ControlMode.MOTION_MAGIC, arm_msg.arm_base_requested_position, 0.0)
-
-        #         if arm_msg.arm_upper_requested_position > -10:
-        #             upperArmMaster.set(ControlMode.MOTION_MAGIC, arm_msg.arm_upper_requested_position, 0.0)
-
-        #         if arm_msg.arm_wrist_requested_position > -10:
-        #             wristMotor.set(ControlMode.MOTION_MAGIC, arm_msg.arm_wrist_requested_position, 0.0)
-        #         pass
-        #     else:
-        #         baseArmMaster.set(ControlMode.PERCENT_OUTPUT, 0.0, 0.0)
-        #         upperArmMaster.set(ControlMode.PERCENT_OUTPUT, 0.0, 0.0)
-        #         wristMotor.set(ControlMode.PERCENT_OUTPUT, 0.0, 0.0)
-        #         pass
-
-
-        #     if arm_msg.extend >= -10:
-        #         if arm_msg.extend > 0:
-        #             extension_solenoid.set(SolenoidState.ON)
-        #         else:
-        #             extension_solenoid.set(SolenoidState.OFF)
-
+            
         arm_simulation.publish_arm_base_link(baseArmMaster.get_sensor_position() * 360.0)
         arm_simulation.publish_arm_upper_link(upperArmMaster.get_sensor_position() * 360.0)
         arm_simulation.publish_arm_extender_link(extension_solenoid.get() == SolenoidState.ON)

@@ -165,6 +165,8 @@ class Arm:
         status_message.arm_upper_angular_velocity = angular_velocity.upper_position
         status_message.arm_wrist_angular_velocity = wrist_angular_velocity
 
+        status_message.arm_at_setpoint = self.is_at_setpoint(2, 2)
+
         status_message.extended = self.extension.get() == SolenoidState.ON
         status_message.left_arm_base_remote_loss_of_signal = master_sticky_faults.RemoteLossOfSignal
         status_message.right_arm_base_remote_loss_of_signal = follower_sticky_faults.RemoteLossOfSignal
