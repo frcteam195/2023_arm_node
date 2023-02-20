@@ -117,6 +117,7 @@ def ros_func():
 
         status_message = arm.get_status()
         status_message.goal = state_to_msg(state_machine.goal_state)
+        status_message.arm_at_setpoint = arm.is_at_setpoint(2, 2) and state_machine.goal_state == state_machine.state
         status_publisher.publish(status_message)
 
         limelight_publisher.publish(limelight_control_msg)
