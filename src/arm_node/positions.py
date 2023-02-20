@@ -31,7 +31,8 @@ POS_GROUND_CUBE = ArmPosition(8.06, 36.0, -8.06, -36.0)
 POS_GROUND_CONE = ArmPosition(-1.55, 29.16, 1.55, -29.16)
 POS_GROUND_DEAD_CONE = ArmPosition(12.74, 27.36, -12.74, -27.36)
 
-POS_SHELF = ArmPosition(-14.98, 78.9, 14.98, -74.1)
+POS_SHELF_CUBE = ArmPosition(-14.98, 78.9, 14.98, -74.1)
+POS_SHELF_CONE = ArmPosition(-14.98, 78.9, 14.98, -74.1)
 
 POS_LOW_SCORE = ArmPosition(21.38, 40.68, -21.38, -40.68)
 POS_MID_CUBE = ArmPosition(16.34, 83.88, -18.34, -83.88)

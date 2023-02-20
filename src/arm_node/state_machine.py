@@ -151,6 +151,8 @@ class ArmStateMachine(StateMachine):
 
         self.wrist_goal = WristPosition.Zero
 
+        self.intake_pinched = False
+
         super().__init__(states, state)
 
     def set_goal(self, new_goal):

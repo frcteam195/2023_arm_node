@@ -1,14 +1,13 @@
-#!/usr/bin/env python3
-
-import rospy
 from threading import Thread
+import rospy
+
 from ck_utilities_py_node.motor import *
 from ck_utilities_py_node.transform_links import *
 from ck_utilities_py_node.rviz_shapes import *
 from ck_utilities_py_node.solenoid import *
 from frc_robot_utilities_py_node.frc_robot_utilities_py import *
 from frc_robot_utilities_py_node.RobotStatusHelperPy import RobotStatusHelperPy, Alliance, RobotMode, BufferedROSMsgHandlerPy
-from ck_ros_msgs_node.msg import Arm_Control, Arm_Goal, Arm_Status, Fault, Health_Monitor_Control
+from ck_ros_msgs_node.msg import Arm_Goal, Arm_Status, Intake_Status
 from arm_node.arm_simulation import ArmSimulation
 from ck_utilities_py_node.constraints import *
 from arm_node.arm_constraints import ArmConstraints
@@ -21,12 +20,14 @@ from actions_node.game_specific_actions.constant import WristPosition
 
 
 def ros_func():
-    global robot_status
-
     arm_simulation = ArmSimulation()
 
-    goal_sub = BufferedROSMsgHandlerPy(Arm_Goal)
-    goal_sub.register_for_updates("ArmGoal")
+    goal_subscriber = BufferedROSMsgHandlerPy(Arm_Goal)
+    goal_subscriber.register_for_updates("ArmGoal")
+
+    intake_subscriber = BufferedROSMsgHandlerPy(Intake_Status)
+    intake_subscriber.register_for_updates("IntakeStatus")
+
     status_publisher = rospy.Publisher(name="ArmStatus", data_class=Arm_Status, queue_size=50, tcp_nodelay=True)
     limelight_publisher = rospy.Publisher(name="LimelightControl", data_class=Limelight_Control, queue_size=50, tcp_nodelay=True)
     
@@ -49,11 +50,10 @@ def ros_func():
 
     state_machine = ArmStateMachine(arm)
 
-    
 
     while not rospy.is_shutdown():
         robot_mode = robot_status.get_mode()
-        goal_msg: Arm_Goal = goal_sub.get()
+        goal_msg: Arm_Goal = goal_subscriber.get()
 
         arm_goal = None
         wrist_goal = None
@@ -66,6 +66,11 @@ def ros_func():
             arm_goal = state_machine.goal_state
             wrist_goal = state_machine.wrist_goal
 
+        # Update pinched state.
+        intake_status_message = intake_subscriber.get()
+        if intake_status_message is not None:
+            state_machine.intake_pinched = intake_status_message.pincher_solenoid_on
+
         # Flip limelight depending on arm position.
         limelight = Limelight()
         limelight.ledMode = 0
@@ -74,7 +79,7 @@ def ros_func():
         limelight.snapshot = 0
         limelight.name = "limelight-arm"
         limelight.pipeline = 1 if upperArmMaster.get_sensor_position() * 360.0 < 5.0 else 0
-        
+
         limelight_control_msg = Limelight_Control()
         limelight_control_msg.limelights.append(limelight)
 
