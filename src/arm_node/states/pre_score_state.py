@@ -15,7 +15,7 @@ class PreScoreState(StateMachine.State):
         self.arm: Arm = arm
         self.side: ArmStateMachine.GoalSides = side
 
-        self.position: ArmPosition = POS_SHELF
+        self.position: ArmPosition = POS_SHELF_CUBE
 
         if self.side is ArmStateMachine.GoalSides.BACK:
             self.position = mirror_position(self.position)

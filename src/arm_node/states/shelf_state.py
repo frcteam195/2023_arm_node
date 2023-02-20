@@ -15,7 +15,7 @@ class ShelfState(StateMachine.State):
         self.arm: Arm = arm
         self.side: ArmStateMachine.GoalSides = side
 
-        self.position: ArmPosition = POS_SHELF
+        self.position: ArmPosition = POS_SHELF_CUBE
         if self.side is ArmStateMachine.GoalSides.BACK:
             self.position = mirror_position(self.position)
 
@@ -27,9 +27,9 @@ class ShelfState(StateMachine.State):
 
     def entry(self):
         self.arm.disable_brakes()
-            
+
     def step(self):
-        # self.arm.set_wrist(self.machine.wrist_goal)
+        self.position = POS_SHELF_CONE if self.machine.intake_pinched else POS_SHELF_CUBE
         standard_step(self.arm, self.position)
 
     def transition(self) -> Enum:
