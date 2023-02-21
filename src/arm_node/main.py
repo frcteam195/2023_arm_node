@@ -83,7 +83,7 @@ def ros_func():
         limelight_control_msg = Limelight_Control()
         limelight_control_msg.limelights.append(limelight)
 
-        if robot_mode == RobotMode.TELEOP:
+        if robot_mode in (RobotMode.TELEOP, RobotMode.AUTONOMOUS):
             state_machine.set_goal(arm_goal)
             arm.wrist_goal = wrist_goal
             state_machine.step()
@@ -96,7 +96,6 @@ def ros_func():
             upperArmMaster.set(ControlMode.PERCENT_OUTPUT, 0.0)
             wristMotor.set(ControlMode.PERCENT_OUTPUT, 0.0)
 
-            
         arm_simulation.publish_arm_base_link(baseArmMaster.get_sensor_position() * 360.0)
         arm_simulation.publish_arm_upper_link(upperArmMaster.get_sensor_position() * 360.0)
         arm_simulation.publish_arm_extender_link(extension_solenoid.get() == SolenoidState.ON)

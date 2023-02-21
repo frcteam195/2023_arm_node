@@ -21,36 +21,38 @@ class ArmStateMachine(StateMachine):
         HOME=1
 
         INTERMEDIATE_FRONT=2
-        GROUND_CUBE_FRONT=3
-        GROUND_CONE_FRONT=4
-        GROUND_DEAD_CONE_FRONT=5
-        SHELF_FRONT=6
-        LOW_SCORE_FRONT=7
-        MID_CUBE_FRONT=8
-        HIGH_CUBE_FRONT=9
-        MID_CONE_FRONT=10
-        HIGH_CONE_FRONT=11
-        PRE_SCORE_FRONT=12
+        INTERMEDIATE_GROUND_FRONT=3
+        GROUND_CUBE_FRONT=4
+        GROUND_CONE_FRONT=5
+        GROUND_DEAD_CONE_FRONT=6
+        SHELF_FRONT=7
+        LOW_SCORE_FRONT=8
+        MID_CUBE_FRONT=9
+        HIGH_CUBE_FRONT=10
+        MID_CONE_FRONT=11
+        HIGH_CONE_FRONT=12
+        PRE_SCORE_FRONT=13
 
 
-        INTERMEDIATE_BACK=13
-        GROUND_CUBE_BACK=14
-        GROUND_CONE_BACK=15
-        GROUND_DEAD_CONE_BACK=16
-        SHELF_BACK=17
-        LOW_SCORE_BACK=18
-        MID_CUBE_BACK=19
-        HIGH_CUBE_BACK=20
-        MID_CONE_BACK=21
-        HIGH_CONE_BACK=22
-        PRE_SCORE_BACK=23
+        INTERMEDIATE_BACK=14
+        INTERMEDIATE_GROUND_BACK=15
+        GROUND_CUBE_BACK=16
+        GROUND_CONE_BACK=17
+        GROUND_DEAD_CONE_BACK=18
+        SHELF_BACK=19
+        LOW_SCORE_BACK=20
+        MID_CUBE_BACK=21
+        HIGH_CUBE_BACK=22
+        MID_CONE_BACK=23
+        HIGH_CONE_BACK=24
+        PRE_SCORE_BACK=25
 
 
-        FORCE_HOME=24
-        PENDULUM=25
+        FORCE_HOME=26
+        PENDULUM=27
 
-        STEAL_FRONT=26
-        STEAL_BACK=27
+        STEAL_FRONT=28
+        STEAL_BACK=29
 
     class GoalSides(Enum):
         HOME=1
@@ -59,6 +61,7 @@ class ArmStateMachine(StateMachine):
 
     FRONT_STATES = [
         States.INTERMEDIATE_FRONT,
+        States.INTERMEDIATE_GROUND_FRONT,
         States.GROUND_CUBE_FRONT,
         States.GROUND_CONE_FRONT,
         States.GROUND_DEAD_CONE_FRONT,
@@ -74,6 +77,7 @@ class ArmStateMachine(StateMachine):
 
     BACK_STATES = [
         States.INTERMEDIATE_BACK,
+        States.INTERMEDIATE_GROUND_BACK,
         States.GROUND_CUBE_BACK,
         States.GROUND_CONE_BACK,
         States.GROUND_DEAD_CONE_BACK,
@@ -101,6 +105,7 @@ class ArmStateMachine(StateMachine):
         from arm_node.states.home_state import HomeState
         from arm_node.states.intermediate_front_state import IntermediateFrontState
         from arm_node.states.intemediate_back_state import IntermediateBackState
+        from arm_node.states.intermediate_ground_state import IntermediateGroundState
         from arm_node.states.shelf_state import ShelfState
         from arm_node.states.high_cube_state import HighCubeState
         from arm_node.states.high_cone_state import HighConeState
@@ -117,8 +122,10 @@ class ArmStateMachine(StateMachine):
             ArmStateMachine.States.HOME : HomeState(self, arm),
             ArmStateMachine.States.FORCE_HOME : HomeState(self, arm, True),
             ArmStateMachine.States.INTERMEDIATE_FRONT : IntermediateFrontState(self, arm),
+            ArmStateMachine.States.INTERMEDIATE_GROUND_FRONT : IntermediateGroundState(self, arm),
             # ArmStateMachine.States.INTERMEDIATE_BACK : IntermediateBackState(self, arm),
             ArmStateMachine.States.INTERMEDIATE_BACK : IntermediateFrontState(self, arm, ArmStateMachine.GoalSides.BACK),
+            ArmStateMachine.States.INTERMEDIATE_GROUND_BACK : IntermediateGroundState(self, arm, ArmStateMachine.GoalSides.BACK),
             ArmStateMachine.States.SHELF_FRONT : ShelfState(self, arm),
             ArmStateMachine.States.SHELF_BACK : ShelfState(self, arm, ArmStateMachine.GoalSides.BACK),
             ArmStateMachine.States.HIGH_CUBE_FRONT : HighCubeState(self, arm),

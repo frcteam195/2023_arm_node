@@ -35,6 +35,9 @@ class GroundDeadConeState(StateMachine.State):
 
     def transition(self) -> Enum:
         if self.machine.goal_state is not self.get_enum():
-            return transition_to_intermediate(self.side is ArmStateMachine.GoalSides.FRONT)
+            if self.side is ArmStateMachine.GoalSides.FRONT:
+                return ArmStateMachine.States.INTERMEDIATE_GROUND_FRONT
+            else:
+                return ArmStateMachine.States.INTERMEDIATE_GROUND_BACK
 
         return self.get_enum()
