@@ -7,8 +7,11 @@ from ck_utilities_py_node.motor import *
 from ck_utilities_py_node.solenoid import *
 from ck_utilities_py_node.StateMachine import StateMachine
 
- 
+
 class GroundCubeState(StateMachine.State):
+    """
+    State for intaking cubes from the ground.
+    """
 
     def __init__(self, machine, arm, side=ArmStateMachine.GoalSides.FRONT):
         self.machine: ArmStateMachine = machine
@@ -29,7 +32,8 @@ class GroundCubeState(StateMachine.State):
     def entry(self):
         self.arm.disable_brakes()
         self.arm.extend()
-            
+        self.arm.wrist_goal = WristPosition.Left_90
+
     def step(self):
         standard_step(self.arm, self.position)
 
