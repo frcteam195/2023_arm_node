@@ -69,7 +69,7 @@ def ros_func():
         # Update pinched state.
         intake_status_message = intake_subscriber.get()
         if intake_status_message is not None:
-            state_machine.intake_pinched = intake_status_message.pincher_solenoid_on
+            state_machine.intake_pinched = intake_status_message.pinched
 
         # Flip limelight depending on arm position.
         limelight = Limelight()
@@ -121,12 +121,11 @@ def ros_func():
 
         status_message = arm.get_status()
         status_message.goal = state_to_msg(state_machine.goal_state)
-        status_message.arm_at_setpoint = arm.is_at_setpoint(2, 2) and state_machine.goal_state == state_machine.state
+        status_message.arm_at_setpoint = state_machine.goal_state == state_machine.state and arm.is_at_setpoint_raw(0.007, 0.007)
         status_publisher.publish(status_message)
 
         limelight_publisher.publish(limelight_control_msg)
-        
-        
+
         rate.sleep()
 
 

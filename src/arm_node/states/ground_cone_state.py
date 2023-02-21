@@ -29,7 +29,7 @@ class GroundConeState(StateMachine.State):
     def entry(self):
         self.arm.disable_brakes()
         self.arm.extend()
-            
+
     def step(self):
         standard_step(self.arm, self.position)
 
