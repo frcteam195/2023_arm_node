@@ -34,7 +34,7 @@ def standard_step(arm: Arm, position: ArmPosition, control_wrist=True):
     #     machine.upperMotor.set(ControlMode.MOTION_MAGIC, position.upper_position)
 
     # Apply brakes when within the setpoint, but only disable the brakes if it's much farther off.
-    if arm.is_at_setpoint_raw(0.005, 0.005):
+    if arm.is_at_setpoint_raw(0.007, 0.007):
         # arm.set_percent_output()
         arm.enable_brakes()
     elif not arm.is_at_setpoint_raw(0.010, 0.010):
