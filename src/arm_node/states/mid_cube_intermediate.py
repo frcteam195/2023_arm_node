@@ -9,6 +9,12 @@ from ck_utilities_py_node.motor import *
 from ck_utilities_py_node.solenoid import *
 from ck_utilities_py_node.StateMachine import StateMachine
 
+TRANSITIONS = [
+    ArmStateMachine.States.MID_CUBE_FRONT,
+    ArmStateMachine.States.MID_CUBE_BACK,
+    ArmStateMachine.States.INTERMEDIATE_FRONT,
+    ArmStateMachine.States.INTERMEDIATE_BACK,
+]
 
 class IntermediateBaseState(StateMachine.State):
 
@@ -34,19 +40,12 @@ class IntermediateBaseState(StateMachine.State):
     def step(self):
         self.arm.set_motion_magic(self.default_position)
 
-        if self.side is not ArmStateMachine.get_goal_side(self.machine.goal_state):
-            self.arm.stow_wrist()
-
     def transition(self) -> Enum:
-        if self.arm.is_at_setpoint_raw(0.06, 0.06) and self.arm.wrist_at_setpoint(0.04):
-            if self.side is not ArmStateMachine.get_goal_side(self.machine.goal_state):
-                return ArmStateMachine.States.HOME
+        if self.arm.is_at_setpoint_raw(0.06, 0.06) and self.arm.wrist_at_setpoint(0.04) and \
+           self.side is ArmStateMachine.get_goal_side(self.machine.goal_state) and \
+           self.machine.goal_state in TRANSITIONS:
             return self.machine.goal_state
-        elif self.side is ArmStateMachine.get_goal_side(self.machine.goal_state) and \
-             self.arm.is_at_setpoint_raw(0.06, 1.0) and \
-             numpy.sign(self.arm.upperMotor.get_sensor_position()) == numpy.sign(self.arm.upperMotor.get_setpoint()) and \
-             abs(self.arm.upperMotor.get_sensor_position()) > abs(self.arm.upperMotor.get_setpoint()):
-            return self.machine.goal_state
-
-        return self.get_enum()
-
+        elif self.arm.is_at_setpoint_raw(0.06, 0.06) and self.arm.wrist_at_setpoint(0.04):
+            return transition_to_intermediate(self.side is ArmStateMachine.GoalSides.FRONT)
+        else:
+            return self.get_enum()
