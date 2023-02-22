@@ -14,7 +14,6 @@ class ArmSimulation:
         drivebase.set_color(Color(.5, 0, 1.0, 1.0))
         drivebase.publish()
 
-
         base_arm_1 = Cube("arm_base")
         base_arm_1_transform = Transform()
         base_arm_1_transform.linear.y = inches_to_meters(9.5)
@@ -99,8 +98,6 @@ class ArmSimulation:
         wrist_cube.set_color(Color(1, .7, .7, 1.0))
         wrist_cube.publish()
 
-        
-
     def publish_arm_base_link(self, degrees : float):
         transform = Transform()
         transform.linear.z = inches_to_meters(7.75222441) #Arm rotation point is 7.75222441 in off the ground
@@ -109,7 +106,6 @@ class ArmSimulation:
         transform_link = TransformLink("arm_base", "base_link") # originate from base link which is the center of the robot
         transform_link.set_transform(transform)
         transform_link.publish()
-
 
     def publish_arm_upper_link(self, degrees : float):
         transform = Transform()
@@ -123,7 +119,6 @@ class ArmSimulation:
         transform_link.set_transform(transform)
         transform_link.publish()
 
-
     def publish_arm_extender_link(self, extension : float):
         transform = Transform()
         transform.linear.z = extension * inches_to_meters(12) + inches_to_meters(12.436533)
@@ -131,7 +126,6 @@ class ArmSimulation:
         transform_link = TransformLink("arm_extender", "arm_upper")
         transform_link.set_transform(transform)
         transform_link.publish()
-
 
     def publish_arm_wrist_link(self, degrees : float):
         transform = Transform()
