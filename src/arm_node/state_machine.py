@@ -147,7 +147,6 @@ class ArmStateMachine(StateMachine):
         state = ArmStateMachine.States.HOME
 
         self.goal_state = ArmStateMachine.States.HOME
-        self.prev_goal = self.goal_state
 
         self.wrist_goal = WristPosition.Zero
 
@@ -157,7 +156,6 @@ class ArmStateMachine(StateMachine):
 
     def set_goal(self, new_goal):
         if self.goal_state is not new_goal:
-            self.prev_goal = self.goal_state
             self.goal_state = new_goal
 
     def set_goals(self, arm_goal, wrist_goal):
@@ -166,12 +164,6 @@ class ArmStateMachine(StateMachine):
 
     def goal_is_high(self) -> bool:
         return self.goal_state in ArmStateMachine.HIGH_INTERMEDIATE_NEEDED
-
-    def prev_goal_was_high(self) -> bool:
-        return self.prev_goal in ArmStateMachine.HIGH_INTERMEDIATE_NEEDED
-
-    def goal_same_side(self) -> bool:
-        return ArmStateMachine.get_goal_side(self.goal_state) is ArmStateMachine.get_goal_side(self.prev_goal)
 
     @staticmethod
     def get_goal_side(goal):
