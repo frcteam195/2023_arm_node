@@ -22,10 +22,6 @@ class Arm:
 
         self.wrist_goal: WristPosition = WristPosition.Zero
 
-        # self.allowed_deviation_pct = 0.05
-        # self.allowed_deviation = ArmPosition()
-        # self.allowed_deviation.base_position = abs(upper_limits.base_position - lower_limits.base_position) * 0.05
-
     def set_motion_magic(self, angle: ArmPosition):
         self.set_motion_magic_raw(self.__angle_to_rotation(angle))
 

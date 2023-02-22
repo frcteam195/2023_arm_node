@@ -175,7 +175,7 @@ class ArmStateMachine(StateMachine):
 
     @staticmethod
     def get_goal_side(goal):
-        if goal is ArmStateMachine.States.HOME or goal is ArmStateMachine.States.FORCE_HOME:
+        if goal is ArmStateMachine.States.HOME or goal is ArmStateMachine.States.HOME:
             return ArmStateMachine.GoalSides.HOME
         if goal in ArmStateMachine.FRONT_STATES:
             return ArmStateMachine.GoalSides.FRONT

@@ -45,7 +45,7 @@ class IntermediateBaseState(StateMachine.State):
     def transition(self) -> Enum:
         if self.arm.is_at_setpoint_raw(0.06, 0.06) and self.arm.wrist_at_setpoint(0.04):
             if self.side is not ArmStateMachine.get_goal_side(self.machine.goal_state):
-                return ArmStateMachine.States.FORCE_HOME
+                return ArmStateMachine.States.HOME
             return self.machine.goal_state
         elif self.side is ArmStateMachine.get_goal_side(self.machine.goal_state) and \
              self.arm.is_at_setpoint_raw(0.06, 1.0) and \
