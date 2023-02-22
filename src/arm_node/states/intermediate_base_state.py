@@ -17,11 +17,9 @@ class IntermediateBaseState(StateMachine.State):
         self.arm: Arm = arm
         self.side: ArmStateMachine.GoalSides = side
         self.default_position: ArmPosition = POS_INTERMEDIATE
-        self.high_position: ArmPosition = POS_HIGH_INTERMEDIATE
 
         if side is ArmStateMachine.GoalSides.BACK:
             self.default_position = mirror_position(self.default_position)
-            self.high_position = mirror_position(self.high_position)
 
     def get_enum(self):
         if self.side is ArmStateMachine.GoalSides.FRONT:
@@ -34,10 +32,7 @@ class IntermediateBaseState(StateMachine.State):
         self.arm.retract()
 
     def step(self):
-        if self.machine.goal_is_high() or self.machine.prev_goal_was_high():
-            self.arm.set_motion_magic(self.high_position)
-        else:
-            self.arm.set_motion_magic(self.default_position)
+        self.arm.set_motion_magic(self.default_position)
 
         if self.side is not ArmStateMachine.get_goal_side(self.machine.goal_state):
             self.arm.stow_wrist()
