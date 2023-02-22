@@ -1,3 +1,5 @@
+import numpy
+
 from arm_node.arm import Arm
 from arm_node.positions import *
 from arm_node.states.util import *
@@ -43,17 +45,15 @@ class IntermediateFrontState(StateMachine.State):
             self.arm.stow_wrist()
 
     def transition(self) -> Enum:
-
         if self.arm.is_at_setpoint_raw(0.06, 0.06) and self.arm.wrist_at_setpoint(0.04):
             if self.side is not ArmStateMachine.get_goal_side(self.machine.goal_state):
                 return ArmStateMachine.States.FORCE_HOME
-
             return self.machine.goal_state
-        # elif self.machine.goal_state in ArmStateMachine.FRONT_STATES and \
-        #      self.arm.is_at_setpoint_raw(0.06, 1.0) and \
-        #      abs(self.arm.upperMotor.get_sensor_position()) > abs(self.arm.upperMotor.get_setpoint()):
-        #     return self.machine.goal_state
-        elif self.machine.goal_same_side():
+        elif self.side is ArmStateMachine.get_goal_side(self.machine.goal_state) and \
+             self.arm.is_at_setpoint_raw(0.06, 1.0) and \
+             numpy.sign(self.arm.upperMotor.get_sensor_position()) == numpy.sign(self.arm.upperMotor.get_setpoint()) and \
+             abs(self.arm.upperMotor.get_sensor_position()) > abs(self.arm.upperMotor.get_setpoint()):
             return self.machine.goal_state
 
         return self.get_enum()
+
