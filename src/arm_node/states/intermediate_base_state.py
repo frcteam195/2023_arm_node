@@ -10,7 +10,7 @@ from ck_utilities_py_node.solenoid import *
 from ck_utilities_py_node.StateMachine import StateMachine
 
 
-class IntermediateFrontState(StateMachine.State):
+class IntermediateBaseState(StateMachine.State):
 
     def __init__(self, machine, arm, side=ArmStateMachine.GoalSides.FRONT):
         self.machine: ArmStateMachine = machine
@@ -30,12 +30,10 @@ class IntermediateFrontState(StateMachine.State):
             return ArmStateMachine.States.INTERMEDIATE_BACK
 
     def entry(self):
-        # print('Entering', self.get_enum())
         self.arm.disable_brakes()
         self.arm.retract()
 
     def step(self):
-        # print('in transition')
         if self.machine.goal_is_high() or self.machine.prev_goal_was_high():
             self.arm.set_motion_magic(self.high_position)
         else:

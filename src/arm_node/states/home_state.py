@@ -10,7 +10,7 @@ from ck_utilities_py_node.StateMachine import StateMachine
 
 class HomeState(StateMachine.State):
 
-    def __init__(self, machine, arm, force=False):
+    def __init__(self, machine, arm):
         self.machine: ArmStateMachine = machine
         self.arm: Arm = arm
         self.force = force
@@ -27,12 +27,7 @@ class HomeState(StateMachine.State):
 
     def transition(self) -> Enum:
         if self.machine.goal_state is not self.get_enum():
-            new_state = transition_to_intermediate(self.machine.goal_state in ArmStateMachine.FRONT_STATES)
-
-            if self.force:
-                if self.arm.is_at_setpoint_raw(0.01, 0.01):
-                    return new_state
-            else:
-                return new_state
+            if self.arm.is_at_setpoint_raw(0.01, 0.01):
+                return transition_to_intermediate(self.machine.goal_state in ArmStateMachine.FRONT_STATES)
 
         return self.get_enum()

@@ -11,9 +11,6 @@ import rospy
 
 from actions_node.game_specific_actions.constant import WristPosition
 
-# from arm_node.states.HomeState import HomeState
-
-
 class ArmStateMachine(StateMachine):
 
 
@@ -47,12 +44,8 @@ class ArmStateMachine(StateMachine):
         HIGH_CONE_BACK=24
         PRE_SCORE_BACK=25
 
-
-        FORCE_HOME=26
-        PENDULUM=27
-
-        STEAL_FRONT=28
-        STEAL_BACK=29
+        STEAL_FRONT=26
+        STEAL_BACK=27
 
     class GoalSides(Enum):
         HOME=1
@@ -107,8 +100,7 @@ class ArmStateMachine(StateMachine):
         self.arm = arm
 
         from arm_node.states.home_state import HomeState
-        from arm_node.states.intermediate_front_state import IntermediateFrontState
-        from arm_node.states.intemediate_back_state import IntermediateBackState
+        from arm_node.states.intermediate_base_state import IntermediateBaseState
         from arm_node.states.intermediate_ground_state import IntermediateGroundState
         from arm_node.states.shelf_state import ShelfState
         from arm_node.states.high_cube_state import HighCubeState
@@ -124,10 +116,8 @@ class ArmStateMachine(StateMachine):
 
         states = {
             ArmStateMachine.States.HOME : HomeState(self, arm),
-            ArmStateMachine.States.FORCE_HOME : HomeState(self, arm, True),
             ArmStateMachine.States.INTERMEDIATE_FRONT : IntermediateFrontState(self, arm),
             ArmStateMachine.States.INTERMEDIATE_GROUND_FRONT : IntermediateGroundState(self, arm),
-            # ArmStateMachine.States.INTERMEDIATE_BACK : IntermediateBackState(self, arm),
             ArmStateMachine.States.INTERMEDIATE_BACK : IntermediateFrontState(self, arm, ArmStateMachine.GoalSides.BACK),
             ArmStateMachine.States.INTERMEDIATE_GROUND_BACK : IntermediateGroundState(self, arm, ArmStateMachine.GoalSides.BACK),
             ArmStateMachine.States.SHELF_FRONT : ShelfState(self, arm),
@@ -149,10 +139,9 @@ class ArmStateMachine(StateMachine):
             ArmStateMachine.States.GROUND_DEAD_CONE_FRONT : GroundDeadConeState(self, arm),
             ArmStateMachine.States.GROUND_DEAD_CONE_BACK : GroundDeadConeState(self, arm, ArmStateMachine.GoalSides.BACK),
             ArmStateMachine.States.PRE_SCORE_FRONT : PreScoreState(self, arm),
-            ArmStateMachine.States.PRE_SCORE_BACK : PreScoreState(self, arm, ArmStateMachine.GoalSides.BACK)
-            # ArmStateMachine.States.STEAL_FRONT : StealState(self, arm),
-            # ArmStateMachine.States.STEAL_BACK : StealState(self, arm, ArmStateMachine.GoalSides.BACK),
-            # ArmStateMachine.States.PENDULUM : ArmStateMachine.PendulumState(self),
+            ArmStateMachine.States.PRE_SCORE_BACK : PreScoreState(self, arm, ArmStateMachine.GoalSides.BACK),
+            ArmStateMachine.States.STEAL_FRONT : StealState(self, arm),
+            ArmStateMachine.States.STEAL_BACK : StealState(self, arm, ArmStateMachine.GoalSides.BACK),
         }
 
         state = ArmStateMachine.States.HOME
