@@ -95,7 +95,11 @@ class ArmStateMachine(StateMachine):
         States.HIGH_CUBE_FRONT,
         States.HIGH_CUBE_BACK,
         States.HIGH_CONE_FRONT,
-        States.HIGH_CONE_BACK
+        States.HIGH_CONE_BACK,
+        States.MID_CUBE_FRONT,
+        States.MID_CUBE_BACK,
+        States.MID_CONE_FRONT,
+        States.MID_CONE_BACK,
     ]
 
 

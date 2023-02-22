@@ -36,7 +36,6 @@ class MidCubeState(StateMachine.State):
 
     def transition(self) -> Enum:
         if self.machine.goal_state is not self.get_enum():
-            return ArmStateMachine.States.PRE_SCORE_FRONT if self.side is ArmStateMachine.GoalSides.FRONT else ArmStateMachine.States.PRE_SCORE_BACK
-            #return transition_to_intermediate(self.side is ArmStateMachine.GoalSides.FRONT)
+            return transition_to_intermediate(self.side is ArmStateMachine.GoalSides.FRONT)
 
         return self.get_enum()
