@@ -5,13 +5,6 @@ Defines all the arm positions in degrees.
 from dataclasses import dataclass
 import rospy
 
-ALLOWED_DEVIATION_PCT = 0.05
-BASE_ALLOWED_DEVIATION = abs(rospy.get_param("/arm_node/baseArmMaster_forwardSoftLimit") -
-                             rospy.get_param("/arm_node/baseArmMaster_reverseSoftLimit")) * ALLOWED_DEVIATION_PCT
-UPPER_ALLOWED_DEVIATION = abs(rospy.get_param("/arm_node/upperArmMaster_forwardSoftLimit") -
-                              rospy.get_param("/arm_node/upperArmMaster_reverseSoftLimit")) * ALLOWED_DEVIATION_PCT
-
-
 @dataclass
 class ArmPosition:
     """
