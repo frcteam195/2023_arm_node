@@ -9,13 +9,14 @@ from actions_node.game_specific_actions.constant import WristPosition
 
 
 class Arm:
-    def __init__(self, baseMotor, upperMotor, wristMotor, baseBrake, upperBrake, extension, home_position, lower_limits, upper_limits):
+    def __init__(self, baseMotor, upperMotor, wristMotor, baseBrake, upperBrake, extension, extension2, home_position, lower_limits, upper_limits):
         self.baseMotor: Motor = baseMotor
         self.upperMotor: Motor = upperMotor
         self.wristMotor: Motor = wristMotor
         self.baseBrake: Solenoid = baseBrake
         self.upperBrake: Solenoid = upperBrake
         self.extension: Solenoid = extension
+        self.extension2: Solenoid = extension2
         self.home_position: ArmPosition = home_position
         self.lower_limits: ArmPosition = lower_limits
         self.upper_limits: ArmPosition = upper_limits
@@ -72,9 +73,11 @@ class Arm:
 
     def extend(self):
         self.extension.set(SolenoidState.ON)
+        self.extension2.set(SolenoidState.ON)
 
     def retract(self):
         self.extension.set(SolenoidState.OFF)
+        self.extension2.set(SolenoidState.OFF)
 
     def get_angle(self) -> ArmPosition:
         position = self.get_raw_position()

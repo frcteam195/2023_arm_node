@@ -42,10 +42,11 @@ def ros_func():
     upper_brake_solenoid = Solenoid("upper_brake", SolenoidType.SINGLE)
 
     extension_solenoid = Solenoid("extension", SolenoidType.SINGLE)
+    extension2_solenoid = Solenoid("extension2", SolenoidType.SINGLE)
 
     rate = rospy.Rate(100)
 
-    arm = Arm(baseArmMaster, upperArmMaster, wristMotor, base_brake_solenoid, upper_brake_solenoid, extension_solenoid, POS_HOME, None, None)
+    arm = Arm(baseArmMaster, upperArmMaster, wristMotor, base_brake_solenoid, upper_brake_solenoid, extension_solenoid, extension2_solenoid, POS_HOME, None, None)
 
     state_machine = ArmStateMachine(arm)
 
@@ -90,6 +91,7 @@ def ros_func():
             base_brake_solenoid.set(SolenoidState.OFF)
             upper_brake_solenoid.set(SolenoidState.OFF)
             extension_solenoid.set(SolenoidState.OFF)
+            extension2_solenoid.set(SolenoidState.OFF)
             baseArmMaster.set(ControlMode.PERCENT_OUTPUT, 0.0)
             upperArmMaster.set(ControlMode.PERCENT_OUTPUT, 0.0)
             wristMotor.set(ControlMode.PERCENT_OUTPUT, 0.0)
