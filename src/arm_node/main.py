@@ -10,7 +10,6 @@ from frc_robot_utilities_py_node.RobotStatusHelperPy import RobotStatusHelperPy,
 from ck_ros_msgs_node.msg import Arm_Goal, Arm_Status, Intake_Status
 from arm_node.arm_simulation import ArmSimulation
 from ck_utilities_py_node.constraints import *
-from arm_node.arm_constraints import ArmConstraints
 from arm_node.state_machine import ArmStateMachine
 from arm_node.positions import *
 from arm_node.arm import Arm
