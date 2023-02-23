@@ -16,7 +16,7 @@ TRANSITIONS = [
     ArmStateMachine.States.INTERMEDIATE_BACK,
 ]
 
-class IntermediateBaseState(StateMachine.State):
+class IntermediateMidConeState(StateMachine.State):
 
     def __init__(self, machine, arm, side=ArmStateMachine.GoalSides.FRONT):
         self.machine: ArmStateMachine = machine

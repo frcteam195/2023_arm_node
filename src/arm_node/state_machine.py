@@ -47,10 +47,10 @@ class ArmStateMachine(StateMachine):
         MID_CONE_BACK=27
         HIGH_CONE_BACK=28
         PRE_SCORE_BACK=29
-        INTERMEDIATE_HIGH_CONE_BACK = 30
-        INTERMEDIATE_HIGH_CUBE_BACK = 31
-        INTERMEDIATE_MID_CONE_BACK = 32
-        INTERMEDIATE_MID_CUBE_BACK = 33
+        INTERMEDIATE_HIGH_CONE_BACK=30
+        INTERMEDIATE_HIGH_CUBE_BACK=31
+        INTERMEDIATE_MID_CONE_BACK=32
+        INTERMEDIATE_MID_CUBE_BACK=33
 
         STEAL_FRONT=34
         STEAL_BACK=35
@@ -136,6 +136,10 @@ class ArmStateMachine(StateMachine):
         from arm_node.states.ground_dead_cone_state import GroundDeadConeState
         from arm_node.states.steal_state import StealState
         from arm_node.states.pre_score_state import PreScoreState
+        from arm_node.states.high_cone_intermediate import IntermediateHighConeState
+        from arm_node.states.high_cube_intermediate import IntermediateHighCubeState
+        from arm_node.states.mid_cone_intermediate import IntermediateMidConeState
+        from arm_node.states.mid_cube_intermediate import IntermediateMidCubeState
 
         states = {
             ArmStateMachine.States.HOME : HomeState(self, arm),
@@ -165,6 +169,14 @@ class ArmStateMachine(StateMachine):
             ArmStateMachine.States.PRE_SCORE_BACK : PreScoreState(self, arm, ArmStateMachine.GoalSides.BACK),
             ArmStateMachine.States.STEAL_FRONT : StealState(self, arm),
             ArmStateMachine.States.STEAL_BACK : StealState(self, arm, ArmStateMachine.GoalSides.BACK),
+            ArmStateMachine.States.INTERMEDIATE_HIGH_CONE_FRONT : IntermediateHighConeState(self, arm),
+            ArmStateMachine.States.INTERMEDIATE_HIGH_CONE_BACK : IntermediateHighConeState(self, arm, ArmStateMachine.GoalSides.BACK),
+            ArmStateMachine.States.INTERMEDIATE_HIGH_CUBE_FRONT : IntermediateHighCubeState(self, arm),
+            ArmStateMachine.States.INTERMEDIATE_HIGH_CUBE_BACK : IntermediateHighCubeState(self, arm, ArmStateMachine.GoalSides.BACK),
+            ArmStateMachine.States.INTERMEDIATE_MID_CONE_FRONT : IntermediateMidConeState(self, arm),
+            ArmStateMachine.States.INTERMEDIATE_MID_CONE_BACK : IntermediateMidConeState(self, arm, ArmStateMachine.GoalSides.BACK),
+            ArmStateMachine.States.INTERMEDIATE_MID_CUBE_FRONT : IntermediateMidCubeState(self, arm),
+            ArmStateMachine.States.INTERMEDIATE_MID_CUBE_BACK : IntermediateMidCubeState(self, arm, ArmStateMachine.GoalSides.BACK),
         }
 
         state = ArmStateMachine.States.HOME
