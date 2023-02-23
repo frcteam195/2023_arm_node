@@ -30,12 +30,15 @@ class MidCubeState(StateMachine.State):
         print('Entering', self.get_enum())
         self.arm.disable_brakes()
         #self.arm.extend()
-            
+
     def step(self):
         standard_step(self.arm, self.position)
 
     def transition(self) -> Enum:
         if self.machine.goal_state is not self.get_enum():
-            return transition_to_intermediate(self.side is ArmStateMachine.GoalSides.FRONT)
+            if self.side is ArmStateMachine.GoalSides.FRONT:
+                return ArmStateMachine.States.INTERMEDIATE_MID_CUBE_FRONT
+            else:
+                return ArmStateMachine.States.INTERMEDIATE_MID_CUBE_BACK
 
         return self.get_enum()
