@@ -66,7 +66,7 @@ def ros_func():
             wrist_goal = state_machine.wrist_goal
 
         # Update pinched state.
-        intake_status_message = intake_subscriber.get()
+        intake_status_message : Intake_Status = intake_subscriber.get()
         if intake_status_message is not None:
             state_machine.intake_pinched = intake_status_message.pinched
 
@@ -86,7 +86,6 @@ def ros_func():
             state_machine.set_goal(arm_goal)
             arm.wrist_goal = wrist_goal
             state_machine.step()
-
         elif robot_mode == RobotMode.DISABLED:
             base_brake_solenoid.set(SolenoidState.OFF)
             upper_brake_solenoid.set(SolenoidState.OFF)
