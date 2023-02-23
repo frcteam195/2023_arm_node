@@ -51,9 +51,6 @@ def standard_step(arm: Arm, position: ArmPosition, control_wrist=True):
 def goal_is_high(machine: ArmStateMachine):
     return machine.goal_state in ArmStateMachine.HIGH_INTERMEDIATE_NEEDED
 
-def prev_goal_was_high(machine: ArmStateMachine):
-    return machine.prev_goal in ArmStateMachine.HIGH_INTERMEDIATE_NEEDED
-
 
 # ARM_GOAL_DICT = {
 #     Arm_Goal.HOME : ArmStateMachine.States.HOME,
