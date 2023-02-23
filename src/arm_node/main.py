@@ -13,9 +13,10 @@ from ck_utilities_py_node.constraints import *
 from arm_node.state_machine import ArmStateMachine
 from arm_node.positions import *
 from arm_node.arm import Arm
-from arm_node.states.util import goal_msg_to_state, state_to_msg, wrist_msg_to_state
+from arm_node.states.util import goal_msg_to_state, state_to_msg, wrist_msg_to_state, STATES_TO_MSG
 from limelight_vision_node.msg import Limelight, Limelight_Control
 from actions_node.game_specific_actions.constant import WristPosition
+
 
 
 def ros_func():
@@ -100,7 +101,9 @@ def ros_func():
 
         status_message = arm.get_status()
         status_message.goal = state_to_msg(state_machine.goal_state)
+        status_message.state = STATES_TO_MSG[state_machine.state]
         status_message.arm_at_setpoint = state_machine.goal_state == state_machine.state and arm.is_at_setpoint_raw(0.007, 0.007)
+
         status_publisher.publish(status_message)
 
         limelight_publisher.publish(limelight_control_msg)

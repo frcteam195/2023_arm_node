@@ -6,13 +6,43 @@ from ck_utilities_py_node.StateMachine import StateMachine
 from ck_utilities_py_node.motor import *
 from ck_utilities_py_node.solenoid import *
 
-from ck_ros_msgs_node.msg import Arm_Goal
+from ck_ros_msgs_node.msg import Arm_Goal, Arm_Status
 
 from frc_robot_utilities_py_node.odometry_helper import OdometryHelper
 
 from actions_node.game_specific_actions.constant import WristPosition
 
 odom = OdometryHelper()
+
+STATES_TO_MSG = {
+    ArmStateMachine.States.HOME : Arm_Status.HOME,
+    ArmStateMachine.States.INTERMEDIATE_FRONT : Arm_Status.INTERMEDIATE_FRONT,
+    ArmStateMachine.States.INTERMEDIATE_GROUND_FRONT : Arm_Status.INTERMEDIATE_GROUND_FRONT,
+    ArmStateMachine.States.GROUND_CUBE_FRONT : Arm_Status.GROUND_CUBE_FRONT,
+    ArmStateMachine.States.GROUND_CONE_FRONT : Arm_Status.GROUND_CONE_FRONT,
+    ArmStateMachine.States.GROUND_DEAD_CONE_FRONT : Arm_Status.GROUND_CONE_FRONT,
+    ArmStateMachine.States.SHELF_FRONT : Arm_Status.SHELF_FRONT,
+    ArmStateMachine.States.LOW_SCORE_FRONT : Arm_Status.LOW_SCORE_FRONT,
+    ArmStateMachine.States.MID_CUBE_FRONT : Arm_Status.MID_CUBE_FRONT,
+    ArmStateMachine.States.HIGH_CUBE_FRONT : Arm_Status.HIGH_CUBE_FRONT,
+    ArmStateMachine.States.MID_CONE_FRONT : Arm_Status.MID_CONE_FRONT,
+    ArmStateMachine.States.HIGH_CONE_FRONT : Arm_Status.HIGH_CONE_FRONT,
+    ArmStateMachine.States.PRE_SCORE_FRONT : Arm_Status.PRE_SCORE_FRONT,
+    ArmStateMachine.States.INTERMEDIATE_BACK : Arm_Status.INTERMEDIATE_BACK,
+    ArmStateMachine.States.INTERMEDIATE_GROUND_BACK : Arm_Status.INTERMEDIATE_GROUND_BACK,
+    ArmStateMachine.States.GROUND_CUBE_BACK : Arm_Status.GROUND_CUBE_BACK,
+    ArmStateMachine.States.GROUND_CONE_BACK : Arm_Status.GROUND_CONE_BACK,
+    ArmStateMachine.States.GROUND_DEAD_CONE_BACK : Arm_Status.GROUND_DEAD_CONE_BACK,
+    ArmStateMachine.States.SHELF_BACK : Arm_Status.SHELF_BACK,
+    ArmStateMachine.States.LOW_SCORE_BACK : Arm_Status.LOW_SCORE_BACK,
+    ArmStateMachine.States.MID_CUBE_BACK : Arm_Status.MID_CUBE_BACK,
+    ArmStateMachine.States.HIGH_CUBE_BACK : Arm_Status.HIGH_CUBE_BACK,
+    ArmStateMachine.States.MID_CONE_BACK : Arm_Status.MID_CONE_BACK,
+    ArmStateMachine.States.HIGH_CONE_BACK : Arm_Status.HIGH_CONE_BACK,
+    ArmStateMachine.States.PRE_SCORE_BACK : Arm_Status.PRE_SCORE_BACK,
+    ArmStateMachine.States.STEAL_FRONT : Arm_Status.STEAL_FRONT,
+    ArmStateMachine.States.STEAL_BACK : Arm_Status.STEAL_BACK,
+}
 
 def transition_to_intermediate(is_front: bool) -> StateMachine.State:
     if is_front:
