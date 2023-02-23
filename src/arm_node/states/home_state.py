@@ -13,7 +13,6 @@ class HomeState(StateMachine.State):
     def __init__(self, machine, arm):
         self.machine: ArmStateMachine = machine
         self.arm: Arm = arm
-        self.force = force
         self.position: ArmPosition = POS_HOME
 
     def get_enum(self):

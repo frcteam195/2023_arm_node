@@ -116,9 +116,9 @@ class ArmStateMachine(StateMachine):
 
         states = {
             ArmStateMachine.States.HOME : HomeState(self, arm),
-            ArmStateMachine.States.INTERMEDIATE_FRONT : IntermediateFrontState(self, arm),
+            ArmStateMachine.States.INTERMEDIATE_FRONT : IntermediateBaseState(self, arm),
             ArmStateMachine.States.INTERMEDIATE_GROUND_FRONT : IntermediateGroundState(self, arm),
-            ArmStateMachine.States.INTERMEDIATE_BACK : IntermediateFrontState(self, arm, ArmStateMachine.GoalSides.BACK),
+            ArmStateMachine.States.INTERMEDIATE_BACK : IntermediateBaseState(self, arm, ArmStateMachine.GoalSides.BACK),
             ArmStateMachine.States.INTERMEDIATE_GROUND_BACK : IntermediateGroundState(self, arm, ArmStateMachine.GoalSides.BACK),
             ArmStateMachine.States.SHELF_FRONT : ShelfState(self, arm),
             ArmStateMachine.States.SHELF_BACK : ShelfState(self, arm, ArmStateMachine.GoalSides.BACK),
