@@ -96,7 +96,7 @@ def ros_func():
             upperArmMaster.set(ControlMode.PERCENT_OUTPUT, 0.0)
             wristMotor.set(ControlMode.PERCENT_OUTPUT, 0.0)
 
-        if frame_count % 3 is 0:
+        if frame_count % 3 == 0:
             arm_simulation.publish_arm_base_link(baseArmMaster.get_sensor_position() * 360.0)
             arm_simulation.publish_arm_upper_link(upperArmMaster.get_sensor_position() * 360.0)
             arm_simulation.publish_arm_extender_link(extension_solenoid.get() == SolenoidState.ON)
