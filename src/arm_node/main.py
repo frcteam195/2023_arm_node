@@ -50,6 +50,7 @@ def ros_func():
 
     state_machine = ArmStateMachine(arm)
 
+    frame_count = 0
 
     while not rospy.is_shutdown():
         robot_mode = robot_status.get_mode()
@@ -95,10 +96,11 @@ def ros_func():
             upperArmMaster.set(ControlMode.PERCENT_OUTPUT, 0.0)
             wristMotor.set(ControlMode.PERCENT_OUTPUT, 0.0)
 
-        arm_simulation.publish_arm_base_link(baseArmMaster.get_sensor_position() * 360.0)
-        arm_simulation.publish_arm_upper_link(upperArmMaster.get_sensor_position() * 360.0)
-        arm_simulation.publish_arm_extender_link(extension_solenoid.get() == SolenoidState.ON)
-        arm_simulation.publish_arm_wrist_link(wristMotor.get_sensor_position() * 360.0)
+        if frame_count % 3 is 0:
+            arm_simulation.publish_arm_base_link(baseArmMaster.get_sensor_position() * 360.0)
+            arm_simulation.publish_arm_upper_link(upperArmMaster.get_sensor_position() * 360.0)
+            arm_simulation.publish_arm_extender_link(extension_solenoid.get() == SolenoidState.ON)
+            arm_simulation.publish_arm_wrist_link(wristMotor.get_sensor_position() * 360.0)
 
         status_message = arm.get_status()
         status_message.goal = state_to_msg(state_machine.goal_state)
@@ -108,6 +110,9 @@ def ros_func():
         status_publisher.publish(status_message)
 
         limelight_publisher.publish(limelight_control_msg)
+
+        frame_count += 1
+        frame_count = frame_count % 100
 
         rate.sleep()
 
