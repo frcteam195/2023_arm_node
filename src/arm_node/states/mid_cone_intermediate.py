@@ -29,9 +29,9 @@ class IntermediateMidConeState(StateMachine.State):
 
     def get_enum(self):
         if self.side is ArmStateMachine.GoalSides.FRONT:
-            return ArmStateMachine.States.INTERMEDIATE_FRONT
+            return ArmStateMachine.States.INTERMEDIATE_MID_CONE_FRONT
         else:
-            return ArmStateMachine.States.INTERMEDIATE_BACK
+            return ArmStateMachine.States.INTERMEDIATE_MID_CONE_BACK
 
     def entry(self):
         self.arm.disable_brakes()

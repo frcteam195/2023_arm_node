@@ -29,9 +29,9 @@ class IntermediateHighCubeState(StateMachine.State):
 
     def get_enum(self):
         if self.side is ArmStateMachine.GoalSides.FRONT:
-            return ArmStateMachine.States.INTERMEDIATE_FRONT
+            return ArmStateMachine.States.INTERMEDIATE_HIGH_CUBE_FRONT
         else:
-            return ArmStateMachine.States.INTERMEDIATE_BACK
+            return ArmStateMachine.States.INTERMEDIATE_HIGH_CUBE_BACK
 
     def entry(self):
         self.arm.disable_brakes()
