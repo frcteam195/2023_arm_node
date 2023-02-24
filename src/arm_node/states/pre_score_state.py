@@ -27,8 +27,8 @@ class PreScoreState(StateMachine.State):
             return ArmStateMachine.States.PRE_SCORE_BACK
 
     def entry(self):
-        print('Entering', self.get_enum())
         self.arm.disable_brakes()
+        self.arm.config_arm_fast()
 
     def step(self):
         standard_step(self.arm, self.position)

@@ -27,6 +27,7 @@ class ShelfState(StateMachine.State):
 
     def entry(self):
         self.arm.disable_brakes()
+        self.arm.config_arm_fast()
 
     def step(self):
         self.position = POS_SHELF_CONE if self.machine.intake_pinched else POS_SHELF_CUBE

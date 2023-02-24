@@ -23,6 +23,11 @@ class Arm:
 
         self.wrist_goal: WristPosition = WristPosition.Zero
 
+
+        self.__upper_arm_default_cruise_vel = self.upperMotor.config.motionCruiseVelocity
+        self.__upper_arm_default_accel = self.upperMotor.config.motionCruiseAcceleration
+        self.__upper_arm_default_s_curve = self.upperMotor.config.motionSCurveStrength
+
     def set_motion_magic(self, angle: ArmPosition):
         self.set_motion_magic_raw(self.__angle_to_rotation(angle))
 
@@ -41,6 +46,18 @@ class Arm:
         base_in_range = self.baseMotor.is_at_setpoint(base_tolerance)
         upper_in_range = self.upperMotor.is_at_setpoint(upper_tolerance)
         return base_in_range and upper_in_range
+
+    def config_arm_fast(self):
+        self.upperMotor.config.motionSCurveStrength = 5
+        self.upperMotor.config.motionCruiseAcceleration = self.__upper_arm_default_accel * 1.2
+        self.upperMotor.config.motionCruiseVelocity = self.__upper_arm_default_cruise_vel * 1.2
+        self.upperMotor.apply()
+
+    def config_arm_normal(self):
+        self.upperMotor.config.motionSCurveStrength = self.__upper_arm_default_s_curve
+        self.upperMotor.config.motionCruiseAcceleration = self.__upper_arm_default_accel
+        self.upperMotor.config.motionCruiseVelocity = self.__upper_arm_default_cruise_vel
+        self.upperMotor.apply()
 
     def stow_wrist(self):
         if self.wrist_goal == WristPosition.Left_90:

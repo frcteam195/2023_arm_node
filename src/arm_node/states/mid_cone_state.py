@@ -27,9 +27,7 @@ class MidConeState(StateMachine.State):
             return ArmStateMachine.States.MID_CONE_BACK
 
     def entry(self):
-        print('Entering', self.get_enum())
         self.arm.disable_brakes()
-        #self.arm.extend()
 
     def step(self):
         standard_step(self.arm, self.position)

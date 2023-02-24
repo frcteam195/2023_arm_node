@@ -36,13 +36,11 @@ class IntermediateGroundState(StateMachine.State):
             return ArmStateMachine.States.INTERMEDIATE_GROUND_BACK
 
     def entry(self):
-        # print('Entering', self.get_enum())
         self.arm.disable_brakes()
         self.arm.retract()
         self.arm.stow_wrist()
 
     def step(self):
-        # print('in transition')
         self.arm.set_motion_magic(self.position)
 
 
