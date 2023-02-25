@@ -22,7 +22,7 @@ class IntermediateMidCubeState(StateMachine.State):
         self.machine: ArmStateMachine = machine
         self.arm: Arm = arm
         self.side: ArmStateMachine.GoalSides = side
-        self.default_position: ArmPosition = POS_HIGH_INTERMEDIATE
+        self.default_position: ArmPosition = POS_MID_CUBE_INTERMEDIATE
 
         if side is ArmStateMachine.GoalSides.BACK:
             self.default_position = mirror_position(self.default_position)

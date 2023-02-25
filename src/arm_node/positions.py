@@ -35,7 +35,10 @@ POS_HIGH_CONE = ArmPosition(19.74, 131.33, -25, -133.88)
 
 POS_INTERMEDIATE = ArmPosition(-16.41, 28.0, 16.41, -28.0)
 POS_GROUND_INTERMEDIATE = ArmPosition(8.06, 58.0, -8.06, -58.0)
-POS_HIGH_INTERMEDIATE = ArmPosition(-16.41, 90.0, 16.41, -90.0)
+POS_HIGH_CONE_INTERMEDIATE = ArmPosition(-16.41, 90.0, 16.41, -90.0)
+POS_HIGH_CUBE_INTERMEDIATE = ArmPosition(-16.41, 90.0, 16.41, -90.0)
+POS_MID_CONE_INTERMEDIATE = ArmPosition(-16.41, 90.0, 16.41, -90.0)
+POS_MID_CUBE_INTERMEDIATE = ArmPosition(-16.41, 90.0, 16.41, -90.0)
 
 
 def mirror_position(position: ArmPosition) -> ArmPosition:
