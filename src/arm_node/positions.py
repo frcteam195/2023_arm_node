@@ -30,7 +30,7 @@ POS_SHELF_CONE = ArmPosition(-14.98, 78.9, 14.98, -74.1)
 POS_LOW_SCORE = ArmPosition(21.38, 40.68, -21.38, -40.68)
 POS_MID_CUBE = ArmPosition(16.34, 83.88, -18.34, -83.88)
 POS_HIGH_CUBE = ArmPosition(21.5, 116.5, -23.5, -116.0)
-POS_MID_CONE = ArmPosition(14.06, 103.3, -14.06, -98.8)
+POS_MID_CONE = ArmPosition(14.06, 104.3, -14.06, -99.8)
 POS_HIGH_CONE = ArmPosition(19.74, 131.33, -25, -133.88)
 
 POS_INTERMEDIATE = ArmPosition(-16.41, 28.0, 16.41, -28.0)
