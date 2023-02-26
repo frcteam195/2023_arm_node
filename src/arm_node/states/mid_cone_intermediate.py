@@ -20,7 +20,7 @@ class IntermediateMidConeState(StateMachine.State):
         self.machine: ArmStateMachine = machine
         self.arm: Arm = arm
         self.side: ArmStateMachine.GoalSides = side
-        self.default_position: ArmPosition = POS_MID_CONE_INTERMEDIATE
+        self.default_position: ArmPosition = POS_MID_CONE_RETRACTION_INTERMEDIATE
 
         if side is ArmStateMachine.GoalSides.BACK:
             self.default_position = mirror_position(self.default_position)
@@ -32,6 +32,18 @@ class IntermediateMidConeState(StateMachine.State):
             return ArmStateMachine.States.INTERMEDIATE_MID_CONE_BACK
 
     def entry(self):
+        if self.machine.goal_state not in TRANSITIONS:
+            self.arm.config_arm_normal()
+            self.arm.config_lower_arm_fast()
+            self.default_position: ArmPosition = POS_MID_CONE_RETRACTION_INTERMEDIATE
+        elif self.machine.goal_state in TRANSITIONS:
+            self.arm.config_arm_slow()
+            self.arm.config_lower_arm_slow()
+            self.default_position: ArmPosition = POS_MID_CONE_EXTENSION_INTERMEDIATE
+
+        if self.side is ArmStateMachine.GoalSides.BACK:
+            self.default_position = mirror_position(self.default_position)
+
         self.arm.disable_brakes()
         self.arm.retract()
 

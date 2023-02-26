@@ -81,6 +81,12 @@ class Arm:
         self.baseMotor.config.motionCruiseVelocity = self.__lower_arm_default_cruise_vel
         self.baseMotor.apply()
 
+    def config_lower_arm_slow(self):
+        self.baseMotor.config.motionSCurveStrength = 7
+        self.baseMotor.config.motionCruiseAcceleration = self.__lower_arm_default_accel
+        self.baseMotor.config.motionCruiseVelocity = self.__lower_arm_default_cruise_vel
+        self.baseMotor.apply()
+
     def stow_wrist(self):
         if self.wrist_goal == WristPosition.Left_90:
             self.wrist_goal = WristPosition.Zero

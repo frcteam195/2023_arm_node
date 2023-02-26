@@ -20,7 +20,7 @@ class IntermediateHighConeState(StateMachine.State):
         self.machine: ArmStateMachine = machine
         self.arm: Arm = arm
         self.side: ArmStateMachine.GoalSides = side
-        self.default_position: ArmPosition = POS_HIGH_CONE_INTERMEDIATE
+        self.default_position: ArmPosition = POS_HIGH_CONE_RETRACTION_INTERMEDIATE
 
         if side is ArmStateMachine.GoalSides.BACK:
             self.default_position = mirror_position(self.default_position)
@@ -32,6 +32,19 @@ class IntermediateHighConeState(StateMachine.State):
             return ArmStateMachine.States.INTERMEDIATE_HIGH_CONE_BACK
 
     def entry(self):
+        if self.machine.goal_state not in TRANSITIONS:
+            self.arm.config_arm_slow()
+            self.arm.config_lower_arm_fast()
+            self.default_position: ArmPosition = POS_HIGH_CONE_RETRACTION_INTERMEDIATE
+        elif self.machine.goal_state in TRANSITIONS:
+            self.arm.config_arm_slow()
+            self.arm.config_lower_arm_slow()
+            self.default_position: ArmPosition = POS_HIGH_CONE_EXTENSION_INTERMEDIATE
+
+        if self.side is ArmStateMachine.GoalSides.BACK:
+            self.default_position = mirror_position(self.default_position)
+
+
         self.arm.disable_brakes()
         self.arm.retract()
 
@@ -39,7 +52,7 @@ class IntermediateHighConeState(StateMachine.State):
         self.arm.set_motion_magic(self.default_position)
 
     def transition(self) -> Enum:
-        if self.arm.is_at_setpoint_raw(0.06, 0.06) and \
+        if self.arm.is_at_setpoint_raw(0.1, 0.1) and \
            self.side is ArmStateMachine.get_goal_side(self.machine.goal_state) and \
            self.machine.goal_state in TRANSITIONS:
             return self.machine.goal_state

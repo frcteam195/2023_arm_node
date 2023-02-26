@@ -56,7 +56,7 @@ class IntermediateHighCubeState(StateMachine.State):
         self.arm.config_arm_fast()
 
     def transition(self) -> Enum:
-        if self.arm.is_at_setpoint_raw(0.04, 1) and \
+        if self.arm.is_at_setpoint_raw(0.015, 1) and \
            self.side is ArmStateMachine.get_goal_side(self.machine.goal_state) and \
            self.machine.goal_state in TRANSITIONS:
             return self.machine.goal_state
