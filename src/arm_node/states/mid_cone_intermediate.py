@@ -12,8 +12,6 @@ from ck_utilities_py_node.StateMachine import StateMachine
 TRANSITIONS = [
     ArmStateMachine.States.MID_CONE_FRONT,
     ArmStateMachine.States.MID_CONE_BACK,
-    ArmStateMachine.States.INTERMEDIATE_FRONT,
-    ArmStateMachine.States.INTERMEDIATE_BACK,
 ]
 
 class IntermediateMidConeState(StateMachine.State):
@@ -41,11 +39,11 @@ class IntermediateMidConeState(StateMachine.State):
         self.arm.set_motion_magic(self.default_position)
 
     def transition(self) -> Enum:
-        if self.arm.is_at_setpoint_raw(0.06, 0.06) and self.arm.wrist_at_setpoint(0.04) and \
+        if self.arm.is_at_setpoint_raw(0.06, 0.06) and \
            self.side is ArmStateMachine.get_goal_side(self.machine.goal_state) and \
            self.machine.goal_state in TRANSITIONS:
             return self.machine.goal_state
-        elif self.arm.is_at_setpoint_raw(0.06, 0.06) and self.arm.wrist_at_setpoint(0.04):
+        elif self.arm.is_at_setpoint_raw(0.06, 0.06) and self.machine.goal_state not in TRANSITIONS:
             return transition_to_intermediate(self.side is ArmStateMachine.GoalSides.FRONT)
         else:
             return self.get_enum()

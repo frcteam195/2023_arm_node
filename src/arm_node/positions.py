@@ -28,7 +28,8 @@ POS_SHELF_CUBE = ArmPosition(-14.98, 78.9, 14.98, -74.1)
 POS_SHELF_CONE = ArmPosition(-14.98, 78.9, 14.98, -74.1)
 
 POS_LOW_SCORE = ArmPosition(21.38, 40.68, -21.38, -40.68)
-POS_MID_CUBE = ArmPosition(16.34, 83.88, -18.34, -83.88)
+# POS_MID_CUBE = ArmPosition(16.34, 83.88, -18.34, -83.88)
+POS_MID_CUBE = ArmPosition(0, 68.88, 0, -68.88)
 POS_HIGH_CUBE = ArmPosition(21.5, 116.5, -23.5, -116.0)
 POS_MID_CONE = ArmPosition(14.06, 104.3, -14.06, -99.8)
 POS_HIGH_CONE = ArmPosition(19.74, 131.33, -25, -133.88)
@@ -36,9 +37,10 @@ POS_HIGH_CONE = ArmPosition(19.74, 131.33, -25, -133.88)
 POS_INTERMEDIATE = ArmPosition(-16.41, 28.0, 16.41, -28.0)
 POS_GROUND_INTERMEDIATE = ArmPosition(8.06, 58.0, -8.06, -58.0)
 POS_HIGH_CONE_INTERMEDIATE = ArmPosition(-16.41, 90.0, 16.41, -90.0)
-POS_HIGH_CUBE_INTERMEDIATE = ArmPosition(-16.41, 90.0, 16.41, -90.0)
+POS_HIGH_CUBE_EXTENSION_INTERMEDIATE = ArmPosition(9, 110, -9, -110)
+POS_HIGH_CUBE_RETRACTION_INTERMEDIATE = ArmPosition(-9.41, 90, 9.41, -90)
 POS_MID_CONE_INTERMEDIATE = ArmPosition(-16.41, 90.0, 16.41, -90.0)
-POS_MID_CUBE_INTERMEDIATE = ArmPosition(-16.41, 90.0, 16.41, -90.0)
+POS_MID_CUBE_INTERMEDIATE = ArmPosition(-18.41, 80.0, 18.41, -80.0)
 
 
 def mirror_position(position: ArmPosition) -> ArmPosition:

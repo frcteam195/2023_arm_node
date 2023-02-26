@@ -28,6 +28,7 @@ class HighCubeState(StateMachine.State):
 
     def entry(self):
         self.arm.disable_brakes()
+        self.arm.config_arm_normal()
 
     def step(self):
         standard_step(self.arm, self.position)

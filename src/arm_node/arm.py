@@ -28,6 +28,10 @@ class Arm:
         self.__upper_arm_default_accel = self.upperMotor.config.motionCruiseAcceleration
         self.__upper_arm_default_s_curve = self.upperMotor.config.motionSCurveStrength
 
+        self.__lower_arm_default_cruise_vel = self.baseMotor.config.motionCruiseVelocity
+        self.__lower_arm_default_accel = self.baseMotor.config.motionCruiseAcceleration
+        self.__lower_arm_default_s_curve = self.baseMotor.config.motionSCurveStrength
+
     def set_motion_magic(self, angle: ArmPosition):
         self.set_motion_magic_raw(self.__angle_to_rotation(angle))
 
@@ -48,7 +52,7 @@ class Arm:
         return base_in_range and upper_in_range
 
     def config_arm_fast(self):
-        self.upperMotor.config.motionSCurveStrength = 5
+        self.upperMotor.config.motionSCurveStrength = 0
         self.upperMotor.config.motionCruiseAcceleration = self.__upper_arm_default_accel * 1.2
         self.upperMotor.config.motionCruiseVelocity = self.__upper_arm_default_cruise_vel * 1.2
         self.upperMotor.apply()
@@ -58,6 +62,24 @@ class Arm:
         self.upperMotor.config.motionCruiseAcceleration = self.__upper_arm_default_accel
         self.upperMotor.config.motionCruiseVelocity = self.__upper_arm_default_cruise_vel
         self.upperMotor.apply()
+
+    def config_arm_slow(self):
+        self.upperMotor.config.motionSCurveStrength = 3
+        self.upperMotor.config.motionCruiseAcceleration = self.__upper_arm_default_accel * 0.8
+        self.upperMotor.config.motionCruiseVelocity = self.__upper_arm_default_cruise_vel * 1
+        self.upperMotor.apply()
+
+    def config_lower_arm_fast(self):
+        self.baseMotor.config.motionSCurveStrength = 1
+        self.baseMotor.config.motionCruiseAcceleration = self.__lower_arm_default_accel * 1.4
+        self.baseMotor.config.motionCruiseVelocity = self.__lower_arm_default_cruise_vel * 1.3
+        self.baseMotor.apply()
+
+    def config_lower_arm_normal(self):
+        self.baseMotor.config.motionSCurveStrength = self.__lower_arm_default_s_curve
+        self.baseMotor.config.motionCruiseAcceleration = self.__lower_arm_default_accel
+        self.baseMotor.config.motionCruiseVelocity = self.__lower_arm_default_cruise_vel
+        self.baseMotor.apply()
 
     def stow_wrist(self):
         if self.wrist_goal == WristPosition.Left_90:
@@ -95,6 +117,9 @@ class Arm:
     def retract(self):
         self.extension.set(SolenoidState.OFF)
         self.extension2.set(SolenoidState.OFF)
+
+    def is_retracted(self) -> bool:
+        return self.wristMotor.get_reverse_limit_closed()
 
     def get_angle(self) -> ArmPosition:
         position = self.get_raw_position()
