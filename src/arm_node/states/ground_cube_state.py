@@ -35,7 +35,7 @@ class GroundCubeState(StateMachine.State):
         
 
     def step(self):
-        self.arm.wrist_goal = WristPosition.Zero
+        self.arm.wrist_goal = WristPosition.Left_90
         standard_step(self.arm, self.position)
 
     def transition(self) -> Enum:
