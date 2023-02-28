@@ -16,7 +16,7 @@ from arm_node.arm import Arm
 from arm_node.states.util import goal_msg_to_state, state_to_msg, wrist_msg_to_state, STATES_TO_MSG
 from limelight_vision_node.msg import Limelight, Limelight_Control
 from actions_node.game_specific_actions.constant import WristPosition
-
+# import cProfile
 
 
 def ros_func():
@@ -71,17 +71,6 @@ def ros_func():
         if intake_status_message is not None:
             state_machine.intake_pinched = intake_status_message.pinched
 
-        # Flip limelight depending on arm position.
-        limelight = Limelight()
-        limelight.ledMode = 0
-        limelight.camMode = 0
-        limelight.stream = 0
-        limelight.snapshot = 0
-        limelight.name = "limelight-arm"
-        limelight.pipeline = 1 if upperArmMaster.get_sensor_position() * 360.0 < 5.0 else 0
-
-        limelight_control_msg = Limelight_Control()
-        limelight_control_msg.limelights.append(limelight)
 
         if robot_mode in (RobotMode.TELEOP, RobotMode.AUTONOMOUS):
             state_machine.set_goal(arm_goal)
@@ -96,12 +85,7 @@ def ros_func():
             upperArmMaster.set(ControlMode.PERCENT_OUTPUT, 0.0)
             wristMotor.set(ControlMode.PERCENT_OUTPUT, 0.0)
 
-        if frame_count % 5 == 0:
-            arm_simulation.publish_arm_base_link(baseArmMaster.get_sensor_position() * 360.0)
-            arm_simulation.publish_arm_upper_link(upperArmMaster.get_sensor_position() * 360.0)
-            arm_simulation.publish_arm_extender_link(extension_solenoid.get() == SolenoidState.ON)
-            arm_simulation.publish_arm_wrist_link(wristMotor.get_sensor_position() * 360.0)
-
+  
         status_message = arm.get_status()
         status_message.goal = state_to_msg(state_machine.goal_state)
         status_message.state = STATES_TO_MSG[state_machine.state]
@@ -109,13 +93,31 @@ def ros_func():
 
         status_publisher.publish(status_message)
 
-        limelight_publisher.publish(limelight_control_msg)
+        if frame_count % 5 == 0:
+            #20Hz Run
+            arm_simulation.publish_arm_base_link(baseArmMaster.get_sensor_position() * 360.0)
+            arm_simulation.publish_arm_upper_link(upperArmMaster.get_sensor_position() * 360.0)
+            arm_simulation.publish_arm_extender_link(extension_solenoid.get() == SolenoidState.ON)
+            arm_simulation.publish_arm_wrist_link(wristMotor.get_sensor_position() * 360.0)
+
+            # Flip limelight depending on arm position.
+            limelight = Limelight()
+            limelight.ledMode = 0
+            limelight.camMode = 0
+            limelight.stream = 0
+            limelight.snapshot = 0
+            limelight.name = "limelight-arm"
+            limelight.pipeline = 1 if upperArmMaster.get_sensor_position() * 360.0 < 5.0 else 0
+
+            limelight_control_msg = Limelight_Control()
+            limelight_control_msg.limelights.append(limelight)
+
+            limelight_publisher.publish(limelight_control_msg)
 
         frame_count += 1
         frame_count = frame_count % 100
 
         rate.sleep()
-
 
 def ros_main(node_name):
     rospy.init_node(node_name)
@@ -124,6 +126,11 @@ def ros_main(node_name):
     t1 = Thread(target=ros_func)
     t1.start()
 
-    rospy.spin()
+    # profiler = cProfile.Profile()
+    # profiler.enable()
 
+    rospy.spin()
     t1.join(5)
+
+    # profiler.disable()
+    # profiler.dump_stats("/mnt/working/arm_node.stats")
