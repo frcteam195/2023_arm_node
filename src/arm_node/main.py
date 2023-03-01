@@ -90,7 +90,7 @@ def ros_func():
         status_message.goal = state_to_msg(state_machine.goal_state)
         status_message.state = STATES_TO_MSG[state_machine.state]
         status_message.arm_at_setpoint = state_machine.goal_state == state_machine.state and arm.is_at_setpoint_raw(0.007, 0.007)
-
+        status_message.is_node_alive = True
         status_publisher.publish(status_message)
 
         if frame_count % 5 == 0:
