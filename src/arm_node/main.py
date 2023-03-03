@@ -7,7 +7,7 @@ from ck_utilities_py_node.rviz_shapes import *
 from ck_utilities_py_node.solenoid import *
 from frc_robot_utilities_py_node.frc_robot_utilities_py import *
 from frc_robot_utilities_py_node.RobotStatusHelperPy import RobotStatusHelperPy, Alliance, RobotMode, BufferedROSMsgHandlerPy
-from ck_ros_msgs_node.msg import Arm_Goal, Arm_Status, Intake_Status
+from ck_ros_msgs_node.msg import Arm_Goal, Arm_Status, Intake_Status, Arm_Control
 from arm_node.arm_simulation import ArmSimulation
 from ck_utilities_py_node.constraints import *
 from arm_node.state_machine import ArmStateMachine
@@ -30,6 +30,9 @@ def ros_func():
 
     status_publisher = rospy.Publisher(name="ArmStatus", data_class=Arm_Status, queue_size=50, tcp_nodelay=True)
     limelight_publisher = rospy.Publisher(name="LimelightControl", data_class=Limelight_Control, queue_size=50, tcp_nodelay=True)
+
+    arm_control_sub = BufferedROSMsgHandlerPy(Arm_Control)
+    arm_control_sub.register_for_updates("ArmControl")
 
     baseArmMaster = Motor("baseArmMaster", MotorType.TalonFX)
     baseArmFollower = Motor("baseArmFollower", MotorType.TalonFX)
@@ -73,9 +76,21 @@ def ros_func():
 
 
         if robot_mode in (RobotMode.TELEOP, RobotMode.AUTONOMOUS):
-            state_machine.set_goal(arm_goal)
-            arm.wrist_goal = wrist_goal
-            state_machine.step()
+            arm.disable_brakes()
+            arm_control: Arm_Control = arm_control_sub.get()
+
+            if arm_control is not None:
+                # rospy.logerr(arm_control)
+                pos = ArmPosition()
+                pos.base_position = arm_control.arm_base_requested_position
+                pos.upper_position = arm_control.arm_upper_requested_position
+                # rospy.logerr(f"{pos.base_position}, {pos.upper_position}")
+
+                arm.set_velocity(pos.base_position, pos.upper_position)
+            # arm.set_motion_magic()
+            # state_machine.set_goal(arm_goal)
+            # arm.wrist_goal = wrist_goal
+            # state_machine.step()
         elif robot_mode == RobotMode.DISABLED:
             base_brake_solenoid.set(SolenoidState.OFF)
             upper_brake_solenoid.set(SolenoidState.OFF)

@@ -32,6 +32,10 @@ class Arm:
         self.__lower_arm_default_accel = self.baseMotor.config.motionCruiseAcceleration
         self.__lower_arm_default_s_curve = self.baseMotor.config.motionSCurveStrength
 
+    def set_velocity(self, base_vel, upper_vel):
+        self.baseMotor.set(ControlMode.VELOCITY, base_vel)
+        self.upperMotor.set(ControlMode.VELOCITY, upper_vel)
+
     def set_motion_magic(self, angle: ArmPosition):
         self.set_motion_magic_raw(self.__angle_to_rotation(angle))
 
