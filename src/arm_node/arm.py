@@ -155,7 +155,7 @@ class Arm:
     def get_raw_velocity(self) -> ArmPosition:
         velocity = ArmPosition()
         velocity.base_position = self.baseMotor.get_sensor_velocity()
-        velocity.upper_position = self.baseMotor.get_sensor_velocity()
+        velocity.upper_position = self.upperMotor.get_sensor_velocity()
 
         return velocity
 

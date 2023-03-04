@@ -76,21 +76,21 @@ def ros_func():
 
 
         if robot_mode in (RobotMode.TELEOP, RobotMode.AUTONOMOUS):
+            state_machine.set_goal(arm_goal)
+            arm.wrist_goal = wrist_goal
+            state_machine.step()
+        elif robot_mode == RobotMode.TEST:
             arm.disable_brakes()
             arm_control: Arm_Control = arm_control_sub.get()
 
             if arm_control is not None:
                 # rospy.logerr(arm_control)
                 pos = ArmPosition()
-                pos.base_position = arm_control.arm_base_requested_position
-                pos.upper_position = arm_control.arm_upper_requested_position
-                # rospy.logerr(f"{pos.base_position}, {pos.upper_position}")
+                pos.base_position = math.degrees(arm_control.arm_base_requested_position)
+                pos.upper_position = math.degrees(arm_control.arm_upper_requested_position)
+                arm.set_motion_magic(pos)
+                # arm.set_velocity()
 
-                arm.set_velocity(pos.base_position, pos.upper_position)
-            # arm.set_motion_magic()
-            # state_machine.set_goal(arm_goal)
-            # arm.wrist_goal = wrist_goal
-            # state_machine.step()
         elif robot_mode == RobotMode.DISABLED:
             base_brake_solenoid.set(SolenoidState.OFF)
             upper_brake_solenoid.set(SolenoidState.OFF)
