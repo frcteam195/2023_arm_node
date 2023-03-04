@@ -86,10 +86,12 @@ def ros_func():
             if arm_control is not None:
                 # rospy.logerr(arm_control)
                 pos = ArmPosition()
-                pos.base_position = math.degrees(arm_control.arm_base_requested_position)
-                pos.upper_position = math.degrees(arm_control.arm_upper_requested_position)
-                arm.set_motion_magic(pos)
-                # arm.set_velocity()
+                # pos.base_position = math.degrees(arm_control.arm_base_requested_position)
+                # pos.upper_position = math.degrees(arm_control.arm_upper_requested_position)
+                pos.base_position = arm_control.arm_base_requested_position
+                pos.upper_position = arm_control.arm_upper_requested_position
+                # arm.set_motion_magic(pos)
+                arm.set_velocity(pos.base_position, pos.upper_position)
 
         elif robot_mode == RobotMode.DISABLED:
             base_brake_solenoid.set(SolenoidState.OFF)
