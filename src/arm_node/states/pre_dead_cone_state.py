@@ -8,23 +8,23 @@ from ck_utilities_py_node.solenoid import *
 from ck_utilities_py_node.StateMachine import StateMachine
 
 
-class GroundDeadConeState(StateMachine.State):
+class PreDeadConeState(StateMachine.State):
 
     def __init__(self, machine, arm, side=ArmStateMachine.GoalSides.FRONT):
         self.machine: ArmStateMachine = machine
         self.arm: Arm = arm
         self.side: ArmStateMachine.GoalSides = side
 
-        self.position: ArmPosition = POS_GROUND_DEAD_CONE
+        self.position: ArmPosition = POS_PRE_GROUND_DEAD_CONE
 
         if self.side is ArmStateMachine.GoalSides.BACK:
             self.position = mirror_position(self.position)
 
     def get_enum(self):
         if self.side is ArmStateMachine.GoalSides.FRONT:
-            return ArmStateMachine.States.GROUND_DEAD_CONE_FRONT
+            return ArmStateMachine.States.PRE_DEAD_CONE_FRONT
         else:
-            return ArmStateMachine.States.GROUND_DEAD_CONE_BACK
+            return ArmStateMachine.States.PRE_DEAD_CONE_BACK
 
     def entry(self):
         self.arm.disable_brakes()
@@ -35,8 +35,8 @@ class GroundDeadConeState(StateMachine.State):
 
     def transition(self) -> Enum:
         if self.machine.goal_state is not self.get_enum():
-            if self.machine.goal_state == ArmStateMachine.States.PRE_DEAD_CONE_FRONT:
-                return ArmStateMachine.States.PRE_DEAD_CONE_FRONT
+            if self.machine.goal_state == ArmStateMachine.States.GROUND_DEAD_CONE_FRONT:
+                return ArmStateMachine.States.GROUND_DEAD_CONE_FRONT
             
             if self.side is ArmStateMachine.GoalSides.FRONT:
                 return ArmStateMachine.States.INTERMEDIATE_GROUND_FRONT

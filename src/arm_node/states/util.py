@@ -50,7 +50,8 @@ STATES_TO_MSG = {
     ArmStateMachine.States.INTERMEDIATE_MID_CUBE_BACK : Arm_Status.INTERMEDIATE_MID_CUBE_BACK,
     ArmStateMachine.States.STEAL_FRONT : Arm_Status.STEAL_FRONT,
     ArmStateMachine.States.STEAL_BACK : Arm_Status.STEAL_BACK,
-
+    ArmStateMachine.States.PRE_DEAD_CONE_FRONT : Arm_Status.PRE_DEAD_CONE_FRONT,
+    ArmStateMachine.States.PRE_DEAD_CONE_BACK : Arm_Status.PRE_DEAD_CONE_BACK
 }
 
 def transition_to_intermediate(is_front: bool) -> StateMachine.State:
@@ -117,6 +118,7 @@ FRONT_GOALS = {
     Arm_Goal.HOME : ArmStateMachine.States.HOME,
     Arm_Goal.GROUND_CUBE : ArmStateMachine.States.GROUND_CUBE_FRONT,
     Arm_Goal.GROUND_CONE : ArmStateMachine.States.GROUND_CONE_FRONT,
+    Arm_Goal.PRE_DEAD_CONE : ArmStateMachine.States.PRE_DEAD_CONE_FRONT,
     Arm_Goal.GROUND_DEAD_CONE : ArmStateMachine.States.GROUND_DEAD_CONE_FRONT,
     Arm_Goal.SHELF_PICKUP : ArmStateMachine.States.SHELF_FRONT,
     Arm_Goal.LOW_SCORE : ArmStateMachine.States.LOW_SCORE_FRONT,
@@ -131,6 +133,7 @@ BACK_GOALS = {
     Arm_Goal.HOME : ArmStateMachine.States.HOME,
     Arm_Goal.GROUND_CUBE : ArmStateMachine.States.GROUND_CUBE_BACK,
     Arm_Goal.GROUND_CONE : ArmStateMachine.States.GROUND_CONE_BACK,
+    Arm_Goal.PRE_DEAD_CONE : ArmStateMachine.States.PRE_DEAD_CONE_BACK,
     Arm_Goal.GROUND_DEAD_CONE : ArmStateMachine.States.GROUND_DEAD_CONE_BACK,
     Arm_Goal.SHELF_PICKUP : ArmStateMachine.States.SHELF_BACK,
     Arm_Goal.LOW_SCORE : ArmStateMachine.States.LOW_SCORE_BACK,
