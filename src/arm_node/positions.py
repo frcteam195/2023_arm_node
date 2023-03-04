@@ -21,7 +21,8 @@ POS_HOME = ArmPosition(0.0, 0.0)
 POS_STEAL = ArmPosition(16.70, 82.08, -16.70, -82.08)  # Fake
 
 POS_GROUND_CUBE = ArmPosition(5.06, 33.0, -8.06, -33.0)
-POS_GROUND_CONE = ArmPosition(-3.55, 32.16, 1.55, -29.16)
+POS_GROUND_CONE = ArmPosition(-3.55, 32.16, 3.55, -30.16)
+#Old positionsPOS_GROUND_CONE = ArmPosition(-3.55, 32.16, 1.55, -29.16)
 POS_GROUND_DEAD_CONE = ArmPosition(1, 30.36, -1, -30.36)
 
 POS_SHELF_CUBE = ArmPosition(-14.98, 78.9, 14.98, -74.1)
