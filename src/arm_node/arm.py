@@ -50,6 +50,12 @@ class Arm:
         base_in_range = self.baseMotor.is_at_setpoint(base_tolerance)
         upper_in_range = self.upperMotor.is_at_setpoint(upper_tolerance)
         return base_in_range and upper_in_range
+    
+    def get_base_deviation_deg(self) -> float:
+        return (self.baseMotor.get_setpoint() - self.baseMotor.get_sensor_position()) * 360.0
+    
+    def get_upper_deviation_deg(self) -> float:
+        return (self.upperMotor.get_setpoint() - self.upperMotor.get_sensor_position()) * 360.0
 
     def config_arm_fast(self):
         self.upperMotor.config.motionSCurveStrength = 0
@@ -212,7 +218,7 @@ class Arm:
         status_message.arm_upper_angular_velocity = angular_velocity.upper_position
         status_message.arm_wrist_angular_velocity = wrist_angular_velocity
 
-        status_message.extended = self.extension.get() == SolenoidState.ON
+        status_message.extended = not self.is_retracted()
         status_message.left_arm_base_remote_loss_of_signal = master_sticky_faults.RemoteLossOfSignal
         status_message.right_arm_base_remote_loss_of_signal = follower_sticky_faults.RemoteLossOfSignal
         status_message.left_arm_base_reset_during_en = master_sticky_faults.ResetDuringEn

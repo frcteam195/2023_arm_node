@@ -56,7 +56,7 @@ class IntermediateHighConeState(StateMachine.State):
            self.side is ArmStateMachine.get_goal_side(self.machine.goal_state) and \
            self.machine.goal_state in TRANSITIONS:
             return self.machine.goal_state
-        elif self.arm.is_at_setpoint_raw(0.06, 0.06) and self.machine.goal_state not in TRANSITIONS:
+        elif self.arm.is_at_setpoint_raw(0.06, 0.06) and self.machine.goal_state not in TRANSITIONS and self.arm.is_retracted():
             return transition_to_intermediate(self.side is ArmStateMachine.GoalSides.FRONT)
         else:
             return self.get_enum()
