@@ -51,7 +51,9 @@ STATES_TO_MSG = {
     ArmStateMachine.States.STEAL_FRONT : Arm_Status.STEAL_FRONT,
     ArmStateMachine.States.STEAL_BACK : Arm_Status.STEAL_BACK,
     ArmStateMachine.States.PRE_DEAD_CONE_FRONT : Arm_Status.PRE_DEAD_CONE_FRONT,
-    ArmStateMachine.States.PRE_DEAD_CONE_BACK : Arm_Status.PRE_DEAD_CONE_BACK
+    ArmStateMachine.States.PRE_DEAD_CONE_BACK : Arm_Status.PRE_DEAD_CONE_BACK,
+    ArmStateMachine.States.SPORT_MODE_FRONT : Arm_Status.SPORT_MODE_FRONT,
+    ArmStateMachine.States.SPORT_MODE_BACK : Arm_Status.SPORT_MODE_BACK
 }
 
 def transition_to_intermediate(is_front: bool) -> StateMachine.State:
@@ -88,8 +90,8 @@ def standard_step(arm: Arm, position: ArmPosition, control_wrist=True):
 
     arm.set_motion_magic(position)
 
-def goal_is_high(machine: ArmStateMachine):
-    return machine.goal_state in ArmStateMachine.HIGH_INTERMEDIATE_NEEDED
+# def goal_is_high(machine: ArmStateMachine):
+#     return machine.goal_state in ArmStateMachine.HIGH_INTERMEDIATE_NEEDED
 
 
 # ARM_GOAL_DICT = {
@@ -127,6 +129,7 @@ FRONT_GOALS = {
     Arm_Goal.HIGH_CONE : ArmStateMachine.States.HIGH_CONE_FRONT,
     Arm_Goal.HIGH_CUBE : ArmStateMachine.States.HIGH_CUBE_FRONT,
     Arm_Goal.PRE_SCORE : ArmStateMachine.States.PRE_SCORE_FRONT,
+    Arm_Goal.SPORT_MODE : ArmStateMachine.States.SPORT_MODE_FRONT
 }
 
 BACK_GOALS = {
@@ -142,6 +145,7 @@ BACK_GOALS = {
     Arm_Goal.HIGH_CONE : ArmStateMachine.States.HIGH_CONE_BACK,
     Arm_Goal.HIGH_CUBE : ArmStateMachine.States.HIGH_CUBE_BACK,
     Arm_Goal.PRE_SCORE : ArmStateMachine.States.PRE_SCORE_BACK,
+    Arm_Goal.SPORT_MODE : ArmStateMachine.States.SPORT_MODE_BACK
 }
 
 SIDE_GOALS = {
