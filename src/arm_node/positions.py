@@ -46,8 +46,7 @@ POS_HIGH_CUBE_RETRACTION_INTERMEDIATE = ArmPosition(-8, 90, 8, -90)
 POS_MID_CONE_EXTENSION_INTERMEDIATE = ArmPosition(14.06, 93, -14.06, -93)
 POS_MID_CONE_RETRACTION_INTERMEDIATE = ArmPosition(-8.41, 104.3, 8, -99.8)
 POS_MID_CUBE_INTERMEDIATE = ArmPosition(-8, 68.88, 8, -68.88)
-POS_SPORT_MODE = ArmPosition(-58.80791801324744, 10.546875, 58.80791801324744, -10.546875) # Setting this to the same as intermediate for right now
-# POS_SPORT_MODE = ArmPosition(-58.80791801324744, 0.0, 58.80791801324744, 0.0) # Setting this to the same as intermediate for right now
+POS_SPORT_MODE = ArmPosition(-57.0, 10.50, 57.0, -10.50) # Setting this to the same as intermediate for right now
 
 
 def mirror_position(position: ArmPosition) -> ArmPosition:

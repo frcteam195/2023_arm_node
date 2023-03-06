@@ -89,7 +89,7 @@ def ros_func():
         status_message = arm.get_status()
         status_message.goal = state_to_msg(state_machine.goal_state)
         status_message.state = STATES_TO_MSG[state_machine.state]
-        status_message.arm_at_setpoint = state_machine.goal_state == state_machine.state and arm.is_at_setpoint_raw(0.007, 0.007)
+        status_message.arm_at_setpoint = state_machine.goal_state == state_machine.state and arm.is_at_setpoint_raw(0.008, 0.008)
         status_message.arm_base_deviation_deg = arm.get_base_deviation_deg()
         status_message.arm_upper_deviation_deg = arm.get_upper_deviation_deg()
         status_message.is_node_alive = True
