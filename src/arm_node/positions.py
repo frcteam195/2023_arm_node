@@ -34,7 +34,7 @@ POS_MID_CUBE = ArmPosition(0, 68.88, 0, -68.88)
 POS_HIGH_CUBE = ArmPosition(16, 111, -16, -111)
 # POS_HIGH_CUBE_AUTO = ArmPosition(8, 100, -8, -100)    #AUTO POS MAYBE
 # POS_MID_CONE = ArmPosition(14.06, 104.3, -14.06, -99.8) - without piston extensions
-POS_MID_CONE = ArmPosition(-6, 81.73, 6, -81.73)
+POS_MID_CONE = ArmPosition(-11, 81.73, 6, -81.73)
 POS_HIGH_CONE = ArmPosition(19, 131.33, -25, -133)
 
 POS_INTERMEDIATE = ArmPosition(-16.41, 28.0, 16.41, -28.0)
@@ -46,8 +46,8 @@ POS_HIGH_CUBE_EXTENSION_INTERMEDIATE = ArmPosition(-8, 100, 8, -100)
 POS_HIGH_CUBE_RETRACTION_INTERMEDIATE = ArmPosition(-8, 90, 8, -90)
 # POS_MID_CONE_EXTENSION_INTERMEDIATE = ArmPosition(14.06, 93, -14.06, -93) - without piston extension
 # POS_MID_CONE_RETRACTION_INTERMEDIATE = ArmPosition(-8.41, 104.3, 8, -99.8) - without piston extension
-POS_MID_CONE_EXTENSION_INTERMEDIATE = ArmPosition(-6, 81.73, 6, -81.73)
-POS_MID_CONE_RETRACTION_INTERMEDIATE = ArmPosition(-6, 81.73, 6, -81.73)
+POS_MID_CONE_EXTENSION_INTERMEDIATE = ArmPosition(-11, 81.73, 6, -81.73)
+POS_MID_CONE_RETRACTION_INTERMEDIATE = ArmPosition(-11, 81.73, 6, -81.73)
 POS_MID_CUBE_INTERMEDIATE = ArmPosition(-8, 68.88, 8, -68.88)
 POS_SPORT_MODE = ArmPosition(-57.0, 10.50, 57.0, -10.50) # Setting this to the same as intermediate for right now
 
