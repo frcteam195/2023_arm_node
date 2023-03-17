@@ -34,7 +34,7 @@ POS_MID_CUBE = ArmPosition(0, 68.88, 0, -68.88)
 POS_HIGH_CUBE = ArmPosition(16, 111, -16, -111)
 # POS_HIGH_CUBE_AUTO = ArmPosition(8, 100, -8, -100)    #AUTO POS MAYBE
 # POS_MID_CONE = ArmPosition(14.06, 104.3, -14.06, -99.8) - without piston extensions
-POS_MID_CONE = ArmPosition(-11, 81.73, 5.5, -81.73)
+POS_MID_CONE = ArmPosition(-9.5, 81.73, 6, -81.73)
 POS_HIGH_CONE = ArmPosition(19, 131.33, -25, -133)
 
 POS_INTERMEDIATE = ArmPosition(-16.41, 28.0, 16.41, -28.0)
