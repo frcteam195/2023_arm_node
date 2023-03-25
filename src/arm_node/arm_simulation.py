@@ -90,13 +90,84 @@ class ArmSimulation:
         arm_extender_cross_cube.set_color(Color(.7, .7, .7, 1.0))
         arm_extender_cross_cube.publish()
 
-        wrist_cube = Cube("wrist_link")
-        wrist_transform = Transform()
-        wrist_transform.linear.z = 0.005
-        wrist_cube.set_transform(wrist_transform)
-        wrist_cube.set_scale(Scale(inches_to_meters(5), inches_to_meters(5), inches_to_meters(1.5)))
-        wrist_cube.set_color(Color(1, .7, .7, 1.0))
-        wrist_cube.publish()
+        intake_rectangle = Cube("intake")
+        intake_rectangle_transform = Transform()
+        intake_rectangle.set_transform(intake_rectangle_transform)
+        intake_rectangle.set_scale(Scale(inches_to_meters(2), inches_to_meters(8), inches_to_meters(10))) 
+        intake_rectangle.set_color(Color(.7, .7, .7, 1.0))
+        intake_rectangle.publish()
+
+        wide_intake_rectangle = Cube("wide_intake")
+        wide_intake_rectangle_transform = Transform()
+        wide_intake_rectangle.set_transform(wide_intake_rectangle_transform)
+        wide_intake_rectangle.set_scale(Scale(inches_to_meters(8), inches_to_meters(8), inches_to_meters(2))) 
+        wide_intake_rectangle.set_color(Color(.7, .7, .7, 1.0))
+        wide_intake_rectangle.publish()
+
+        intake_arrow = Arrow("intake_arrow")
+        intake_arrow_transform = Transform()
+        intake_arrow.set_transform(intake_arrow_transform)
+        intake_arrow.set_scale(Scale(0.5, 0.1, 0.1))
+        intake_arrow.set_color(Color(0.949, 0.875, 0.027, 1.0)) 
+        intake_arrow.publish()
+
+        intake_support_1_cube = Cube("intake_support")
+        intake_support_1_transform = Transform()
+        intake_support_1_transform.linear.y = inches_to_meters(-5.420734)
+        intake_support_1_cube.set_transform(intake_support_1_transform)
+        intake_support_1_cube.set_scale(Scale(inches_to_meters(2), inches_to_meters(1), inches_to_meters(9)))
+        intake_support_1_cube.set_color(Color(.7, .7, .7, 1.0))
+        intake_support_1_cube.publish()
+
+        intake_support_2_cube = Cube("intake_support")
+        intake_support_2_transform = Transform()
+        intake_support_2_transform.linear.y = inches_to_meters(5.420734)
+        intake_support_2_cube.set_transform(intake_support_2_transform)
+        intake_support_2_cube.set_scale(Scale(inches_to_meters(2), inches_to_meters(1), inches_to_meters(9)))
+        intake_support_2_cube.set_color(Color(.7, .7, .7, 1.0))
+        intake_support_2_cube.publish()
+
+    def publish_intake_link(self, degrees : float):
+        transform = Transform()
+        transform.linear.z = inches_to_meters(14)
+        transform.angular.pitch = math.radians(degrees)
+
+        transform_link = TransformLink("intake", "arm_extender")
+        transform_link.set_transform(transform)
+        transform_link.publish()
+
+    def publish_wide_intake_link(self, degrees : float):
+        transform = Transform()
+        transform.linear.z = inches_to_meters(5)
+        transform.angular.pitch = 0#math.radians(degrees)
+
+        transform_link = TransformLink("wide_intake", "intake")
+        transform_link.set_transform(transform)
+        transform_link.publish()
+    
+    def publish_intake_arrow_link(self, pitch_degrees : float, intake: float):
+        transform = Transform()
+        
+        if intake > 0 :
+            transform.angular.pitch = math.radians(pitch_degrees)
+            transform.linear.z = 1
+        elif intake < 0:
+            transform.angular.pitch = math.radians(-pitch_degrees)
+            transform.linear.z = 0.5
+        else:
+            transform.linear.z = 100
+
+        transform_link = TransformLink("intake_arrow", "arm_extender")
+        transform_link.set_transform(transform)
+        transform_link.publish()
+    
+    def publish_intake_support_link(self):
+        transform = Transform()
+        transform.linear.z = inches_to_meters(9)
+
+        transform_link = TransformLink("intake_support", "arm_extender")
+        transform_link.set_transform(transform)
+        transform_link.publish()
 
     def publish_arm_base_link(self, degrees : float):
         transform = Transform()
@@ -127,10 +198,4 @@ class ArmSimulation:
         transform_link.set_transform(transform)
         transform_link.publish()
 
-    def publish_arm_wrist_link(self, degrees : float):
-        transform = Transform()
-        transform.angular.yaw = math.radians(degrees)
-        transform.linear.z = inches_to_meters(9.763878)
-        transform_link = TransformLink("wrist_link", "arm_extender")
-        transform_link.set_transform(transform)
-        transform_link.publish()
+    
