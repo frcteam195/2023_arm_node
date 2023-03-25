@@ -8,28 +8,30 @@ from ck_utilities_py_node.solenoid import *
 from ck_utilities_py_node.StateMachine import StateMachine
 
 
-class LowScoreState(StateMachine.State):
+class ShelfConeState(StateMachine.State):
 
     def __init__(self, machine, arm, side=ArmStateMachine.GoalSides.FRONT):
         self.machine: ArmStateMachine = machine
         self.arm: Arm = arm
         self.side: ArmStateMachine.GoalSides = side
 
-        self.position: ArmPosition = POS_LOW_SCORE
-
+        self.position: ArmPosition = POS_SHELF_CONE
         if self.side is ArmStateMachine.GoalSides.BACK:
             self.position = mirror_position(self.position)
 
     def get_enum(self):
         if self.side is ArmStateMachine.GoalSides.FRONT:
-            return ArmStateMachine.States.LOW_SCORE_FRONT
+            return ArmStateMachine.States.SHELF_CONE_FRONT
         else:
-            return ArmStateMachine.States.LOW_SCORE_BACK
+            return ArmStateMachine.States.SHELF_CONE_BACK
 
     def entry(self):
         self.arm.disable_brakes()
-            
+        self.arm.config_arm_fast()
+
     def step(self):
+        if self.side is ArmStateMachine.GoalSides.BACK:
+            self.position = mirror_position(self.position)
         standard_step(self.arm, self.position)
 
     def transition(self) -> Enum:

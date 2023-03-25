@@ -8,7 +8,7 @@ from ck_utilities_py_node.solenoid import *
 from ck_utilities_py_node.StateMachine import StateMachine
 
 
-class ShelfState(StateMachine.State):
+class ShelfCubeState(StateMachine.State):
 
     def __init__(self, machine, arm, side=ArmStateMachine.GoalSides.FRONT):
         self.machine: ArmStateMachine = machine
@@ -21,16 +21,15 @@ class ShelfState(StateMachine.State):
 
     def get_enum(self):
         if self.side is ArmStateMachine.GoalSides.FRONT:
-            return ArmStateMachine.States.SHELF_FRONT
+            return ArmStateMachine.States.SHELF_CUBE_FRONT
         else:
-            return ArmStateMachine.States.SHELF_BACK
+            return ArmStateMachine.States.SHELF_CUBE_BACK
 
     def entry(self):
         self.arm.disable_brakes()
         self.arm.config_arm_fast()
 
     def step(self):
-        self.position = POS_SHELF_CONE if self.machine.intake_pinched else POS_SHELF_CUBE
         if self.side is ArmStateMachine.GoalSides.BACK:
             self.position = mirror_position(self.position)
         standard_step(self.arm, self.position)
