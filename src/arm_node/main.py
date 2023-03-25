@@ -98,7 +98,7 @@ def ros_func():
             arm_simulation.publish_arm_extender_link(extension_solenoid.get() == SolenoidState.ON)
             arm_simulation.publish_intake_link(wristMotor.get_sensor_position() * 360.0)
             arm_simulation.publish_wide_intake_link(wristMotor.get_sensor_position() * 360.0)
-            arm_simulation.publish_intake_arrow_link(90, 0)#intakeRollerMotor.get_sensor_velocity())
+            arm_simulation.publish_intake_arrow_link(90, 20)#intakeRollerMotor.get_sensor_velocity())
             arm_simulation.publish_intake_support_link() 
 
             # Flip limelight depending on arm position.
