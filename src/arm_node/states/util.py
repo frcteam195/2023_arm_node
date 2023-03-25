@@ -61,6 +61,9 @@ STATES_TO_MSG = {
 }
 
 def transition_to_intermediate(is_front: bool) -> StateMachine.State:
+    """
+    Transition to an intermediate state depending on the front/back side.
+    """
     if is_front:
         return ArmStateMachine.States.INTERMEDIATE_FRONT
     else:
@@ -80,9 +83,10 @@ def standard_step(arm: Arm, position: ArmPosition):
     #     machine.upperMotor.set(ControlMode.MOTION_MAGIC, position.upper_position)
 
     # Apply brakes when within the setpoint, but only disable the brakes if it's much farther off.
-    if arm.is_at_setpoint_raw(0.008, 0.008):
+    # Ignore the wrist for this application.
+    if arm.is_at_setpoint_raw(0.008, 0.008, 1.0):
         arm.enable_brakes()
-    elif not arm.is_at_setpoint_raw(0.01, 0.01):
+    elif not arm.is_at_setpoint_raw(0.01, 0.01, 1.0):
         arm.disable_brakes()
 
     arm.set_motion_magic(position)
@@ -172,9 +176,10 @@ INTAKE_GOALS = {
 }
 
 def goal_msg_to_state(goal_msg: Arm_Goal):
+    """
+    Convert the arm goal message to the internal arm state.
+    """
     return SIDE_GOALS[goal_msg.goal_side][goal_msg.goal]
-
-
 
 def state_to_msg(state: ArmStateMachine.States) -> Arm_Goal:
     goal_msg = Arm_Goal()

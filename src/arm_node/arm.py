@@ -35,10 +35,6 @@ class Arm:
         self.__lower_arm_default_accel = self.baseMotor.config.motionCruiseAcceleration
         self.__lower_arm_default_s_curve = self.baseMotor.config.motionSCurveStrength
 
-        self.__wrist_default_cruise_vel = self.wristMotor.config.motionCruiseVelocity
-        self.__wrist_default_accel = self.wristMotor.config.motionCruiseAcceleration
-        self.__wrist_default_s_curve = self.wristMotor.config.motionSCurveStrength
-
     def set_motion_magic(self, angle: ArmPosition):
         """
         Converts the arm positions from degrees to rotations, then commands motion magic.
@@ -61,13 +57,13 @@ class Arm:
         self.upperMotor.set(ControlMode.PERCENT_OUTPUT, upper)
         self.wristMotor.set(ControlMode.PERCENT_OUTPUT, wrist)
 
-    def is_at_setpoint(self, base_tolerance, upper_tolerance, wrist_tolerance) -> bool:
+    def is_at_setpoint(self, base_tolerance, upper_tolerance, wrist_tolerance = 360.0) -> bool:
         """
         Checks if the arm and wrist are at the setpoint, using tolerances in degrees.
         """
         return self.is_at_setpoint_raw(base_tolerance / 360.0, upper_tolerance / 360.0, wrist_tolerance / 360.0)
 
-    def is_at_setpoint_raw(self, base_tolerance, upper_tolerance, wrist_tolerance) -> bool:
+    def is_at_setpoint_raw(self, base_tolerance, upper_tolerance, wrist_tolerance = 1.0) -> bool:
         """
         Checks if the arm and wrist are at the setpoint, using tolerances in rotations.
         """

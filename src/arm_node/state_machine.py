@@ -219,12 +219,11 @@ class ArmStateMachine(StateMachine):
         if self.goal_state is not new_goal:
             self.goal_state = new_goal
 
-    def set_goals(self, arm_goal, wrist_goal):
+    def set_goals(self, arm_goal):
         self.set_goal(arm_goal)
-        self.wrist_goal = wrist_goal
 
-    def goal_is_high(self) -> bool:
-        return self.goal_state in ArmStateMachine.HIGH_INTERMEDIATE_NEEDED
+    # def goal_is_high(self) -> bool:
+    #     return self.goal_state in ArmStateMachine.HIGH_INTERMEDIATE_NEEDED
 
     @staticmethod
     def get_goal_side(goal):

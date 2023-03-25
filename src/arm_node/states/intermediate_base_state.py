@@ -52,7 +52,7 @@ class IntermediateBaseState(StateMachine.State):
 
 
     def transition(self) -> Enum:
-        if self.arm.is_at_setpoint_raw(0.2, 0.25) and self.arm.is_retracted() and self.is_base_arm_opposite() and self.arm.wrist_at_setpoint(0.04):
+        if self.arm.is_at_setpoint_raw(0.2, 0.25, 0.04) and self.arm.is_retracted() and self.is_base_arm_opposite():
             if self.side is not ArmStateMachine.get_goal_side(self.machine.goal_state):
                 return ArmStateMachine.States.HOME
             if self.machine.goal_state in ArmStateMachine.REDIRECTED_STATES:
