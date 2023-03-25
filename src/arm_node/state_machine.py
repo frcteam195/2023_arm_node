@@ -22,43 +22,47 @@ class ArmStateMachine(StateMachine):
         GROUND_CUBE_FRONT=4
         GROUND_CONE_FRONT=5
         GROUND_DEAD_CONE_FRONT=6
-        SHELF_FRONT=7
-        LOW_SCORE_FRONT=8
+        SHELF_CUBE_FRONT=7
+        LOW_CUBE_FRONT=8
         MID_CUBE_FRONT=9
         HIGH_CUBE_FRONT=10
-        MID_CONE_FRONT=11
-        HIGH_CONE_FRONT=12
-        PRE_SCORE_FRONT=13
-        INTERMEDIATE_HIGH_CONE_FRONT=14
-        INTERMEDIATE_HIGH_CUBE_FRONT=15
-        INTERMEDIATE_MID_CONE_FRONT=16
-        INTERMEDIATE_MID_CUBE_FRONT=17
-        SPORT_MODE_FRONT=18
+        SHELF_CONE_FRONT=11
+        LOW_CONE_FRONT=12
+        MID_CONE_FRONT=13
+        HIGH_CONE_FRONT=14
+        PRE_SCORE_FRONT=15
+        INTERMEDIATE_HIGH_CONE_FRONT=16
+        INTERMEDIATE_HIGH_CUBE_FRONT=17
+        INTERMEDIATE_MID_CONE_FRONT=18
+        INTERMEDIATE_MID_CUBE_FRONT=19
+        SPORT_MODE_FRONT=20
 
 
-        INTERMEDIATE_BACK=19
-        INTERMEDIATE_GROUND_BACK=20
-        GROUND_CUBE_BACK=21
-        GROUND_CONE_BACK=22
-        GROUND_DEAD_CONE_BACK=23
-        SHELF_BACK=24
-        LOW_SCORE_BACK=25
-        MID_CUBE_BACK=26
-        HIGH_CUBE_BACK=27
-        MID_CONE_BACK=28
-        HIGH_CONE_BACK=29
-        PRE_SCORE_BACK=30
-        INTERMEDIATE_HIGH_CONE_BACK=31
-        INTERMEDIATE_HIGH_CUBE_BACK=32
-        INTERMEDIATE_MID_CONE_BACK=33
-        INTERMEDIATE_MID_CUBE_BACK=34
-        SPORT_MODE_BACK=35
+        INTERMEDIATE_BACK=21
+        INTERMEDIATE_GROUND_BACK=22
+        GROUND_CUBE_BACK=23
+        GROUND_CONE_BACK=24
+        GROUND_DEAD_CONE_BACK=25
+        SHELF_CUBE_BACK=26
+        LOW_CUBE_BACK=27
+        MID_CUBE_BACK=28
+        HIGH_CUBE_BACK=29
+        SHELF_CONE_BACK=30
+        LOW_CONE_BACK=31
+        MID_CONE_BACK=32
+        HIGH_CONE_BACK=33
+        PRE_SCORE_BACK=34
+        INTERMEDIATE_HIGH_CONE_BACK=35
+        INTERMEDIATE_HIGH_CUBE_BACK=36
+        INTERMEDIATE_MID_CONE_BACK=37
+        INTERMEDIATE_MID_CUBE_BACK=38
+        SPORT_MODE_BACK=39
 
-        STEAL_FRONT=36
-        STEAL_BACK=37
+        STEAL_FRONT=40
+        STEAL_BACK=41
 
-        PRE_DEAD_CONE_FRONT=38
-        PRE_DEAD_CONE_BACK=39
+        PRE_DEAD_CONE_FRONT=42
+        PRE_DEAD_CONE_BACK=43
 
         # INTERMEDIATE_DEAD_CONE_FRONT=36
         # INTERMEDIATE_DEAD_CONE_BACK=37
@@ -75,10 +79,12 @@ class ArmStateMachine(StateMachine):
         States.GROUND_CONE_FRONT,
         States.PRE_DEAD_CONE_FRONT,
         States.GROUND_DEAD_CONE_FRONT,
-        States.SHELF_FRONT,
-        States.LOW_SCORE_FRONT,
+        States.SHELF_CUBE_FRONT,
+        States.LOW_CUBE_FRONT,
         States.MID_CUBE_FRONT,
         States.HIGH_CUBE_FRONT,
+        States.SHELF_CONE_FRONT,
+        States.LOW_CONE_FRONT,
         States.MID_CONE_FRONT,
         States.HIGH_CONE_FRONT,
         States.STEAL_FRONT,
@@ -97,10 +103,12 @@ class ArmStateMachine(StateMachine):
         States.GROUND_CONE_BACK,
         States.PRE_DEAD_CONE_BACK,
         States.GROUND_DEAD_CONE_BACK,
-        States.SHELF_BACK,
-        States.LOW_SCORE_BACK,
+        States.SHELF_CUBE_BACK,
+        States.LOW_CUBE_BACK,
         States.MID_CUBE_BACK,
         States.HIGH_CUBE_BACK,
+        States.SHELF_CONE_BACK,
+        States.LOW_CONE_BACK,
         States.MID_CONE_BACK,
         States.HIGH_CONE_BACK,
         States.STEAL_BACK,
@@ -135,12 +143,14 @@ class ArmStateMachine(StateMachine):
         from arm_node.states.home_state import HomeState
         from arm_node.states.intermediate_base_state import IntermediateBaseState
         from arm_node.states.intermediate_ground_state import IntermediateGroundState
-        from arm_node.states.shelf_state import ShelfState
+        from arm_node.states.shelf_cube_state import ShelfCubeState
+        from arm_node.states.shelf_cone_state import ShelfConeState
         from arm_node.states.high_cube_state import HighCubeState
         from arm_node.states.high_cone_state import HighConeState
         from arm_node.states.mid_cone_state import MidConeState
         from arm_node.states.mid_cube_state import MidCubeState
-        from arm_node.states.low_score_state import LowScoreState
+        from arm_node.states.low_cone_state import LowConeState
+        from arm_node.states.low_cube_state import LowCubeState
         from arm_node.states.ground_cone_state import GroundConeState
         from arm_node.states.ground_cube_state import GroundCubeState
         from arm_node.states.ground_dead_cone_state import GroundDeadConeState
@@ -159,8 +169,10 @@ class ArmStateMachine(StateMachine):
             ArmStateMachine.States.INTERMEDIATE_GROUND_FRONT : IntermediateGroundState(self, arm),
             ArmStateMachine.States.INTERMEDIATE_BACK : IntermediateBaseState(self, arm, ArmStateMachine.GoalSides.BACK),
             ArmStateMachine.States.INTERMEDIATE_GROUND_BACK : IntermediateGroundState(self, arm, ArmStateMachine.GoalSides.BACK),
-            ArmStateMachine.States.SHELF_FRONT : ShelfState(self, arm),
-            ArmStateMachine.States.SHELF_BACK : ShelfState(self, arm, ArmStateMachine.GoalSides.BACK),
+            ArmStateMachine.States.SHELF_CUBE_FRONT : ShelfCubeState(self, arm),
+            ArmStateMachine.States.SHELF_CUBE_BACK : ShelfCubeState(self, arm, ArmStateMachine.GoalSides.BACK),
+            ArmStateMachine.States.SHELF_CONE_FRONT : ShelfConeState(self, arm),
+            ArmStateMachine.States.SHELF_CONE_BACK : ShelfConeState(self, arm, ArmStateMachine.GoalSides.BACK),
             ArmStateMachine.States.HIGH_CUBE_FRONT : HighCubeState(self, arm),
             ArmStateMachine.States.HIGH_CUBE_BACK : HighCubeState(self, arm, ArmStateMachine.GoalSides.BACK),
             ArmStateMachine.States.HIGH_CONE_FRONT : HighConeState(self, arm),
@@ -169,8 +181,10 @@ class ArmStateMachine(StateMachine):
             ArmStateMachine.States.MID_CONE_BACK : MidConeState(self, arm, ArmStateMachine.GoalSides.BACK),
             ArmStateMachine.States.MID_CUBE_FRONT : MidCubeState(self, arm),
             ArmStateMachine.States.MID_CUBE_BACK : MidCubeState(self, arm, ArmStateMachine.GoalSides.BACK),
-            ArmStateMachine.States.LOW_SCORE_FRONT : LowScoreState(self, arm),
-            ArmStateMachine.States.LOW_SCORE_BACK : LowScoreState(self, arm, ArmStateMachine.GoalSides.BACK),
+            ArmStateMachine.States.LOW_CONE_FRONT : LowConeState(self, arm),
+            ArmStateMachine.States.LOW_CONE_BACK : LowConeState(self, arm, ArmStateMachine.GoalSides.BACK),
+            ArmStateMachine.States.LOW_CUBE_FRONT : LowCubeState(self, arm),
+            ArmStateMachine.States.LOW_CUBE_BACK : LowCubeState(self, arm, ArmStateMachine.GoalSides.BACK),
             ArmStateMachine.States.GROUND_CONE_FRONT : GroundConeState(self, arm),
             ArmStateMachine.States.GROUND_CONE_BACK : GroundConeState(self, arm, ArmStateMachine.GoalSides.BACK),
             ArmStateMachine.States.GROUND_CUBE_FRONT : GroundCubeState(self, arm),
