@@ -10,7 +10,7 @@ from ck_ros_msgs_node.msg import Arm_Goal, Arm_Status
 
 from frc_robot_utilities_py_node.odometry_helper import OdometryHelper
 
-from actions_node.game_specific_actions.constant import RollerState, WristPosition
+from actions_node.game_specific_actions.constant import RollerState
 
 odom = OdometryHelper()
 
@@ -66,7 +66,7 @@ def transition_to_intermediate(is_front: bool) -> StateMachine.State:
     else:
         return ArmStateMachine.States.INTERMEDIATE_BACK
 
-def standard_step(arm: Arm, position: ArmPosition, control_wrist=True):
+def standard_step(arm: Arm, position: ArmPosition):
     """
     Standard arm control.
     """
@@ -84,12 +84,6 @@ def standard_step(arm: Arm, position: ArmPosition, control_wrist=True):
         arm.enable_brakes()
     elif not arm.is_at_setpoint_raw(0.01, 0.01):
         arm.disable_brakes()
-
-    # if wrist_position is not WristPosition.Unchanged:
-    #     arm.set_wrist(wrist_position.value)
-
-    if control_wrist:
-        arm.set_wrist(arm.wrist_goal)
 
     arm.set_motion_magic(position)
 
@@ -169,12 +163,6 @@ INVERTED_SIDES = {
     ArmStateMachine.GoalSides.BACK : Arm_Goal.SIDE_BACK
 }
 
-WRIST_GOALS = {
-    Arm_Goal.WRIST_ZERO : WristPosition.Zero,
-    Arm_Goal.WRIST_90 : WristPosition.Left_90,
-    Arm_Goal.WRIST_180 : WristPosition.Left_180
-}
-
 INTAKE_GOALS = {
     Arm_Goal.INTAKE_OFF : RollerState.Off,
     Arm_Goal.INTAKE_CONE : RollerState.Intake_Cone,
@@ -199,9 +187,6 @@ def state_to_msg(state: ArmStateMachine.States) -> Arm_Goal:
         goal_msg.goal = INVERTED_BACK_GOALS[state]
 
     return goal_msg
-
-def wrist_msg_to_state(goal_msg: Arm_Goal) -> WristPosition:
-    return WRIST_GOALS[goal_msg.wrist_goal]
 
 def intake_msg_to_state(goal_msg: Arm_Goal) -> RollerState:
     """

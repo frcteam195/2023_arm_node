@@ -13,9 +13,9 @@ from ck_utilities_py_node.constraints import *
 from arm_node.state_machine import ArmStateMachine
 from arm_node.positions import *
 from arm_node.arm import Arm
-from arm_node.states.util import goal_msg_to_state, intake_msg_to_state, state_to_msg, wrist_msg_to_state, STATES_TO_MSG
+from arm_node.states.util import goal_msg_to_state, intake_msg_to_state, state_to_msg, STATES_TO_MSG
 from limelight_vision_node.msg import Limelight, Limelight_Control
-from actions_node.game_specific_actions.constant import RollerState, WristPosition
+from actions_node.game_specific_actions.constant import RollerState
 # import cProfile
 
 
@@ -46,7 +46,7 @@ def ros_func():
 
     rate = rospy.Rate(100)
 
-    arm = Arm(baseArmMaster, upperArmMaster, wristMotor, intakeMotor, base_brake_solenoid, upper_brake_solenoid, extension_solenoid, POS_HOME, None, None)
+    arm = Arm(baseArmMaster, upperArmMaster, wristMotor, intakeMotor, base_brake_solenoid, upper_brake_solenoid, extension_solenoid, POS_HOME_CONE, None, None)
 
     state_machine = ArmStateMachine(arm)
 
@@ -59,19 +59,15 @@ def ros_func():
         goal_msg: Arm_Goal = goal_subscriber.get()
 
         arm_goal = None
-        wrist_goal = None
 
         if goal_msg is not None:
             arm_goal = goal_msg_to_state(goal_msg)
             intake_goal = intake_msg_to_state(goal_msg)
-            wrist_goal = wrist_msg_to_state(goal_msg)
         else:
             arm_goal = state_machine.goal_state
-            wrist_goal = state_machine.wrist_goal
 
         if robot_mode in (RobotMode.TELEOP, RobotMode.AUTONOMOUS):
             state_machine.set_goal(arm_goal)
-            arm.wrist_goal = wrist_goal
             arm.control_intake(intake_goal, goal_msg.speed)
             state_machine.step()
         elif robot_mode == RobotMode.DISABLED:
@@ -83,7 +79,7 @@ def ros_func():
             wristMotor.set(ControlMode.PERCENT_OUTPUT, 0.0)
             intakeMotor.set(ControlMode.PERCENT_OUTPUT, 0.0)
 
-        status_message = arm.get_status()
+        status_message : Arm_Status = arm.get_status()
         status_message.goal = state_to_msg(state_machine.goal_state)
         status_message.state = STATES_TO_MSG[state_machine.state]
         status_message.arm_at_setpoint = state_machine.goal_state == state_machine.state and arm.is_at_setpoint_raw(0.008, 0.008)

@@ -9,8 +9,6 @@ from frc_robot_utilities_py_node.RobotStatusHelperPy import RobotMode
 from enum import Enum
 import rospy
 
-from actions_node.game_specific_actions.constant import WristPosition
-
 class ArmStateMachine(StateMachine):
 
 
@@ -212,8 +210,6 @@ class ArmStateMachine(StateMachine):
         state = ArmStateMachine.States.HOME
 
         self.goal_state = ArmStateMachine.States.HOME
-
-        self.wrist_goal = WristPosition.Zero
 
         self.intake_pinched = False
 
