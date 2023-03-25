@@ -13,7 +13,7 @@ class HomeState(StateMachine.State):
     def __init__(self, machine, arm):
         self.machine: ArmStateMachine = machine
         self.arm: Arm = arm
-        self.position: ArmPosition = POS_HOME
+        self.position: ArmPosition = POS_HOME_CONE
 
     def get_enum(self):
         return ArmStateMachine.States.HOME
