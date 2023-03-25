@@ -169,7 +169,7 @@ class ArmSimulation:
         transform_link = TransformLink("intake_arrow", "arm_extender")
         transform_link.set_transform(transform)
         transform_link.publish()
-    
+
     def publish_intake_support_link(self):
         transform = Transform()
         transform.linear.z = inches_to_meters(9)
@@ -206,5 +206,3 @@ class ArmSimulation:
         transform_link = TransformLink("arm_extender", "arm_upper")
         transform_link.set_transform(transform)
         transform_link.publish()
-
-    

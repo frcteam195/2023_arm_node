@@ -18,8 +18,8 @@ class ArmPosition:
     wrist_position_rear: float = 0.0
 
 
-POS_HOME_CUBE = ArmPosition(0.0, 0.0, 90.0, 0.0, 0.0, -90.0)
-POS_HOME_CONE = ArmPosition(0.0, 0.0, 0.0)
+POS_HOME_CUBE = ArmPosition(0.0, 0.0, 118.916)
+POS_HOME_CONE = ArmPosition(0.0, 0.0, 118.916)
 
 POS_STEAL = ArmPosition(16.70, 82.08, 0.0, -16.70, -82.08, 0.0)  # Fake
 
