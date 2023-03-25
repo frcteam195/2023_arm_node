@@ -51,6 +51,7 @@ def ros_func():
     state_machine = ArmStateMachine(arm)
 
     intake_goal = RollerState.Off
+    intake_speed = 0
 
     frame_count = 0
 
@@ -63,12 +64,13 @@ def ros_func():
         if goal_msg is not None:
             arm_goal = goal_msg_to_state(goal_msg)
             intake_goal = intake_msg_to_state(goal_msg)
+            intake_speed = goal_msg.speed
         else:
             arm_goal = state_machine.goal_state
 
         if robot_mode in (RobotMode.TELEOP, RobotMode.AUTONOMOUS):
             state_machine.set_goal(arm_goal)
-            arm.control_intake(intake_goal) # TODO: Custom speeds.
+            arm.control_intake(intake_goal, intake_speed)
             state_machine.step()
         elif robot_mode == RobotMode.DISABLED:
             base_brake_solenoid.set(SolenoidState.OFF)
