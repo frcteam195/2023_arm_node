@@ -9,6 +9,9 @@ from ck_utilities_py_node.StateMachine import StateMachine
 
 
 class GroundConeState(StateMachine.State):
+    """
+    Arm state for intaking vertical cones from the ground.
+    """
 
     def __init__(self, machine, arm, side=ArmStateMachine.GoalSides.FRONT):
         self.machine: ArmStateMachine = machine

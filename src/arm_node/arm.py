@@ -35,10 +35,6 @@ class Arm:
         self.__lower_arm_default_accel = self.baseMotor.config.motionCruiseAcceleration
         self.__lower_arm_default_s_curve = self.baseMotor.config.motionSCurveStrength
 
-        self.__wrist_default_cruise_vel = self.wristMotor.config.motionCruiseVelocity
-        self.__wrist_default_accel = self.wristMotor.config.motionCruiseAcceleration
-        self.__wrist_default_s_curve = self.wristMotor.config.motionSCurveStrength
-
     def set_motion_magic(self, angle: ArmPosition):
         """
         Converts the arm positions from degrees to rotations, then commands motion magic.
