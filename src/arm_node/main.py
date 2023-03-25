@@ -68,7 +68,7 @@ def ros_func():
 
         if robot_mode in (RobotMode.TELEOP, RobotMode.AUTONOMOUS):
             state_machine.set_goal(arm_goal)
-            arm.control_intake(intake_goal, goal_msg.speed)
+            arm.control_intake(intake_goal) # TODO: Custom speeds.
             state_machine.step()
         elif robot_mode == RobotMode.DISABLED:
             base_brake_solenoid.set(SolenoidState.OFF)

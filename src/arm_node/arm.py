@@ -57,13 +57,13 @@ class Arm:
         self.upperMotor.set(ControlMode.PERCENT_OUTPUT, upper)
         self.wristMotor.set(ControlMode.PERCENT_OUTPUT, wrist)
 
-    def is_at_setpoint(self, base_tolerance, upper_tolerance, wrist_tolerance) -> bool:
+    def is_at_setpoint(self, base_tolerance, upper_tolerance, wrist_tolerance = 360.0) -> bool:
         """
         Checks if the arm and wrist are at the setpoint, using tolerances in degrees.
         """
         return self.is_at_setpoint_raw(base_tolerance / 360.0, upper_tolerance / 360.0, wrist_tolerance / 360.0)
 
-    def is_at_setpoint_raw(self, base_tolerance, upper_tolerance, wrist_tolerance) -> bool:
+    def is_at_setpoint_raw(self, base_tolerance, upper_tolerance, wrist_tolerance = 1.0) -> bool:
         """
         Checks if the arm and wrist are at the setpoint, using tolerances in rotations.
         """

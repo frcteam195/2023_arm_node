@@ -45,11 +45,11 @@ class IntermediateDeadCone(StateMachine.State):
 
 
     def transition(self) -> Enum:
-        if self.arm.is_at_setpoint_raw(0.06, 0.06) and self.arm.wrist_at_setpoint(0.04) and \
+        if self.arm.is_at_setpoint_raw(0.06, 0.06, 0.04) and \
            self.side is ArmStateMachine.get_goal_side(self.machine.goal_state) and \
            self.machine.goal_state in TRANSITIONS:
             return self.machine.goal_state
-        elif self.arm.is_at_setpoint_raw(0.025, 0.025) and self.arm.wrist_at_setpoint(0.04):
+        elif self.arm.is_at_setpoint_raw(0.025, 0.025, 0.04):
             return transition_to_intermediate(self.side is ArmStateMachine.GoalSides.FRONT)
         else:
             return self.get_enum()
