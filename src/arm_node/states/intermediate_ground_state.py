@@ -38,7 +38,6 @@ class IntermediateGroundState(StateMachine.State):
     def entry(self):
         self.arm.disable_brakes()
         self.arm.retract()
-        self.arm.stow_wrist()
 
     def step(self):
         self.arm.set_motion_magic(self.position)

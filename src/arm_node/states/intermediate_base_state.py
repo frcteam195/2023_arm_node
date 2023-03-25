@@ -35,9 +35,6 @@ class IntermediateBaseState(StateMachine.State):
     def step(self):
         self.arm.set_motion_magic(self.default_position)
 
-        if self.side is not ArmStateMachine.get_goal_side(self.machine.goal_state):
-            self.arm.stow_wrist()
-
     def end(self):
         self.arm.config_arm_normal()
         self.arm.config_lower_arm_normal()
