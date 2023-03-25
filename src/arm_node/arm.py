@@ -1,27 +1,29 @@
-from ck_utilities_py_node.motor import *
-from ck_utilities_py_node.solenoid import *
 
 from arm_node.positions import ArmPosition
 
 from ck_ros_msgs_node.msg import Arm_Status
 
-from actions_node.game_specific_actions.constant import WristPosition
+from actions_node.game_specific_actions.constant import RollerState, WristPosition
 
+from ck_utilities_py_node.ckmath import limit
+from ck_utilities_py_node.motor import *
+from ck_utilities_py_node.solenoid import *
 
 class Arm:
-    def __init__(self, baseMotor, upperMotor, wristMotor, baseBrake, upperBrake, extension, extension2, home_position, lower_limits, upper_limits):
+    def __init__(self, baseMotor, upperMotor, wristMotor, intakeMotor, baseBrake, upperBrake, extension, home_position, lower_limits, upper_limits):
         self.baseMotor: Motor = baseMotor
         self.upperMotor: Motor = upperMotor
         self.wristMotor: Motor = wristMotor
+        self.intakeMotor: Motor = intakeMotor
         self.baseBrake: Solenoid = baseBrake
         self.upperBrake: Solenoid = upperBrake
         self.extension: Solenoid = extension
-        self.extension2: Solenoid = extension2
         self.home_position: ArmPosition = home_position
         self.lower_limits: ArmPosition = lower_limits
         self.upper_limits: ArmPosition = upper_limits
 
         self.wrist_goal: WristPosition = WristPosition.Zero
+        self.intake_goal: RollerState = RollerState.Off
 
 
         self.__upper_arm_default_cruise_vel = self.upperMotor.config.motionCruiseVelocity
@@ -50,10 +52,10 @@ class Arm:
         base_in_range = self.baseMotor.is_at_setpoint(base_tolerance)
         upper_in_range = self.upperMotor.is_at_setpoint(upper_tolerance)
         return base_in_range and upper_in_range
-    
+
     def get_base_deviation_deg(self) -> float:
         return (self.baseMotor.get_setpoint() - self.baseMotor.get_sensor_position()) * 360.0
-    
+
     def get_upper_deviation_deg(self) -> float:
         return (self.upperMotor.get_setpoint() - self.upperMotor.get_sensor_position()) * 360.0
 
@@ -124,11 +126,22 @@ class Arm:
 
     def extend(self):
         self.extension.set(SolenoidState.ON)
-        self.extension2.set(SolenoidState.ON)
 
     def retract(self):
         self.extension.set(SolenoidState.OFF)
-        self.extension2.set(SolenoidState.OFF)
+
+    def control_intake(self, state: RollerState, speed: float = 1.0):
+        """
+        Controls the intake rollers. Default speed is full.
+        """
+        speed = limit(abs(speed), 0.0, 1.0)
+
+        if state in (RollerState.Intake_Cone, RollerState.Outtake_Cube):
+            self.intakeMotor.set(ControlMode.PERCENT_OUTPUT, speed)
+        elif state in (RollerState.Intake_Cube, RollerState.Outtake_Cone):
+            self.intakeMotor.set(ControlMode.PERCENT_OUTPUT, -speed)
+        else:
+            self.intakeMotor.set(ControlMode.PERCENT_OUTPUT, 0.0)
 
     def is_retracted(self) -> bool:
         return self.wristMotor.get_reverse_limit_closed()

@@ -13,9 +13,9 @@ from ck_utilities_py_node.constraints import *
 from arm_node.state_machine import ArmStateMachine
 from arm_node.positions import *
 from arm_node.arm import Arm
-from arm_node.states.util import goal_msg_to_state, state_to_msg, wrist_msg_to_state, STATES_TO_MSG
+from arm_node.states.util import goal_msg_to_state, intake_msg_to_state, state_to_msg, wrist_msg_to_state, STATES_TO_MSG
 from limelight_vision_node.msg import Limelight, Limelight_Control
-from actions_node.game_specific_actions.constant import WristPosition
+from actions_node.game_specific_actions.constant import RollerState, WristPosition
 # import cProfile
 
 
@@ -37,18 +37,20 @@ def ros_func():
     upperArmFollower = Motor("upperArmFollower", MotorType.TalonFX)
 
     wristMotor = Motor("wristMotor", MotorType.TalonFX)
+    intakeMotor = Motor("intake", MotorType.TalonFX)
 
     base_brake_solenoid = Solenoid("base_brake", SolenoidType.SINGLE)
     upper_brake_solenoid = Solenoid("upper_brake", SolenoidType.SINGLE)
 
     extension_solenoid = Solenoid("extension", SolenoidType.SINGLE)
-    extension2_solenoid = Solenoid("extension2", SolenoidType.SINGLE)
 
     rate = rospy.Rate(100)
 
-    arm = Arm(baseArmMaster, upperArmMaster, wristMotor, base_brake_solenoid, upper_brake_solenoid, extension_solenoid, extension2_solenoid, POS_HOME, None, None)
+    arm = Arm(baseArmMaster, upperArmMaster, wristMotor, intakeMotor, base_brake_solenoid, upper_brake_solenoid, extension_solenoid, POS_HOME, None, None)
 
     state_machine = ArmStateMachine(arm)
+
+    intake_goal = RollerState.Off
 
     frame_count = 0
 
@@ -61,31 +63,26 @@ def ros_func():
 
         if goal_msg is not None:
             arm_goal = goal_msg_to_state(goal_msg)
+            intake_goal = intake_msg_to_state(goal_msg)
             wrist_goal = wrist_msg_to_state(goal_msg)
         else:
             arm_goal = state_machine.goal_state
             wrist_goal = state_machine.wrist_goal
 
-        # Update pinched state.
-        intake_status_message : Intake_Status = intake_subscriber.get()
-        if intake_status_message is not None:
-            state_machine.intake_pinched = intake_status_message.pinched
-
-
         if robot_mode in (RobotMode.TELEOP, RobotMode.AUTONOMOUS):
             state_machine.set_goal(arm_goal)
             arm.wrist_goal = wrist_goal
+            arm.control_intake(intake_goal, goal_msg.speed)
             state_machine.step()
         elif robot_mode == RobotMode.DISABLED:
             base_brake_solenoid.set(SolenoidState.OFF)
             upper_brake_solenoid.set(SolenoidState.OFF)
             extension_solenoid.set(SolenoidState.OFF)
-            extension2_solenoid.set(SolenoidState.OFF)
             baseArmMaster.set(ControlMode.PERCENT_OUTPUT, 0.0)
             upperArmMaster.set(ControlMode.PERCENT_OUTPUT, 0.0)
             wristMotor.set(ControlMode.PERCENT_OUTPUT, 0.0)
+            intakeMotor.set(ControlMode.PERCENT_OUTPUT, 0.0)
 
-  
         status_message = arm.get_status()
         status_message.goal = state_to_msg(state_machine.goal_state)
         status_message.state = STATES_TO_MSG[state_machine.state]

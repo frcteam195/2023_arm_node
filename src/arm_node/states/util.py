@@ -10,7 +10,7 @@ from ck_ros_msgs_node.msg import Arm_Goal, Arm_Status
 
 from frc_robot_utilities_py_node.odometry_helper import OdometryHelper
 
-from actions_node.game_specific_actions.constant import WristPosition
+from actions_node.game_specific_actions.constant import RollerState, WristPosition
 
 odom = OdometryHelper()
 
@@ -77,7 +77,6 @@ def standard_step(arm: Arm, position: ArmPosition, control_wrist=True):
 
     # Apply brakes when within the setpoint, but only disable the brakes if it's much farther off.
     if arm.is_at_setpoint_raw(0.008, 0.008):
-        # arm.set_percent_output()
         arm.enable_brakes()
     elif not arm.is_at_setpoint_raw(0.01, 0.01):
         arm.disable_brakes()
@@ -168,6 +167,14 @@ WRIST_GOALS = {
     Arm_Goal.WRIST_180 : WristPosition.Left_180
 }
 
+INTAKE_GOALS = {
+    Arm_Goal.INTAKE_OFF : RollerState.Off,
+    Arm_Goal.INTAKE_CONE : RollerState.Intake_Cone,
+    Arm_Goal.INTAKE_CUBE : RollerState.Intake_Cube,
+    Arm_Goal.OUTTAKE_CONE : RollerState.Outtake_Cone,
+    Arm_Goal.OUTTAKE_CUBE : RollerState.Outtake_Cube
+}
+
 def goal_msg_to_state(goal_msg: Arm_Goal):
     return SIDE_GOALS[goal_msg.goal_side][goal_msg.goal]
 
@@ -187,3 +194,9 @@ def state_to_msg(state: ArmStateMachine.States) -> Arm_Goal:
 
 def wrist_msg_to_state(goal_msg: Arm_Goal) -> WristPosition:
     return WRIST_GOALS[goal_msg.wrist_goal]
+
+def intake_msg_to_state(goal_msg: Arm_Goal) -> RollerState:
+    """
+    Converts the arm goal message integer to an intake goal state.
+    """
+    return INTAKE_GOALS[goal_msg.intake_goal]
