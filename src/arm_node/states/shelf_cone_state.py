@@ -30,8 +30,8 @@ class ShelfConeState(StateMachine.State):
         self.arm.config_arm_fast()
 
     def step(self):
-        if self.side is ArmStateMachine.GoalSides.BACK:
-            self.position = mirror_position(self.position)
+        # if self.side is ArmStateMachine.GoalSides.BACK:
+        #     self.position = mirror_position(self.position)
         standard_step(self.arm, self.position)
 
     def transition(self) -> Enum:

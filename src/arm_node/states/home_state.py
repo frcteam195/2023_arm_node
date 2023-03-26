@@ -26,7 +26,7 @@ class HomeState(StateMachine.State):
 
     def transition(self) -> Enum:
         if self.machine.goal_state is not self.get_enum():
-            if self.arm.is_at_setpoint_raw(0.01, 1.0):
+            if self.arm.is_at_setpoint_raw(0.01, 1.0, 0.04):
                 return transition_to_intermediate(self.machine.goal_state in ArmStateMachine.FRONT_STATES)
 
         return self.get_enum()

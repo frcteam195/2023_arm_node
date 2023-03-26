@@ -52,6 +52,7 @@ class IntermediateBaseState(StateMachine.State):
 
 
     def transition(self) -> Enum:
+        rospy.logerr(self.arm.is_at_setpoint_raw(0.2, 0.25, 0.04))
         if self.arm.is_at_setpoint_raw(0.2, 0.25, 0.04) and self.arm.is_retracted() and self.is_base_arm_opposite():
             if self.side is not ArmStateMachine.get_goal_side(self.machine.goal_state):
                 return ArmStateMachine.States.HOME
@@ -59,7 +60,7 @@ class IntermediateBaseState(StateMachine.State):
                 return ArmStateMachine.REDIRECTED_STATES[self.machine.goal_state]
             return self.machine.goal_state
         elif self.side is ArmStateMachine.get_goal_side(self.machine.goal_state) and \
-             self.arm.is_at_setpoint_raw(0.1, 1.0) and \
+             self.arm.is_at_setpoint_raw(0.1, 0.05, 0.04) and \
              numpy.sign(self.arm.upperMotor.get_sensor_position()) == numpy.sign(self.arm.upperMotor.get_setpoint()) and \
              abs(self.arm.upperMotor.get_sensor_position()) > abs(self.arm.upperMotor.get_setpoint() - 0.04):
             if self.machine.goal_state in ArmStateMachine.REDIRECTED_STATES:

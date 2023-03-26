@@ -162,9 +162,9 @@ class Arm:
         """
         position = self.get_raw_position()
 
-        position.base_position = (position.base_position - self.home_position.base_position) * 360.0
-        position.upper_position = (position.upper_position - self.home_position.upper_position) * 360.0
-        position.wrist_position = (position.wrist_position - self.home_position.wrist_position) * 360.0
+        position.base_position = position.base_position * 360.0
+        position.upper_position = position.upper_position * 360.0
+        position.wrist_position = position.wrist_position * 360.0
 
         return position
 
@@ -210,10 +210,9 @@ class Arm:
         """
         position = ArmPosition()
 
-        position.base_position = angle.base_position / 360.0 + self.home_position.base_position
-        position.upper_position = angle.upper_position / 360.0 + self.home_position.upper_position
-        position.wrist_position = angle.wrist_position / 360.0 + self.home_position.wrist_position
-
+        position.base_position = angle.base_position / 360.0
+        position.upper_position = angle.upper_position / 360.0
+        position.wrist_position = angle.wrist_position / 360.0
         return position
 
     def get_status(self) -> Arm_Status:
