@@ -106,15 +106,14 @@ class ArmSimulation:
 
         intake_arrow = Arrow("intake_arrow")
         intake_arrow_transform = Transform()
-        intake_arrow_transform.linear.y = inches_to_meters(-4)
         intake_arrow.set_transform(intake_arrow_transform)
         intake_arrow.set_scale(Scale(0.5, 0.1, 0.1))
         intake_arrow.set_color(Color(0.949, 0.875, 0.027, 1.0)) 
         intake_arrow.publish()
 
-        intake_arrow_2 = Arrow("intake_arrow")
+        intake_arrow_2 = Arrow("intake_arrow_2")
         intake_arrow_2_transform = Transform()
-        intake_arrow_2_transform.linear.y = inches_to_meters(4)
+        intake_arrow_2_transform.angular.pitch = math.radians(90)
         intake_arrow_2.set_transform(intake_arrow_2_transform)
         intake_arrow_2.set_scale(Scale(0.5, 0.1, 0.1))
         intake_arrow_2.set_color(Color(0.533, 0.141, 0.878, 1.0)) 
@@ -159,14 +158,30 @@ class ArmSimulation:
         
         if intake > 0 :
             transform.angular.pitch = math.radians(pitch_degrees)
-            transform.linear.z = 1 + 0.1
+            transform.linear.z = 0.6
         elif intake < 0:
             transform.angular.pitch = math.radians(-pitch_degrees)
-            transform.linear.z = 0.5 + 0.1
+            transform.linear.z = 0.1
         else:
             transform.linear.z = 100
 
-        transform_link = TransformLink("intake_arrow", "arm_extender")
+        transform_link = TransformLink("intake_arrow", "wide_intake")
+        transform_link.set_transform(transform)
+        transform_link.publish()
+
+    def publish_intake_arrow_2_link(self, pitch_degrees : float, intake: float):
+        transform = Transform()
+        
+        if intake > 0 :
+            transform.angular.pitch = math.radians(-pitch_degrees)
+            transform.linear.x = 0.1
+        elif intake < 0:
+            transform.angular.pitch = math.radians(pitch_degrees)
+            transform.linear.x = 0.6
+        else:
+            transform.linear.x = 100
+
+        transform_link = TransformLink("intake_arrow_2", "intake")
         transform_link.set_transform(transform)
         transform_link.publish()
 
