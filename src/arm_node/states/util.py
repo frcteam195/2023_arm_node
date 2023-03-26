@@ -6,7 +6,7 @@ from ck_utilities_py_node.StateMachine import StateMachine
 from ck_utilities_py_node.motor import *
 from ck_utilities_py_node.solenoid import *
 
-from ck_ros_msgs_node.msg import Arm_Goal, Arm_Status
+from ck_ros_msgs_node.msg import Arm_Goal, Arm_Status, Intake_Goal
 
 from frc_robot_utilities_py_node.odometry_helper import OdometryHelper
 
@@ -168,11 +168,11 @@ INVERTED_SIDES = {
 }
 
 INTAKE_GOALS = {
-    Arm_Goal.INTAKE_OFF : RollerState.Off,
-    Arm_Goal.INTAKE_CONE : RollerState.Intake_Cone,
-    Arm_Goal.INTAKE_CUBE : RollerState.Intake_Cube,
-    Arm_Goal.OUTTAKE_CONE : RollerState.Outtake_Cone,
-    Arm_Goal.OUTTAKE_CUBE : RollerState.Outtake_Cube
+    Intake_Goal.INTAKE_OFF : RollerState.Off,
+    Intake_Goal.INTAKE_CONE : RollerState.Intake_Cone,
+    Intake_Goal.INTAKE_CUBE : RollerState.Intake_Cube,
+    Intake_Goal.OUTTAKE_CONE : RollerState.Outtake_Cone,
+    Intake_Goal.OUTTAKE_CUBE : RollerState.Outtake_Cube
 }
 
 def goal_msg_to_state(goal_msg: Arm_Goal):
@@ -193,8 +193,8 @@ def state_to_msg(state: ArmStateMachine.States) -> Arm_Goal:
 
     return goal_msg
 
-def intake_msg_to_state(goal_msg: Arm_Goal) -> RollerState:
+def intake_msg_to_state(goal_msg: Intake_Goal) -> RollerState:
     """
-    Converts the arm goal message integer to an intake goal state.
+    Converts the intake goal message integer to an intake goal state.
     """
     return INTAKE_GOALS[goal_msg.intake_goal]

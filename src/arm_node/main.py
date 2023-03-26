@@ -7,7 +7,7 @@ from ck_utilities_py_node.rviz_shapes import *
 from ck_utilities_py_node.solenoid import *
 from frc_robot_utilities_py_node.frc_robot_utilities_py import *
 from frc_robot_utilities_py_node.RobotStatusHelperPy import RobotStatusHelperPy, Alliance, RobotMode, BufferedROSMsgHandlerPy
-from ck_ros_msgs_node.msg import Arm_Goal, Arm_Status, Intake_Status
+from ck_ros_msgs_node.msg import Arm_Goal, Arm_Status, Intake_Status, Intake_Goal
 from arm_node.arm_simulation import ArmSimulation
 from ck_utilities_py_node.constraints import *
 from arm_node.state_machine import ArmStateMachine
@@ -24,6 +24,9 @@ def ros_func():
 
     goal_subscriber = BufferedROSMsgHandlerPy(Arm_Goal)
     goal_subscriber.register_for_updates("ArmGoal")
+
+    intake_goal_subscriber = BufferedROSMsgHandlerPy(Intake_Goal)
+    intake_goal_subscriber.register_for_updates("IntakeGoal")
 
     intake_subscriber = BufferedROSMsgHandlerPy(Intake_Status)
     intake_subscriber.register_for_updates("IntakeStatus")
@@ -58,16 +61,20 @@ def ros_func():
     while not rospy.is_shutdown():
         robot_mode = robot_status.get_mode()
         goal_msg: Arm_Goal = goal_subscriber.get()
+        intake_goal_msg: Intake_Goal = intake_goal_subscriber.get()
 
         arm_goal = None
+        intake_goal = None
 
         if goal_msg is not None:
             arm_goal = goal_msg_to_state(goal_msg)
-            intake_goal = intake_msg_to_state(goal_msg)
-            intake_speed = goal_msg.speed
         else:
             arm_goal = state_machine.goal_state
 
+        if intake_goal_msg is not None:
+            intake_goal = intake_msg_to_state(intake_goal_msg)
+            intake_speed = intake_goal_msg.speed
+        
         if robot_mode in (RobotMode.TELEOP, RobotMode.AUTONOMOUS):
             state_machine.set_goal(arm_goal)
             arm.control_intake(intake_goal, intake_speed)
@@ -98,7 +105,8 @@ def ros_func():
             arm_simulation.publish_arm_extender_link(extension_solenoid.get() == SolenoidState.ON)
             arm_simulation.publish_intake_link(wristMotor.get_sensor_position() * 360.0)
             arm_simulation.publish_wide_intake_link(wristMotor.get_sensor_position() * 360.0)
-            arm_simulation.publish_intake_arrow_link(90, 20)#intakeRollerMotor.get_sensor_velocity())
+            arm_simulation.publish_intake_arrow_link(90, intakeMotor.get_sensor_velocity())
+            arm_simulation.publish_intake_arrow_2_link(90, intakeMotor.get_sensor_velocity())
             arm_simulation.publish_intake_support_link() 
 
             # Flip limelight depending on arm position.
