@@ -16,6 +16,8 @@ TRANSITIONS = [
     ArmStateMachine.States.GROUND_CUBE_FRONT,
     ArmStateMachine.States.GROUND_DEAD_CONE_BACK,
     ArmStateMachine.States.GROUND_DEAD_CONE_FRONT,
+    ArmStateMachine.States.SIDEWAYS_DEAD_CONE_BACK,
+    ArmStateMachine.States.SIDEWAYS_DEAD_CONE_FRONT
 ]
 
 class IntermediateGroundState(StateMachine.State):

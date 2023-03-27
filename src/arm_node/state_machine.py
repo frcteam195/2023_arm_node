@@ -60,6 +60,8 @@ class ArmStateMachine(StateMachine):
         PRE_DEAD_CONE_FRONT=38
         PRE_DEAD_CONE_BACK=39
 
+        SIDEWAYS_DEAD_CONE_FRONT=40
+        SIDEWAYS_DEAD_CONE_BACK=41
         # INTERMEDIATE_DEAD_CONE_FRONT=36
         # INTERMEDIATE_DEAD_CONE_BACK=37
 
@@ -88,6 +90,7 @@ class ArmStateMachine(StateMachine):
         States.INTERMEDIATE_MID_CONE_FRONT,
         States.INTERMEDIATE_MID_CUBE_FRONT,
         States.SPORT_MODE_FRONT,
+        States.SIDEWAYS_DEAD_CONE_FRONT,
     ]
 
     BACK_STATES = [
@@ -110,6 +113,7 @@ class ArmStateMachine(StateMachine):
         States.INTERMEDIATE_MID_CONE_BACK,
         States.INTERMEDIATE_MID_CUBE_BACK,
         States.SPORT_MODE_BACK,
+        States.SIDEWAYS_DEAD_CONE_BACK,
     ]
 
 
@@ -118,6 +122,8 @@ class ArmStateMachine(StateMachine):
         States.GROUND_CONE_FRONT : States.INTERMEDIATE_GROUND_FRONT,
         States.GROUND_CUBE_BACK : States.INTERMEDIATE_GROUND_BACK,
         States.GROUND_CUBE_FRONT : States.INTERMEDIATE_GROUND_FRONT,
+        States.SIDEWAYS_DEAD_CONE_BACK: States.INTERMEDIATE_GROUND_BACK,
+        States.SIDEWAYS_DEAD_CONE_FRONT: States.INTERMEDIATE_GROUND_FRONT,
         States.HIGH_CONE_BACK : States.INTERMEDIATE_HIGH_CONE_BACK,
         States.HIGH_CONE_FRONT : States.INTERMEDIATE_HIGH_CONE_FRONT,
         States.HIGH_CUBE_BACK : States.INTERMEDIATE_HIGH_CUBE_BACK,
@@ -152,6 +158,7 @@ class ArmStateMachine(StateMachine):
         from arm_node.states.mid_cube_intermediate import IntermediateMidCubeState
         from arm_node.states.pre_dead_cone_state import PreDeadConeState
         from arm_node.states.sport_mode_state import SportModeState
+        from arm_node.states.sideways_dead_cone_state import SidewaysDeadCone
 
         states = {
             ArmStateMachine.States.HOME : HomeState(self, arm),
@@ -192,7 +199,9 @@ class ArmStateMachine(StateMachine):
             ArmStateMachine.States.SPORT_MODE_FRONT : SportModeState(self, arm, ArmStateMachine.GoalSides.FRONT),
             ArmStateMachine.States.SPORT_MODE_BACK : SportModeState(self, arm, ArmStateMachine.GoalSides.BACK),
             ArmStateMachine.States.PRE_DEAD_CONE_FRONT : PreDeadConeState(self, arm),
-            ArmStateMachine.States.PRE_DEAD_CONE_BACK: PreDeadConeState(self, arm, ArmStateMachine.GoalSides.BACK)
+            ArmStateMachine.States.PRE_DEAD_CONE_BACK: PreDeadConeState(self, arm, ArmStateMachine.GoalSides.BACK), 
+            ArmStateMachine.States.SIDEWAYS_DEAD_CONE_FRONT: SidewaysDeadCone(self, arm),
+            ArmStateMachine.States.SIDEWAYS_DEAD_CONE_BACK: SidewaysDeadCone(self, arm, ArmStateMachine.GoalSides.BACK)
         }
 
         state = ArmStateMachine.States.HOME
