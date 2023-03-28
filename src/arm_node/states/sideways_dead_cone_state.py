@@ -31,11 +31,10 @@ class SidewaysDeadCone(StateMachine.State):
         self.arm.extend()
 
     def step(self):
-        self.arm.wrist_goal = WristPosition.Left_90
         standard_step(self.arm, self.position)
 
     def transition(self) -> Enum:
-        if self.machine.goal_state is not self.get_enum():            
+        if self.machine.goal_state is not self.get_enum():
             if self.side is ArmStateMachine.GoalSides.FRONT:
                 return ArmStateMachine.States.INTERMEDIATE_GROUND_FRONT
             else:
