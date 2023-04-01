@@ -30,8 +30,8 @@ POS_GROUND_DEAD_CONE = ArmPosition(40, 33, -40, -36)
 POS_SIDEWAYS_DEAD_CONE = ArmPosition(6.5, 32.0, -6.5, -32.0)
 
 
-POS_SHELF_CUBE = ArmPosition(-14.98, 76.9, 17.98, -74.1)
-POS_SHELF_CONE = ArmPosition(-14.98, 76.9, 17.98, -74.1)
+POS_SHELF_CUBE = ArmPosition(-14.98, 77.9, 17.98, -74.1)
+POS_SHELF_CONE = ArmPosition(-14.98, 77.9, 17.98, -74.1)
 
 POS_LOW_SCORE = ArmPosition(21.38, 40.68, -21.38, -40.68)
 POS_MID_CUBE = ArmPosition(3, 68.88, 0, -68.88)
@@ -39,7 +39,7 @@ POS_HIGH_CUBE = ArmPosition(19, 114, -16, -111)
 # POS_HIGH_CUBE_AUTO = ArmPosition(8, 100, -8, -100)    #AUTO POS MAYBE
 # POS_MID_CONE = ArmPosition(14.06, 104.3, -14.06, -99.8) - without piston extensions
 POS_MID_CONE = ArmPosition(-6.5, 81.73, 7, -81.73)
-POS_HIGH_CONE = ArmPosition(21, 131.33, -21, -133)
+POS_HIGH_CONE = ArmPosition(21, 132.33, -21, -130.5)
 
 POS_INTERMEDIATE = ArmPosition(-16.41, 28.0, 16.41, -28.0)
 POS_GROUND_INTERMEDIATE = ArmPosition(-8.06, 42.0, 8.06, -42.0)
