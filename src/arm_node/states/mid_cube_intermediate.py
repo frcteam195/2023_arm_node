@@ -39,6 +39,7 @@ class IntermediateMidCubeState(StateMachine.State):
         self.arm.retract()
 
     def step(self):
+        self.arm.wrist_goal = WristPosition.Left_90
         self.arm.set_motion_magic(self.default_position)
 
     def transition(self) -> Enum:
