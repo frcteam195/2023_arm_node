@@ -37,6 +37,8 @@ class GroundDeadConeState(StateMachine.State):
         if self.machine.goal_state is not self.get_enum():
             if self.machine.goal_state == ArmStateMachine.States.PRE_DEAD_CONE_FRONT:
                 return ArmStateMachine.States.PRE_DEAD_CONE_FRONT
+            elif self.machine.goal_state == ArmStateMachine.States.PRE_DEAD_CONE_BACK:
+                return ArmStateMachine.States.PRE_DEAD_CONE_BACK
             
             if self.side is ArmStateMachine.GoalSides.FRONT:
                 return ArmStateMachine.States.INTERMEDIATE_GROUND_FRONT
