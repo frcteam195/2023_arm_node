@@ -23,8 +23,9 @@ POS_STEAL = ArmPosition(16.70, 82.08, -16.70, -82.08)  # Fake
 POS_GROUND_CUBE = ArmPosition(5.06, 33.0, -5.06, -33.0)
 POS_GROUND_CONE = ArmPosition(-3.55, 32.16, 4.55, -30.16)
 # POS_GROUND_DEAD_CONE = ArmPosition(1, 30.36, -1, -30.36)
-POS_PRE_GROUND_DEAD_CONE = ArmPosition(21.38, 40.68, -26.38, -40.68)
-POS_GROUND_DEAD_CONE = ArmPosition(40, 33, -41, -32)
+POS_PRE_GROUND_DEAD_CONE = ArmPosition(24.5, 40.68, -26.38, -42.0)
+POS_GROUND_DEAD_CONE = ArmPosition(40.5, 32.5, -42, -33)
+#POS_GROUND_DEAD_CONE = ArmPosition(40, 33, -40, -36)
 
 # POS_SIDEWAYS_DEAD_CONE = ArmPosition(15.38, 60.68, -15.38, -60.0)
 POS_SIDEWAYS_DEAD_CONE = ArmPosition(6.5, 32.0, -6.5, -32.0)
