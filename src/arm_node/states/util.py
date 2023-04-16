@@ -55,7 +55,9 @@ STATES_TO_MSG = {
     ArmStateMachine.States.SPORT_MODE_FRONT : Arm_Status.SPORT_MODE_FRONT,
     ArmStateMachine.States.SPORT_MODE_BACK : Arm_Status.SPORT_MODE_BACK,
     ArmStateMachine.States.SIDEWAYS_DEAD_CONE_FRONT : Arm_Status.SIDEWAYS_DEAD_CONE_FRONT,
-    ArmStateMachine.States.SIDEWAYS_DEAD_CONE_BACK : Arm_Status.SIDEWAYS_DEAD_CONE_BACK
+    ArmStateMachine.States.SIDEWAYS_DEAD_CONE_BACK : Arm_Status.SIDEWAYS_DEAD_CONE_BACK,
+    ArmStateMachine.States.CUBE_PUSH_AUTO_FRONT : Arm_Status.CUBE_PUSH_AUTO_FRONT,
+    ArmStateMachine.States.CUBE_PUSH_AUTO_BACK : Arm_Status.CUBE_PUSH_AUTO_BACK
 
 }
 
@@ -133,7 +135,8 @@ FRONT_GOALS = {
     Arm_Goal.HIGH_CUBE : ArmStateMachine.States.HIGH_CUBE_FRONT,
     Arm_Goal.PRE_SCORE : ArmStateMachine.States.PRE_SCORE_FRONT,
     Arm_Goal.SPORT_MODE : ArmStateMachine.States.SPORT_MODE_FRONT,
-    Arm_Goal.SIDEWAYS_DEAD_CONE : ArmStateMachine.States.SIDEWAYS_DEAD_CONE_FRONT
+    Arm_Goal.SIDEWAYS_DEAD_CONE : ArmStateMachine.States.SIDEWAYS_DEAD_CONE_FRONT,
+    Arm_Goal.CUBE_PUSH_AUTO : ArmStateMachine.States.CUBE_PUSH_AUTO_FRONT
 
 }
 
@@ -151,7 +154,8 @@ BACK_GOALS = {
     Arm_Goal.HIGH_CUBE : ArmStateMachine.States.HIGH_CUBE_BACK,
     Arm_Goal.PRE_SCORE : ArmStateMachine.States.PRE_SCORE_BACK,
     Arm_Goal.SPORT_MODE : ArmStateMachine.States.SPORT_MODE_BACK,
-    Arm_Goal.SIDEWAYS_DEAD_CONE : ArmStateMachine.States.SIDEWAYS_DEAD_CONE_BACK
+    Arm_Goal.SIDEWAYS_DEAD_CONE : ArmStateMachine.States.SIDEWAYS_DEAD_CONE_BACK,
+    Arm_Goal.CUBE_PUSH_AUTO : ArmStateMachine.States.CUBE_PUSH_AUTO_BACK
 }
 
 SIDE_GOALS = {

@@ -62,6 +62,8 @@ class ArmStateMachine(StateMachine):
 
         SIDEWAYS_DEAD_CONE_FRONT=40
         SIDEWAYS_DEAD_CONE_BACK=41
+        CUBE_PUSH_AUTO_FRONT=42
+        CUBE_PUSH_AUTO_BACK=43
         # INTERMEDIATE_DEAD_CONE_FRONT=36
         # INTERMEDIATE_DEAD_CONE_BACK=37
 
@@ -91,6 +93,7 @@ class ArmStateMachine(StateMachine):
         States.INTERMEDIATE_MID_CUBE_FRONT,
         States.SPORT_MODE_FRONT,
         States.SIDEWAYS_DEAD_CONE_FRONT,
+        States.CUBE_PUSH_AUTO_FRONT,
     ]
 
     BACK_STATES = [
@@ -114,6 +117,7 @@ class ArmStateMachine(StateMachine):
         States.INTERMEDIATE_MID_CUBE_BACK,
         States.SPORT_MODE_BACK,
         States.SIDEWAYS_DEAD_CONE_BACK,
+        States.CUBE_PUSH_AUTO_BACK,
     ]
 
 
@@ -159,6 +163,7 @@ class ArmStateMachine(StateMachine):
         from arm_node.states.pre_dead_cone_state import PreDeadConeState
         from arm_node.states.sport_mode_state import SportModeState
         from arm_node.states.sideways_dead_cone_state import SidewaysDeadCone
+        from arm_node.states.cube_push_auto_state import CubePushAutoState
 
         states = {
             ArmStateMachine.States.HOME : HomeState(self, arm),
@@ -201,7 +206,9 @@ class ArmStateMachine(StateMachine):
             ArmStateMachine.States.PRE_DEAD_CONE_FRONT : PreDeadConeState(self, arm),
             ArmStateMachine.States.PRE_DEAD_CONE_BACK: PreDeadConeState(self, arm, ArmStateMachine.GoalSides.BACK), 
             ArmStateMachine.States.SIDEWAYS_DEAD_CONE_FRONT: SidewaysDeadCone(self, arm),
-            ArmStateMachine.States.SIDEWAYS_DEAD_CONE_BACK: SidewaysDeadCone(self, arm, ArmStateMachine.GoalSides.BACK)
+            ArmStateMachine.States.SIDEWAYS_DEAD_CONE_BACK: SidewaysDeadCone(self, arm, ArmStateMachine.GoalSides.BACK),
+            ArmStateMachine.States.CUBE_PUSH_AUTO_FRONT: CubePushAutoState(self, arm),
+            ArmStateMachine.States.CUBE_PUSH_AUTO_BACK: CubePushAutoState(self, arm, ArmStateMachine.GoalSides.BACK),
         }
 
         state = ArmStateMachine.States.HOME
