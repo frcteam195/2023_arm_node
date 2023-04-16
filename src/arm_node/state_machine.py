@@ -68,6 +68,8 @@ class ArmStateMachine(StateMachine):
         MID_CUBE_AUTO_BACK=45
         HIGH_CUBE_AUTO_FRONT=46
         HIGH_CUBE_AUTO_BACK=47
+        CUBE_PUSH_HARD_AUTO_FRONT=48
+        CUBE_PUSH_HARD_AUTO_BACK=49
         # INTERMEDIATE_DEAD_CONE_FRONT=36
         # INTERMEDIATE_DEAD_CONE_BACK=37
 
@@ -100,6 +102,7 @@ class ArmStateMachine(StateMachine):
         States.CUBE_PUSH_AUTO_FRONT,
         States.MID_CUBE_AUTO_FRONT,
         States.HIGH_CUBE_AUTO_FRONT,
+        States.CUBE_PUSH_HARD_AUTO_FRONT,
     ]
 
     BACK_STATES = [
@@ -126,6 +129,7 @@ class ArmStateMachine(StateMachine):
         States.CUBE_PUSH_AUTO_BACK,
         States.MID_CUBE_AUTO_BACK,
         States.HIGH_CUBE_AUTO_BACK,
+        States.CUBE_PUSH_HARD_AUTO_BACK,
     ]
 
 
@@ -178,6 +182,7 @@ class ArmStateMachine(StateMachine):
         from arm_node.states.cube_push_auto_state import CubePushAutoState
         from arm_node.states.mid_cube_auto_state import MidCubeAutoState
         from arm_node.states.high_cube_auto_state import HighCubeAutoState
+        from arm_node.states.cube_push_hard_auto_state import CubePushHardAutoState
 
         states = {
             ArmStateMachine.States.HOME : HomeState(self, arm),
@@ -227,6 +232,8 @@ class ArmStateMachine(StateMachine):
             ArmStateMachine.States.MID_CUBE_AUTO_BACK: MidCubeAutoState(self, arm, ArmStateMachine.GoalSides.BACK),
             ArmStateMachine.States.HIGH_CUBE_AUTO_FRONT: HighCubeAutoState(self, arm),
             ArmStateMachine.States.HIGH_CUBE_AUTO_BACK: HighCubeAutoState(self, arm, ArmStateMachine.GoalSides.BACK),
+            ArmStateMachine.States.CUBE_PUSH_HARD_AUTO_FRONT: CubePushHardAutoState(self, arm),
+            ArmStateMachine.States.CUBE_PUSH_HARD_AUTO_BACK: CubePushHardAutoState(self, arm, ArmStateMachine.GoalSides.BACK),
         }
 
         state = ArmStateMachine.States.HOME

@@ -31,6 +31,7 @@ POS_GROUND_DEAD_CONE = ArmPosition(40.5, 32.5, -42, -33)
 POS_SIDEWAYS_DEAD_CONE = ArmPosition(6.5, 32.0, -6.5, -32.0)
 
 POS_CUBE_PUSH_AUTO = ArmPosition(0, 4.5, 0, -4.5)
+POS_CUBE_PUSH_HARD_AUTO = ArmPosition(0, 12, 0, -12)
 
 POS_SHELF_CUBE = ArmPosition(-14.98, 78.4, 17.98, -75.1)
 POS_SHELF_CONE = ArmPosition(-14.98, 78.4, 17.98, -75.1)
