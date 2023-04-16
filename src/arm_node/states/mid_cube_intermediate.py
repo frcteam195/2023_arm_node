@@ -12,6 +12,8 @@ from ck_utilities_py_node.StateMachine import StateMachine
 TRANSITIONS = [
     ArmStateMachine.States.MID_CUBE_FRONT,
     ArmStateMachine.States.MID_CUBE_BACK,
+    ArmStateMachine.States.MID_CUBE_AUTO_FRONT,
+    ArmStateMachine.States.MID_CUBE_AUTO_BACK,
 ]
 
 class IntermediateMidCubeState(StateMachine.State):

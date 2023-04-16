@@ -64,6 +64,10 @@ class ArmStateMachine(StateMachine):
         SIDEWAYS_DEAD_CONE_BACK=41
         CUBE_PUSH_AUTO_FRONT=42
         CUBE_PUSH_AUTO_BACK=43
+        MID_CUBE_AUTO_FRONT=44
+        MID_CUBE_AUTO_BACK=45
+        HIGH_CUBE_AUTO_FRONT=46
+        HIGH_CUBE_AUTO_BACK=47
         # INTERMEDIATE_DEAD_CONE_FRONT=36
         # INTERMEDIATE_DEAD_CONE_BACK=37
 
@@ -94,6 +98,8 @@ class ArmStateMachine(StateMachine):
         States.SPORT_MODE_FRONT,
         States.SIDEWAYS_DEAD_CONE_FRONT,
         States.CUBE_PUSH_AUTO_FRONT,
+        States.MID_CUBE_AUTO_FRONT,
+        States.HIGH_CUBE_AUTO_FRONT,
     ]
 
     BACK_STATES = [
@@ -118,6 +124,8 @@ class ArmStateMachine(StateMachine):
         States.SPORT_MODE_BACK,
         States.SIDEWAYS_DEAD_CONE_BACK,
         States.CUBE_PUSH_AUTO_BACK,
+        States.MID_CUBE_AUTO_BACK,
+        States.HIGH_CUBE_AUTO_BACK,
     ]
 
 
@@ -136,6 +144,10 @@ class ArmStateMachine(StateMachine):
         States.MID_CONE_FRONT : States.INTERMEDIATE_MID_CONE_FRONT,
         States.MID_CUBE_BACK : States.INTERMEDIATE_MID_CUBE_BACK,
         States.MID_CUBE_FRONT : States.INTERMEDIATE_MID_CUBE_FRONT,
+        States.MID_CUBE_AUTO_FRONT : States.INTERMEDIATE_MID_CUBE_FRONT,
+        States.MID_CUBE_AUTO_BACK : States.INTERMEDIATE_MID_CUBE_BACK,
+        States.HIGH_CUBE_AUTO_FRONT : States.INTERMEDIATE_HIGH_CUBE_FRONT,
+        States.HIGH_CUBE_AUTO_BACK : States.INTERMEDIATE_HIGH_CUBE_BACK,
     }
 
 
@@ -164,6 +176,8 @@ class ArmStateMachine(StateMachine):
         from arm_node.states.sport_mode_state import SportModeState
         from arm_node.states.sideways_dead_cone_state import SidewaysDeadCone
         from arm_node.states.cube_push_auto_state import CubePushAutoState
+        from arm_node.states.mid_cube_auto_state import MidCubeAutoState
+        from arm_node.states.high_cube_auto_state import HighCubeAutoState
 
         states = {
             ArmStateMachine.States.HOME : HomeState(self, arm),
@@ -209,6 +223,10 @@ class ArmStateMachine(StateMachine):
             ArmStateMachine.States.SIDEWAYS_DEAD_CONE_BACK: SidewaysDeadCone(self, arm, ArmStateMachine.GoalSides.BACK),
             ArmStateMachine.States.CUBE_PUSH_AUTO_FRONT: CubePushAutoState(self, arm),
             ArmStateMachine.States.CUBE_PUSH_AUTO_BACK: CubePushAutoState(self, arm, ArmStateMachine.GoalSides.BACK),
+            ArmStateMachine.States.MID_CUBE_AUTO_FRONT: MidCubeAutoState(self, arm),
+            ArmStateMachine.States.MID_CUBE_AUTO_BACK: MidCubeAutoState(self, arm, ArmStateMachine.GoalSides.BACK),
+            ArmStateMachine.States.HIGH_CUBE_AUTO_FRONT: HighCubeAutoState(self, arm),
+            ArmStateMachine.States.HIGH_CUBE_AUTO_BACK: HighCubeAutoState(self, arm, ArmStateMachine.GoalSides.BACK),
         }
 
         state = ArmStateMachine.States.HOME
