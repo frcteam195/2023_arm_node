@@ -64,7 +64,7 @@ STATES_TO_MSG = {
     ArmStateMachine.States.HIGH_CUBE_AUTO_BACK : Arm_Status.HIGH_CUBE_AUTO_BACK,
     ArmStateMachine.States.CUBE_PUSH_HARD_AUTO_FRONT : Arm_Status.CUBE_PUSH_HARD_AUTO_FRONT,
     ArmStateMachine.States.CUBE_PUSH_HARD_AUTO_BACK : Arm_Status.CUBE_PUSH_HARD_AUTO_BACK,
-
+    ArmStateMachine.States.FORCE_HOME : Arm_Status.FORCE_HOME,
 }
 
 def transition_to_intermediate(is_front: bool) -> StateMachine.State:
@@ -146,7 +146,7 @@ FRONT_GOALS = {
     Arm_Goal.MID_CUBE_AUTO : ArmStateMachine.States.MID_CUBE_AUTO_FRONT,
     Arm_Goal.HIGH_CUBE_AUTO : ArmStateMachine.States.HIGH_CUBE_AUTO_FRONT,
     Arm_Goal.CUBE_PUSH_HARD_AUTO : ArmStateMachine.States.CUBE_PUSH_HARD_AUTO_FRONT,
-
+    Arm_Goal.FORCE_HOME : ArmStateMachine.States.FORCE_HOME,
 }
 
 BACK_GOALS = {
@@ -168,7 +168,7 @@ BACK_GOALS = {
     Arm_Goal.MID_CUBE_AUTO : ArmStateMachine.States.MID_CUBE_AUTO_BACK,
     Arm_Goal.HIGH_CUBE_AUTO : ArmStateMachine.States.HIGH_CUBE_AUTO_BACK,
     Arm_Goal.CUBE_PUSH_HARD_AUTO : ArmStateMachine.States.CUBE_PUSH_HARD_AUTO_BACK,
-
+    Arm_Goal.FORCE_HOME : ArmStateMachine.States.FORCE_HOME,
 }
 
 SIDE_GOALS = {
@@ -182,7 +182,7 @@ INVERTED_BACK_GOALS = {v: k for k, v in BACK_GOALS.items()}
 INVERTED_SIDES = {
     ArmStateMachine.GoalSides.HOME : Arm_Goal.SIDE_FRONT,
     ArmStateMachine.GoalSides.FRONT : Arm_Goal.SIDE_FRONT,
-    ArmStateMachine.GoalSides.BACK : Arm_Goal.SIDE_BACK
+    ArmStateMachine.GoalSides.BACK : Arm_Goal.SIDE_BACK,
 }
 
 WRIST_GOALS = {

@@ -25,7 +25,10 @@ class HomeState(StateMachine.State):
         standard_step(self.arm, self.position, False)
 
     def transition(self) -> Enum:
-        if self.machine.goal_state is not self.get_enum():
+        if self.machine.goal_state == ArmStateMachine.States.FORCE_HOME:
+            self.machine.set_goal(self.get_enum())
+            return self.get_enum()
+        elif self.machine.goal_state is not self.get_enum():
             if self.arm.is_at_setpoint_raw(0.01, 1.0):
                 return transition_to_intermediate(self.machine.goal_state in ArmStateMachine.FRONT_STATES)
 

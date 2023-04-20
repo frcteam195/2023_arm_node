@@ -70,6 +70,7 @@ class ArmStateMachine(StateMachine):
         HIGH_CUBE_AUTO_BACK=47
         CUBE_PUSH_HARD_AUTO_FRONT=48
         CUBE_PUSH_HARD_AUTO_BACK=49
+        FORCE_HOME=50
         # INTERMEDIATE_DEAD_CONE_FRONT=36
         # INTERMEDIATE_DEAD_CONE_BACK=37
 
@@ -234,6 +235,7 @@ class ArmStateMachine(StateMachine):
             ArmStateMachine.States.HIGH_CUBE_AUTO_BACK: HighCubeAutoState(self, arm, ArmStateMachine.GoalSides.BACK),
             ArmStateMachine.States.CUBE_PUSH_HARD_AUTO_FRONT: CubePushHardAutoState(self, arm),
             ArmStateMachine.States.CUBE_PUSH_HARD_AUTO_BACK: CubePushHardAutoState(self, arm, ArmStateMachine.GoalSides.BACK),
+            ArmStateMachine.States.FORCE_HOME: HomeState(self, arm),
         }
 
         state = ArmStateMachine.States.HOME
@@ -259,7 +261,7 @@ class ArmStateMachine(StateMachine):
 
     @staticmethod
     def get_goal_side(goal):
-        if goal is ArmStateMachine.States.HOME or goal is ArmStateMachine.States.HOME:
+        if goal is ArmStateMachine.States.HOME or goal is ArmStateMachine.States.FORCE_HOME:
             return ArmStateMachine.GoalSides.HOME
         if goal in ArmStateMachine.FRONT_STATES:
             return ArmStateMachine.GoalSides.FRONT
